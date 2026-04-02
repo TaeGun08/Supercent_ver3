@@ -11,7 +11,7 @@ public class Stone : MonoBehaviour, IMiningTarget
 
     public void Init(StoneGenerator generator)
     {
-        this.stoneGenerator = generator;
+        stoneGenerator = generator;
     }
 
     public Cobblestone MineResource(bool isFull)
