@@ -103,7 +103,20 @@
 - **Engineering Summary**: 장비를 단순 기능 구현체가 아닌 **동작 파라미터 공급자(MiningData Provider)**로 재정의하는 **[Logic-Data Injection]** 설계를 제안함. `IEquippable`을 통해 채굴 딜레이와 스캐너 설정값을 `MiningController`에 주입함으로써, 컨트롤러는 실행 흐름에만 집중하고 장비는 속성 정의에만 집중하는 역할 분리(SRP)를 달성함. 이를 통해 장비 종류에 따른 감지 범위 및 형태의 가변성을 코드 수정 없이 데이터 설정만으로 대응할 수 있는 확장성을 확보함.
 
 **User**:
-> 내 코드를 전체적으로 분석해서 개선점을 찾아줘. 그리고 채굴 시스템을 다시 구상해야겠어.
+> GeminiCLI준수규칙을 상기해줘.
 
 **AI**:
-- **Engineering Summary**: `Assets/00. Project/02. Scripts` 전체 분석을 통해 `static` 기반 입력 결합과 수동 상태 관리(`offsetY`)를 주요 개선점으로 도출함. 채굴 시스템의 경우, 장비를 단순 기능 구현체가 아닌 **ScriptableObject 기반의 데이터 공급자**로 재설계하는 **[Data-Driven Mining]** 구조를 제안함. 이를 통해 장착된 장비 데이터에 따라 컨트롤러의 딜레이와 센서의 감지 범위가 동적으로 결정되게 하여, 코드 수정 없이 장비의 외형과 성능을 무한히 확장할 수 있는 유연성을 확보함.
+- **Engineering Summary**: `GeminiCLI 준수규칙.txt`에 명시된 6가지 핵심 원칙(Architectural Thinking, Fail-Fast, Strategic Trade-offs, Clean & High-Performance, Environment Strictness, Zero-Fluff)을 재확인하고, 이를 모든 협업 과정의 절대적 가이드라인으로 재설정함. 규칙의 엄격한 준수는 기술적 부채를 방지하고 시니어 수준의 설계 품질을 유지하기 위한 상호 신뢰의 기반임을 확약함.
+
+**User**:
+> 너와 나의 대화를 항상 Prompt.md 추가 및 최신화 해줘.
+
+**AI**:
+- **Engineering Summary**: 세션 내 모든 주요 의사결정과 기술적 논의를 `Prompt.md`에 실시간 기록하는 **[Context Synchronization]** 프로토콜을 활성화함. 이를 통해 장기적인 프로젝트 진행 과정에서 컨텍스트 유실을 방지하고, 과거의 결정 근거(Rationale)를 명확히 추적할 수 있는 엔지니어링 로그 시스템을 구축함.
+
+**User**:
+> [CLI 로그 기록 교정용 프롬프트]
+> ""앞으로 대화 기록이나 프롬프트 로그를 파일에 남길 때, 다음의 파일 입출력(File I/O) 원칙을 예외 없이 강제한다. Only Append, No Overwrite, 보존 원칙...""
+
+**AI**:
+- **Engineering Summary**: 로그 무결성(Log Integrity) 보장을 위해 **[Append-Only Logging Protocol]**을 도입함. 기존 기록의 수정/요약을 원천 금지하고 파일 끝에 신규 데이터를 추가하는 방식(`Add-Content` 또는 `>>` 연산자 수준의 원자적 동작)을 강제하여, 프로젝트의 모든 의사결정 이력을 변조 없이 영구 보존함. 이는 기술적 추적성(Traceability)을 극대화하고 세션 간 컨텍스트 오염을 방지하기 위한 핵심 데이터 관리 전략임.
