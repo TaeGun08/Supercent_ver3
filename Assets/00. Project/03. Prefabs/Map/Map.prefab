@@ -356,7 +356,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 603375631778135395}
-  - component: {fileID: 8718119536065833183}
   m_Layer: 0
   m_Name: Prison
   m_TagString: Untagged
@@ -387,18 +386,6 @@ Transform:
   - {fileID: 6145090706790430007}
   m_Father: {fileID: 368756746513147663}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8718119536065833183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2546719442793733453}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d2c692ab67e2ba4d969e6abce1b7b6f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3197413258975201679
 GameObject:
   m_ObjectHideFlags: 0

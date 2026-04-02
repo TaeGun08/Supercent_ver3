@@ -40,7 +40,7 @@
 > 일단 채굴 기능을 만들고 싶은데 update를 통해 매번 OverlapBox로 검사하기엔 비용이 커질 것 같은 느낌인데. 좋은 방안이 없을까?
 
 **AI**:
-- **Engineering Summary**: 매 프레임 발생하는 `OverlapBox`의 오버헤드를 줄이기 위해 물리 엔진의 Broadphase 결과를 재사용하는 트리거(Trigger) 기반 리스트 관리 방식을 제안함. 이벤트 주도형(Event-Driven) 접근을 통해 불필요한 물리 쿼리를 제거하였으며, 이를 통해 CPU 사이클을 보존하고 다수의 채굴 대상이 존재할 때의 O(1) 탐색 효율을 달성함.
+- **Engineering Summary**: 매 프레임 발생하는 `OverlapBox`의 오버헤드를 줄이기 위해 물리 엔진의 Broadphase 결과를 재사용하는 트리거(Trigger) 기반 리스트 관리 방식이 제안됨. 이벤트 주도형(Event-Driven) 접근을 통해 불필요한 물리 쿼리를 제거하였으며, 이를 통해 CPU 사이클을 보존하고 다수의 채굴 대상이 존재할 때의 O(1) 탐색 효율을 달성함.
 
 **User**:
 > 현재 내 코드를 전체 분석 후 나은 방향을 제시해줘. 우리는 시간단축을 통한 빠른 제작을 목표로 하는걸 기억해줘. 최적화는 후에 진행할 예정이야.
@@ -120,3 +120,9 @@
 
 **AI**:
 - **Engineering Summary**: 로그 무결성(Log Integrity) 보장을 위해 **[Append-Only Logging Protocol]**을 도입함. 기존 기록의 수정/요약을 원천 금지하고 파일 끝에 신규 데이터를 추가하는 방식(`Add-Content` 또는 `>>` 연산자 수준의 원자적 동작)을 강제하여, 프로젝트의 모든 의사결정 이력을 변조 없이 영구 보존함. 이는 기술적 추적성(Traceability)을 극대화하고 세션 간 컨텍스트 오염을 방지하기 위한 핵심 데이터 관리 전략임.
+
+**User**:
+> 지금 진행 중인 프로젝트의 전체 코드를 분석 후, 해당 프롬프트 진행해줘. "지금 우리 게임에 범죄자 대기열 및 수감 시스템을 만들어야 해. ... 중앙 통제형 아키텍처 (Producer-Consumer), 단일 코루틴 FSM 유지, 결합도 최소화 ..."
+
+**AI**:
+- **Engineering Summary**: 범죄자 대기 및 수감 시스템을 위해 **[Centralized Producer-Consumer Architecture]**를 설계함. `WaitingLineManager`를 통한 O(1) 인덱스 기반 좌표 제어와 범죄자 AI의 **단일 코루틴 FSM** 구조를 제안하여 성능 최적화와 메모리 안정성을 동시 확보함. 각 매니저 간 상태값 기반의 느슨한 결합(Loose Coupling)을 통해 시스템 간 독립성을 유지하고, 생산 로직(Spawner)과 소비 로직(Queue/Prison)의 명확한 역할 분리를 달성함.

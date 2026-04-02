@@ -4,10 +4,10 @@ using UnityEngine;
 
 public abstract class Npc : MonoBehaviour
 {
-    [Header("Npc")] 
+    [Header("Npc Settings")] 
     [SerializeField] protected float moveSpeed = 2f;
-
-    protected void OnEnable()
+    
+    protected virtual void OnEnable()
     {
         StartCoroutine(NpcBehaviorCoroutine());
     }

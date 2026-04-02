@@ -1,11 +1,14 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MiningController : MonoBehaviour
 {
     [Header("Equipments")]
     [SerializeField]private MiningEquipment[] miningEquipments;
     private MiningEquipment currentMiningEq;
+    [SerializeField] private StoneStacker stoneStacker;
+    [SerializeField] private PotionStacker potionStacker;
 
     private void Awake()
     {
@@ -13,7 +16,7 @@ public class MiningController : MonoBehaviour
         {
             PlayerController = GetComponent<PlayerController>(),
             PlayerAnimation = GetComponent<PlayerAnimation>(),
-            ItemStacker = GetComponent<ItemStacker>(),
+            ItemStacker = stoneStacker,
         };
         
         foreach (MiningEquipment eq in miningEquipments)
@@ -26,6 +29,7 @@ public class MiningController : MonoBehaviour
 
     private void Update()
     {
+        if (potionStacker.HasItem) return;
         currentMiningEq?.Mining();
     }
 
