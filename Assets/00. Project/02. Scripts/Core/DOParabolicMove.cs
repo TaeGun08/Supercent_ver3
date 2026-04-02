@@ -23,13 +23,13 @@ public static class DOParabolicMove
         float t = 0f;
 
         return DOTween.To(() => t, x => t = x, 1f, duration)
-            .SetEase(Ease.OutCubic)
+            .SetEase(Ease.Linear)
             .SetTarget(moveTrs)
             .OnUpdate(() =>
             {
                 if (targetTrs == null) return;
 
-                Vector3 currentTargetPos = targetTrs.position + new Vector3(0, yOffset, 0);
+                Vector3 currentTargetPos = targetTrs.position + (targetTrs.up * yOffset);
 
                 Vector3 lerpPos = Vector3.Lerp(startPos, currentTargetPos, t);
                 lerpPos.y += height * 4f * t * (1f - t);
@@ -42,7 +42,7 @@ public static class DOParabolicMove
             {
                 if (targetTrs != null)
                 {
-                    moveTrs.position = targetTrs.position + new Vector3(0, yOffset, 0);
+                    moveTrs.position = targetTrs.position + (targetTrs.up * yOffset);
                     moveTrs.rotation = targetTrs.rotation * Quaternion.Euler(0, endRotY, 0);
                 }
 

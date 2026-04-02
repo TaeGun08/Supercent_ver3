@@ -14,9 +14,11 @@ public abstract class MiningEquipment : MonoBehaviour
     protected ItemStacker itemStacker;
     
     [Header("Equipment")]
+    [SerializeField] private GameObject equipment;
+    public GameObject Equipment => equipment;
     [SerializeField] protected float miningDelay;
     [SerializeField] protected MiningSensor miningSensor;
-    protected float timer;
+    protected float timer = float.MaxValue;
     
     public virtual void Init(MiningContext miningContext)
     {

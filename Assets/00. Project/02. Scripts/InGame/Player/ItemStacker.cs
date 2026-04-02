@@ -15,10 +15,10 @@ public class ItemStacker : MonoBehaviour
     
     public void PushStack(IPickupAble pickupAble)
     {
-        if (IsFull) return;
+        if (IsFull || pickupAble == null) return;
 
         int count = stackedItems.Count;
-        pickupAble.Transform.SetParent(targetTrs);
+        pickupAble?.Transform.SetParent(targetTrs);
         DOParabolicMove.MoveToDynamicTarget(pickupAble.Transform, targetTrs, height, duration, count * height);
         stackedItems.Push(pickupAble);
     }

@@ -1602,9 +1602,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92013167fc2098d41ab5e1df86cedb8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  miningDelay: 0.5
+  equipment: {fileID: 2939856356031543911}
+  miningDelay: 0.25
   miningSensor: {fileID: 9215008639737828000}
-  pickAxeObj: {fileID: 8621537047718914595}
 --- !u!1 &8698414028228524979
 GameObject:
   m_ObjectHideFlags: 0
@@ -1907,10 +1907,6 @@ PrefabInstance:
     - target: {fileID: 8524554536735263008, guid: 741bace384974e24ea1bd75a9b462d1c, type: 3}
       propertyPath: m_Name
       value: BullDozer
-      objectReference: {fileID: 0}
-    - target: {fileID: 8524554536735263008, guid: 741bace384974e24ea1bd75a9b462d1c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

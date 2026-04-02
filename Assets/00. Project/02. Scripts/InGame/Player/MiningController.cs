@@ -29,6 +29,11 @@ public class MiningController : MonoBehaviour
         currentMiningEq?.Mining();
     }
 
+    public void SetActiveEquipment(bool active)
+    {
+        currentMiningEq.Equipment.SetActive(active);
+    }
+
     public void ChangeEquipment(MiningEquipment newMiningEq)
     {
         currentMiningEq.gameObject.SetActive(false);
