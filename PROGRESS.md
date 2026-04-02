@@ -1,13 +1,16 @@
 # Project Progress - Supercent Project
 
 ## 📌 Status Overview
-- **Current Phase**: Initialization & Environment Setup
+- **Current Phase**: Architecture Refinement (Actual Code Analysis)
 - **Last Updated**: 2026-04-02
+- **Strategy**: Data Integrity & Input Decoupling
 
 ---
 
 ## 🚀 Current Task
-- [ ] Define the primary gameplay system and architecture.
+- [ ] Refactor Joystick to remove static dependencies.
+- [ ] Optimize ItemStacker offset calculation (Index-based).
+- [ ] Decouple PlayerController from specific Joystick implementation.
 
 ---
 
@@ -15,10 +18,14 @@
 ### 1. Project Foundation
 - [x] Establishment of GeminiCLI guidelines.
 - [x] Setup of communication and logging protocols (`Prompt.md`, `PROGRESS.md`).
-- [ ] Assembly Definition (.asmdef) structure design.
+- [x] Folder restructuring (Actual path: `Assets/00. Project/02. Scripts`).
 
-### 2. Core Mechanics (To be defined)
-- [ ] TBD
+### 2. Core Mechanics (Under Review)
+- [x] Mining System Prototyped.
+- [x] Virtual Stacking System (Initial version).
+- [ ] Input Abstraction (IInputProvider).
+- [ ] Stack Logic Hardening (Data Consistency).
+
 
 ---
 
@@ -26,8 +33,9 @@
 | Date | Decision | Rationale |
 | :--- | :--- | :--- |
 | 2026-04-02 | Fail-Fast Strategy | Early detection of logic errors via `Debug.Assert`. |
-| 2026-04-02 | MD-based Logging | Project history and state persistence. |
-| 2026-04-02 | Context Keywords | Rapid session recovery and alignment. |
+| 2026-04-02 | Virtual Stacking | Performance (No SetParent) & Animation independence. |
+| 2026-04-02 | DIP via .asmdef | Compilation optimization & dependency control. |
+| 2026-04-02 | Prompt Sync Protocol | Persistent context across sessions. |
 
 ---
 
