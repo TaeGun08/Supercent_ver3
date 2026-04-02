@@ -1,19 +1,14 @@
 using UnityEngine;
 
-public class BullDozer : MonoBehaviour, IEquippable
+public class BullDozer : MiningEquipment
 {
-    public void GetMineDelay()
+    public override void Mining()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void Equip(PlayerController player)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void UnEquip(PlayerController player)
-    {
-        throw new System.NotImplementedException();
+        if (miningSensor.MiningTargets.Count <= 0) return;
+        IMiningTarget stone = miningSensor.GetClosestTarget(miningSensor.transform.position);
+        IPickupAble cobblestone = stone.MineResource(itemStacker.IsFull);
+        miningSensor.MiningTargets.Remove(stone);
+        if (itemStacker.IsFull) return;
+        itemStacker.PushStack(cobblestone);
     }
 }

@@ -75,7 +75,7 @@ public class Joystick : MonoBehaviour, IInputProvider
         background.gameObject.SetActive(false);
     }
 
-    public Vector3 GetDragDirection()
+    private Vector3 GetDragDirection()
     {
         Vector3 normalized = new Vector3(dragDirection.x, 0, dragDirection.y) / radius;
         return Vector3.ClampMagnitude(normalized, 1).normalized;

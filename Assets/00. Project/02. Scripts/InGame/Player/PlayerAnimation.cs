@@ -6,18 +6,18 @@ public class PlayerAnimation : MonoBehaviour
     public static readonly int IS_RUN = Animator.StringToHash("IsRun");
     public static readonly int PICKAX_MINING = Animator.StringToHash("Pickax_Mining");
 
-    private PlayerController player;
+    private IInputProvider inputProvider;
 
     private Animator animator;
-
-    private bool isRun;
     
     private void Awake()
     {
-        player = GetComponent<PlayerController>();
         animator = GetComponentInChildren<Animator>();
+    }
 
-        isRun = player.InputProvider.IsInputActive;
+    private void Start()
+    {
+        inputProvider = GetComponent<PlayerController>().InputProvider;
     }
 
     private void Update()
@@ -27,7 +27,7 @@ public class PlayerAnimation : MonoBehaviour
 
     private void PlayRunAnimation()
     {
-        animator.SetBool(IS_RUN, isRun);
+        animator.SetBool(IS_RUN, inputProvider.IsInputActive);
     }
 
     public void PlayMiningAnimation()

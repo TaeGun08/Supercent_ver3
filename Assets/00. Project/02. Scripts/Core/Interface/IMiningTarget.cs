@@ -3,6 +3,6 @@ using UnityEngine;
 public interface IMiningTarget
 {
     public Transform Transform { get; }
-    
-    public Cobblestone MineResource();
+
+    public Cobblestone MineResource(bool isFull);
 }

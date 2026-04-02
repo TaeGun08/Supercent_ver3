@@ -7,9 +7,9 @@ public class Stone : MonoBehaviour, IMiningTarget
     [Header("Cobblestone")]
     [SerializeField] private Cobblestone cobblestone;
     
-    public Cobblestone MineResource()
+    public Cobblestone MineResource(bool isFull)
     {
         gameObject.SetActive(false);
-        return Instantiate(cobblestone, transform.position, Quaternion.identity);
+        return isFull ? null : Instantiate(cobblestone, transform.position, Quaternion.identity);
     }
 }

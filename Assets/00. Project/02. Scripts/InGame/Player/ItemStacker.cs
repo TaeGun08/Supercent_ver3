@@ -10,6 +10,7 @@ public class ItemStacker : MonoBehaviour
     [SerializeField] private float duration = 0.5f;
     
     private Stack<IPickupAble> stackedItems = new();
+    
     public bool IsFull => stackedItems.Count >= maxStackCount;
     
     public void PushStack(IPickupAble pickupAble)
@@ -17,7 +18,8 @@ public class ItemStacker : MonoBehaviour
         if (IsFull) return;
 
         int count = stackedItems.Count;
-        DOParabolicMove.MoveToDynamicTarget(pickupAble.Transform, targetTrs, height, height, count * height);
+        pickupAble.Transform.SetParent(targetTrs);
+        DOParabolicMove.MoveToDynamicTarget(pickupAble.Transform, targetTrs, height, duration, count * height);
         stackedItems.Push(pickupAble);
     }
 }

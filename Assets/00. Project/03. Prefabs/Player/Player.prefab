@@ -1568,7 +1568,7 @@ GameObject:
   - component: {fileID: 3373887073152991812}
   - component: {fileID: 1754768481680918345}
   m_Layer: 0
-  m_Name: Pickax
+  m_Name: PickAxe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1602,6 +1602,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92013167fc2098d41ab5e1df86cedb8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  miningDelay: 0.5
+  miningSensor: {fileID: 9215008639737828000}
+  pickAxeObj: {fileID: 8621537047718914595}
 --- !u!1 &8698414028228524979
 GameObject:
   m_ObjectHideFlags: 0
@@ -1690,8 +1693,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42e6b82c320be6a48b0efaa373d2cfc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStat:
-    MoveSpeed: 3
+  inputSource: {fileID: 0}
+  playerData:
+    MoveSpeed: 4
     Gravity: 10
 --- !u!114 &7221200558233369282
 MonoBehaviour:
@@ -1705,6 +1709,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5acfacaa35fd3814a94a76e9d9463c32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  miningEquipments:
+  - {fileID: 1754768481680918345}
+  - {fileID: 690364300664009719}
+  - {fileID: 1878710990013854520}
 --- !u!114 &4568253109081107431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1719,8 +1727,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxStackCount: 10
   targetTrs: {fileID: 965027104983166577}
-  height: 1
-  duration: 0.5
+  height: 0.5
+  duration: 0.1
 --- !u!1 &8799593228450362439
 GameObject:
   m_ObjectHideFlags: 0
@@ -1856,10 +1864,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3834070095454711888}
     m_Modifications:
-    - target: {fileID: 6855726911427559126, guid: 741bace384974e24ea1bd75a9b462d1c, type: 3}
-      propertyPath: m_Name
-      value: MiningSensor_BullDozer
-      objectReference: {fileID: 0}
     - target: {fileID: 8250512794997814680, guid: 741bace384974e24ea1bd75a9b462d1c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1911,23 +1915,14 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8524554536735263008, guid: 741bace384974e24ea1bd75a9b462d1c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 68435139855933693}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741bace384974e24ea1bd75a9b462d1c, type: 3}
---- !u!1 &6502249916828920563 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8524554536735263008, guid: 741bace384974e24ea1bd75a9b462d1c, type: 3}
+--- !u!114 &1878710990013854520 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3919091858576216299, guid: 741bace384974e24ea1bd75a9b462d1c, type: 3}
   m_PrefabInstance: {fileID: 3202601355435467731}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &68435139855933693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6502249916828920563}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fbd9276983c7b4548afbff6117e88a5b, type: 3}
@@ -1990,54 +1985,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Drill
       objectReference: {fileID: 0}
-    - target: {fileID: 2995372543264010293, guid: 33c1787df75019643914b6e6172ada4b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8640527891677418115, guid: 33c1787df75019643914b6e6172ada4b, type: 3}
-      propertyPath: m_Name
-      value: MiningSensor_Drill
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2995372543264010293, guid: 33c1787df75019643914b6e6172ada4b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5861043393477857218}
-    - targetCorrespondingSourceObject: {fileID: 8640527891677418115, guid: 33c1787df75019643914b6e6172ada4b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8509746681472694339}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33c1787df75019643914b6e6172ada4b, type: 3}
---- !u!1 &1246030373897376220 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8640527891677418115, guid: 33c1787df75019643914b6e6172ada4b, type: 3}
+--- !u!114 &690364300664009719 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8013930132902899880, guid: 33c1787df75019643914b6e6172ada4b, type: 3}
   m_PrefabInstance: {fileID: 7395922497214448479}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8509746681472694339
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1246030373897376220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2094ff1bbd023f44aa81ff7b3167e15, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &5706671121315410794 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2995372543264010293, guid: 33c1787df75019643914b6e6172ada4b, type: 3}
-  m_PrefabInstance: {fileID: 7395922497214448479}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &5861043393477857218
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5706671121315410794}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17908d3c3f62cfe4c8892a3c537bcea0, type: 3}
