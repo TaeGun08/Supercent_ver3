@@ -173,6 +173,7 @@ MonoBehaviour:
   maxStackCount: 10
   height: 0.5
   duration: 0.1
+  pickupGold: {fileID: 965027104983166577}
 --- !u!1 &880185107996034715
 GameObject:
   m_ObjectHideFlags: 0
@@ -1809,9 +1810,6 @@ MonoBehaviour:
   playerData:
     MoveSpeed: 4
     Gravity: 10
-  stackerTrs:
-  - {fileID: 3126381952370295833}
-  - {fileID: 965027104983166577}
 --- !u!114 &7221200558233369282
 MonoBehaviour:
   m_ObjectHideFlags: 0
