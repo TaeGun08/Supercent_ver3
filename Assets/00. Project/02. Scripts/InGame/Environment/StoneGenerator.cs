@@ -3,15 +3,15 @@ using UnityEngine;
 
 public class StoneGenerator : MonoBehaviour
 {
-    [Header("Generator Settings")] [SerializeField]
-    private Stone stonePrefab;
+    [Header("Generator Settings")] 
+    [SerializeField] private Stone stonePrefab;
+    [SerializeField] private Cobblestone cobblePrefab; // í’€ ì´ˆê¸°í™”ë¥¼ ìœ„í•´ ì¶”ê°€
 
     [SerializeField] private Transform fieldContainer;
     [SerializeField] private float respawnDelay = 3f;
 
-    [Header("Grid Settings")] [SerializeField]
-    private int rows = 7;
-
+    [Header("Grid Settings")] 
+    [SerializeField] private int rows = 7;
     [SerializeField] private int columns = 15;
     [SerializeField] private float spacingX = 1f;
     [SerializeField] private float spacingZ = 1f;
@@ -26,7 +26,18 @@ public class StoneGenerator : MonoBehaviour
 
     private void Start()
     {
+        InitializePools();
         GenerateStones();
+    }
+
+    private void InitializePools()
+    {
+        Debug.Assert(stonePrefab != null, "StoneGenerator: StonePrefab missing!");
+        Debug.Assert(cobblePrefab != null, "StoneGenerator: CobblePrefab missing!");
+
+        // í•„ìš”í•œ ë§Œí¼ì˜ í’€ ì‚¬ì „ ìƒì„±
+        PoolManager.Instance.CreatePool(stonePrefab, rows * columns);
+        PoolManager.Instance.CreatePool(cobblePrefab, 20); // ì´ˆê¸° ê°€ìš©ëŸ‰ 20ê°œ
     }
 
     private void Update()
@@ -52,16 +63,17 @@ public class StoneGenerator : MonoBehaviour
                 Vector3 localSpawnPos = new Vector3(startX + (x * spacingX), 0, startZ + (z * spacingZ));
                 Vector3 finalSpawnPos = transform.position + localSpawnPos;
 
-                Stone stone = Instantiate(stonePrefab, finalSpawnPos, Quaternion.identity, fieldContainer);
+                // [Pooling ì ìš©]: Instantiate ëŒ€ì‹  Poolì—ì„œ íšë“
+                Stone stone = PoolManager.Instance.Get<Stone>();
+                stone.transform.SetPositionAndRotation(finalSpawnPos, Quaternion.identity);
+                stone.transform.SetParent(fieldContainer);
+                stone.gameObject.SetActive(true);
 
                 stone.Init(this);
             }
         }
     }
 
-    /// <summary>
-    /// µ¹ÀÌ Ã¤±¼µÇ¾úÀ» ¶§ È£ÃâµÇ¾î ºÎÈ° ´ë±â¿­¿¡ Ãß°¡ÇÔ
-    /// </summary>
     public void RegisterRespawn(Stone stone)
     {
         respawnQueue.Enqueue(new RespawnData

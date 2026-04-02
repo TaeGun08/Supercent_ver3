@@ -2904,6 +2904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stonePrefab: {fileID: 772147005003508585, guid: 49cdff7a77a7af04e8674ba3d8b2f3e6, type: 3}
+  cobblePrefab: {fileID: 4482288098283253247, guid: 2898473c827b69b4793ca1eda3f7bd62, type: 3}
   fieldContainer: {fileID: 2146263404}
   respawnDelay: 5
   rows: 16
@@ -3097,8 +3098,7 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 4568253109081107431, guid: 78d7b765bed5973409318cd7c26f6bc3, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -21,7 +21,7 @@ public class PickAxe : MiningEquipment
         isMining = true;
         timer = 0f;
         playerAnimation.PlayMiningAnimation();
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.2f);
         isMining = false;
         IMiningTarget stone = miningSensor.GetClosestTarget(miningSensor.transform.position);
         IPickupAble cobblestone = stone?.MineResource(itemStacker.IsFull);

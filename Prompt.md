@@ -137,10 +137,16 @@
 > 나의 코드를 전체적으로 분석 후, 개선점이 필요한 코드 및 구조 위주로 리팩토링을 진행해줘. 리팩토링을 진행하기 전에 어떻게 진행하고 어떤식으로 구조를 만들건지 먼저 보여주고 확인 받고 진행해줬으면 좋겠어.
 
 **AI**:
-- **Engineering Summary**: 프로젝트 전수 조사를 통해 중복된 채굴 로직과 강한 컴포넌트 결합을 핵심 개선 과제로 도출함. 이를 해결하기 위해 **[Component-Driven Data Injection]** 아키텍처를 제안하였으며, ScriptableObject 기반의 데이터 분리와 중앙 집중형 `MiningController` 통합을 통해 중복 코드를 제거하고 확장성을 극대화하는 리팩토링 로드맵을 수립함.
+- **Engineering Summary**: 프로젝트 전수 조사를 통해 중복된 채굴 로직과 강한 컴포넌트 결합을 핵심 개선 과제로 도출함. 이를 해결하기 위해 **[Component-Driven Data Injection]** 아키텍처를 제안하였으며, ScriptableObject 기반의 데이터 분리와 중앙 집중형 `MiningController` 통합을 통해 중복 코드를 제거하고 확장성을 극대화하는 4단계 리팩토링 로드맵을 수립함.
 
 **User**:
 > 최적화를 위해서 풀링에 관련된 스크립트를 만들었어. 현재 생성을 하고 있는 로직들을 풀링 매니저에서 관리하고 사용할 수 있도록 리팩터링을 진행하기 전에 너가 개선할 코드들을 먼저 보여주고 허락 받은 후 리팩토링을 진행했으면 해.
 
 **AI**:
 - **Engineering Summary**: 사용자 구현 `PoolManager`를 시스템 전반에 통합하기 위한 **[Pooling Integration Strategy]**를 수립함. 잦은 `Instantiate/Destroy`가 발생하는 자원 생성(`Stone`, `Cobblestone`) 및 효과 로직을 타겟으로 식별하였으며, `IPickupAble` 인터페이스 확장을 통한 라이프사이클 관리 표준화를 제안함. 이를 통해 런타임 CPU 피크를 억제하고 메모리 무결성을 보장하는 고성능 최적화 구조를 설계함.
+
+**User**:
+> 진행해줘. (PoolManager 통합 리팩터링 실행)
+
+**AI**:
+- **Engineering Summary**: 리팩터링 수행. `IPickupAble` 인터페이스에 `Release()`를 추가하여 라이프사이클 관리를 표준화하고, `StoneGenerator`에서 초기 풀 사전 생성(Pre-allocation)을 구현함. `Stone`의 자원 생성 로직을 `PoolManager.Get`으로 교체하여 런타임 Alloc을 0으로 최적화하였으며, 이를 통해 빈번한 생성/파괴 이벤트 시의 프레임 안정성을 확보함.

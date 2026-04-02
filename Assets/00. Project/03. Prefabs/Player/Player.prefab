@@ -1714,7 +1714,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equipment: {fileID: 2939856356031543911}
-  miningDelay: 0.25
+  miningDelay: 0.35
   miningSensor: {fileID: 9215008639737828000}
 --- !u!1 &8698414028228524979
 GameObject:
