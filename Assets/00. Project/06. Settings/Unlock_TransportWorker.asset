@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cff3fcd2a7b67fd49a912add3182e9bb, type: 3}
-  m_Name: Unlock_MiningWorker
+  m_Name: Unlock_TransportWorker
   m_EditorClassIdentifier: 
   unlockId: 0
   requiredGold: 50

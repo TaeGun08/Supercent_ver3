@@ -646,7 +646,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3442039049651684201}
   m_Layer: 8
-  m_Name: Squadmate_Idle
+  m_Name: Guardian
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
