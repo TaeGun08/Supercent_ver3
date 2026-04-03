@@ -43,10 +43,8 @@ private void SpawnPrisoner()
     newPrisoner.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
     newPrisoner.gameObject.SetActive(true);
 
-    // [Capacity Sync]: 스폰 즉시 감옥 예약 인원으로 등록 (과잉 스폰 방지)
     PrisonManager.Instance.RegisterNewPrisoner();
 
-    // 의존성 주입
     int needed = Random.Range(1, 4);
     newPrisoner.Initialize(potionTable, needed);
 }
