@@ -7,6 +7,7 @@ public abstract class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
     protected static T instance;
     private static readonly object lockObj = new();
     private static bool applicationIsQuitting;
+    private static bool isInitialized;
 
     public static T Instance
     {
@@ -14,12 +15,24 @@ public abstract class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
         {
             if (applicationIsQuitting)
             {
+                Debug.LogWarning($"[Singleton] {typeof(T)} 인스턴스 접근 시도: 애플리케이션 종료 중");
                 return null;
             }
 
             lock (lockObj)
             {
-                Debug.Assert(instance != null, $"[Singleton] {typeof(T).Name} νͽ  ʽϴ. ٸ Awake  ʿմϴ.");
+                if (instance != null) return instance;
+                instance = FindObjectOfType<T>();
+
+                if (instance == null)
+                {
+                    var singletonObject = new GameObject(typeof(T).Name);
+                    instance = singletonObject.AddComponent<T>();
+                    DontDestroyOnLoad(singletonObject);
+                }
+
+                isInitialized = true;
+
                 return instance;
             }
         }
@@ -31,10 +44,12 @@ public abstract class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
         {
             instance = this as T;
             DontDestroyOnLoad(gameObject);
+
+            isInitialized = true;
         }
         else if (instance != this)
         {
-            Debug.LogWarning($"[Singleton] {typeof(T).Name} ߺ νͽ ı.");
+            Debug.LogWarning($"중복된 인스턴스를 발견하여 파괴하였습니다.");
             Destroy(gameObject);
         }
     }
@@ -46,9 +61,9 @@ public abstract class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void OnDestroy()
     {
-        if (instance == this)
-        {
-            instance = null;
-        }
+        if (instance != this) return;
+        instance = null;
+        isInitialized = false;
+        applicationIsQuitting = true;
     }
 }

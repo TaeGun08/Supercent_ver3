@@ -1,15 +1,16 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class MiningController : MonoBehaviour
 {
-    [Header("Equipments")]
-    [SerializeField] private MiningEquipment[] miningEquipments;
+    [Header("Equipments")] [SerializeField]
+    private MiningEquipment[] miningEquipments;
+
     private MiningEquipment currentMiningEq;
 
-    [Header("Stackers")]
-    [SerializeField] private StoneStacker stoneStacker;
+    [Header("Stackers")] [SerializeField] private StoneStacker stoneStacker;
     [SerializeField] private PotionStacker potionStacker;
 
     private PlayerAnimation playerAnimation;
@@ -19,21 +20,8 @@ public class MiningController : MonoBehaviour
 
     private void Awake()
     {
-        // [Fail-Fast]: 필수 컴포넌트 및 장착 장비 검증
         playerAnimation = GetComponent<PlayerAnimation>();
-        Debug.Assert(playerAnimation != null, "[MiningController] PlayerAnimation이 누락되었습니다.");
-        Debug.Assert(miningEquipments != null && miningEquipments.Length > 0, "[MiningController] 할당된 장비가 없습니다.");
-        
-        // 장비 센서 초기화 (데이터 동기화)
-        foreach (var eq in miningEquipments)
-        {
-            if (eq != null && eq.MiningSensor != null)
-            {
-                eq.MiningSensor.Init(eq.MiningData.MiningRange);
-            }
-        }
 
-        // 초기 장비 설정 및 비활성화 (구역 진입 전까지)
         currentMiningEq = miningEquipments[0];
         miningTimer = currentMiningEq.MiningData.MiningDelay;
         SetMiningZoneActive(false);
@@ -41,8 +29,7 @@ public class MiningController : MonoBehaviour
 
     private void Update()
     {
-        // 채굴 구역이 아니거나, 포션 스택이 있거나, 제작 중이면 중단
-        if (!isInMiningZone) return;
+        if (isInMiningZone == false) return;
         if (potionStacker != null && potionStacker.HasItem) return;
         if (currentMiningEq == null || isMiningInProgress) return;
 
@@ -52,43 +39,54 @@ public class MiningController : MonoBehaviour
     public void SetMiningZoneActive(bool active)
     {
         isInMiningZone = active;
-        
-        // 시각적 활성화/비활성화
-        if (currentMiningEq != null && currentMiningEq.VisualObject != null)
-        {
-            currentMiningEq.VisualObject.SetActive(active);
-        }
+
+        if (currentMiningEq == null || currentMiningEq.VisualObject == null) return;
+        currentMiningEq.VisualObject.SetActive(active);
     }
 
     private void UpdateMiningProcess()
     {
         MiningSensor sensor = currentMiningEq.MiningSensor;
-        
-        // 주변에 타겟이 없으면 대기
+        MiningDataSO data = currentMiningEq.MiningData;
+
         if (sensor.MiningTargets.Count <= 0) return;
 
         miningTimer += Time.deltaTime;
-        
-        if (miningTimer >= currentMiningEq.MiningData.MiningDelay)
+
+        if (data.Type == MiningType.Burst)
         {
-            StartCoroutine(PerformMiningAction(sensor));
+            if (miningTimer >= data.MiningDelay)
+            {
+                StartCoroutine(PerformBurstMining(sensor));
+            }
+        }
+        else // Continuous (Drill, Bulldozer)
+        {
+            if (miningTimer >= data.MiningDelay)
+            {
+                ExecuteMining(sensor);
+                miningTimer = 0f;
+            }
         }
     }
 
-    private System.Collections.IEnumerator PerformMiningAction(MiningSensor sensor)
+    private IEnumerator PerformBurstMining(MiningSensor sensor)
     {
         isMiningInProgress = true;
         miningTimer = 0f;
 
-        // 1. 애니메이션 재생
         playerAnimation.PlayMiningAnimation();
-
-        // 2. 애니메이션 타이밍 대기 (데이터화 가능)
         yield return new WaitForSeconds(0.2f);
 
-        // 3. 실제 채굴 수행
+        ExecuteMining(sensor);
+
+        isMiningInProgress = false;
+    }
+
+    private void ExecuteMining(MiningSensor sensor)
+    {
         IMiningTarget target = sensor.GetClosestTarget(sensor.transform.position);
-        
+
         if (target != null)
         {
             IPickupAble resource = target.MineResource(stoneStacker.IsFull);
@@ -96,28 +94,25 @@ public class MiningController : MonoBehaviour
 
             if (resource != null && !stoneStacker.IsFull)
             {
-                stoneStacker.PushStack(resource);
+                DOParabolicMove.MoveToDynamicTarget(
+                    resource.Transform,
+                    stoneStacker.transform,
+                    height: 1.5f,
+                    duration: 0.3f,
+                    yOffset: stoneStacker.CurrentCount * 0.5f,
+                    onComplete: () => { stoneStacker.PushStack(resource); }
+                );
             }
         }
-
-        isMiningInProgress = false;
     }
 
     public void ChangeEquipment(int index)
     {
-        Debug.Assert(index >= 0 && index < miningEquipments.Length, "[MiningController] 잘못된 장비 인덱스입니다.");
-        
         currentMiningEq.gameObject.SetActive(false);
         currentMiningEq = miningEquipments[index];
         currentMiningEq.gameObject.SetActive(true);
-        
-        // 센서 범위 재동기화 (장비별 개별 설정 보장)
-        if (currentMiningEq.MiningSensor != null)
-        {
-            currentMiningEq.MiningSensor.Init(currentMiningEq.MiningData.MiningRange);
-        }
-        
-        // 타이머 초기화 (즉시 채굴 가능하도록)
+
+
         miningTimer = currentMiningEq.MiningData.MiningDelay;
     }
 }

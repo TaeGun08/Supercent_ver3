@@ -9,14 +9,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 213365353455918934}
-  - component: {fileID: 8013930132902899880}
+  - component: {fileID: 7197115447803479882}
   m_Layer: 0
   m_Name: Drill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &213365353455918934
 Transform:
   m_ObjectHideFlags: 0
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 1468357908394638665}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8013930132902899880
+--- !u!114 &7197115447803479882
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,12 +42,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2995372543264010293}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17908d3c3f62cfe4c8892a3c537bcea0, type: 3}
+  m_Script: {fileID: 11500000, guid: 9869235b5cce5c540a24362dbd6ceb19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equipment: {fileID: 3473292065244259984}
-  miningDelay: 0
-  miningSensor: {fileID: 8009542585389194021}
+  miningData: {fileID: 0}
+  visualObject: {fileID: 0}
+  miningSensor: {fileID: 0}
 --- !u!1 &3473292065244259984
 GameObject:
   m_ObjectHideFlags: 0

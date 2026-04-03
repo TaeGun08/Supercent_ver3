@@ -22,12 +22,10 @@ public class StoneStacker : ItemStacker
         base.PushStack(pickupAble);
     }
 
-    public override IPickupAble PopStack(Transform targetTrs, Vector3 pos)
+    public override IPickupAble PopStack()
     {
-        var pickupAble = base.PopStack(targetTrs, pos);
-        
         if (HasItem == false) pickupGold.localPosition = originLocalPos; 
         
-        return pickupAble;
+        return base.PopStack();
     }
 }

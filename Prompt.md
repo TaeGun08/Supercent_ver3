@@ -216,3 +216,27 @@
 
 **AI**:
 - **Engineering Summary**: 리팩터링 과정에서 누락된 채굴 구역 활성화 로직을 [Centralized Control] 구조로 복구함. MiningController에 isInMiningZone 플래그와 SetMiningZoneActive 인터페이스를 추가하여 구역 외 채굴 타이머를 차단하였으며, InQuarry 트리거와 연동하여 장비 외형의 동적 활성화를 보장함. [Fail-Fast] 원칙에 따른 컴포넌트 검증을 추가하여 런타임 안정성을 확보함.
+
+**User**:
+> 이동 연출 로직을 어디에서 사용할 건지 정해야할 것 같아. (Stacker vs Sender) 보완해줘.
+
+**AI**:
+- **Engineering Summary**: 자원 이동 연출의 주체를 Sender-Driven(송신자 중심) 구조로 재정의하여 [SRP]를 강화함. ItemStacker에서 연출 로직을 제거하고 데이터 관리 및 좌표 공급 역할로 국한시켰으며, MiningController와 CauldronZone에서 직접 DOParabolicMove를 실행하게 함으로써 연출의 유연성을 확보함. 콜백 기반의 논리 삽입 구조를 통해 시각적 피드백과 데이터 무결성을 동시 달성함.
+
+**User**:
+> List보단 스택이 더 좋지 않을까? (물리적 적층 메커니즘 교정) 보완해줘.
+
+**AI**:
+- **Engineering Summary**: 게임의 물리적 적층 메커니즘(LIFO)에 최적화하기 위해 ItemStacker를 Stack<IPickupAble> 기반으로 전격 복원함. MagicCauldron에 물리적 입력 버퍼(Input Stacker)를 도입하여 플레이어의 자원 투입과 가마솥의 제작 소모 프로세스를 물리적으로 시각화하였으며, Stacker 간의 자원 이동 연출을 강화하여 고퀄리티의 자원 순환 시스템을 완성함.
+
+**User**:
+> 드릴이랑 불도저 같은 고주파 채굴 장비의 비용 및 딜레이 문제를 해결해줘. (Dual-Mode Mining 도입)
+
+**AI**:
+- **Engineering Summary**: 단발성 채굴(Burst)과 연속성 채굴(Continuous)을 모두 지원하는 [Dual-Mode Mining System]을 구축함. 드릴/불도저 모드에서는 코루틴 오버헤드를 제거하고 Update 루프 기반의 즉각적 로직 실행을 통해 '접촉 즉시 채굴' 컨셉을 고성능으로 구현함. 공통 채굴 로직의 캡슐화(ExecuteMining)를 통해 아키텍처 결합도를 낮추고 장비별 연출 자유도를 극대화함.
+
+**User**:
+> 싱글톤베이스는 돌려놔. (자동 생성 및 지연 탐색 구조로 복구)
+
+**AI**:
+- **Engineering Summary**: 사용자의 요구에 따라 SingletonBase를 리팩터링 이전의 [Lazy-Initialization & Auto-Creation] 방식으로 복구함. FindObjectOfType을 통한 런타임 인스턴스 탐색 및 부재 시 자동 GameObject 생성 로직을 재활성화하여, 씬 구성의 유연성과 개발 편의성을 최우선으로 확보함.

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5c019b33b3cd8e4bb6d01e6f9ecb637, type: 3}
+  m_Name: PickAxeData
+  m_EditorClassIdentifier: 
+  Type: 0
+  MiningDelay: 0.35
+  MiningRange: 2
+  MiningPower: 1
+  AnimationName: PickAxe
+  EffectPrefab: {fileID: 0}

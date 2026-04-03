@@ -16,33 +16,27 @@ public class CauldronZone : MonoBehaviour
     private void Awake()
     {
         playerLayer = LayerMask.NameToLayer("Player");
-        Debug.Assert(cauldron != null, "[CauldronZone] MagicCauldron이 연결되지 않았습니다.");
-        Debug.Assert(playerLayer != -1, "[CauldronZone] 'Player' 레이어가 존재하지 않습니다.");
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer != playerLayer) return;
 
-        if (interactionCoroutine == null)
-        {
-            interactionCoroutine = StartCoroutine(InteractionRoutine(other.gameObject));
-        }
+        interactionCoroutine ??= StartCoroutine(InteractionRoutine(other.gameObject));
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer != playerLayer) return;
 
-        if (interactionCoroutine != null)
-        {
-            StopCoroutine(interactionCoroutine);
-            interactionCoroutine = null;
-        }
+        if (interactionCoroutine == null) return;
+        StopCoroutine(interactionCoroutine);
+        interactionCoroutine = null;
     }
 
     private IEnumerator InteractionRoutine(GameObject playerObj)
     {
+        WaitForSeconds wait = new WaitForSeconds(interactionInterval);
         while (true)
         {
             if (zoneType == ZoneType.Input)
@@ -54,30 +48,31 @@ public class CauldronZone : MonoBehaviour
                 HandleOutput(playerObj);
             }
 
-            yield return new WaitForSeconds(interactionInterval);
+            yield return wait;
         }
     }
 
     private void HandleInput(GameObject playerObj)
     {
         StoneStacker stoneStacker = playerObj.GetComponentInChildren<StoneStacker>();
-        if (stoneStacker == null || !stoneStacker.HasItem) return;
+        if (stoneStacker == null || !stoneStacker.HasItem || !cauldron.CanAcceptMoreStones) return;
 
-        IPickupAble stone = stoneStacker.PopStack(playerObj.transform.position);
-        if (stone != null)
-        {
-            // [Visual Feedback]: 가마솥으로 날아가는 연출 후 투입
-            DOParabolicMove.MoveToStaticPosition(
-                stone.Transform, 
-                cauldron.transform.position + Vector3.up * 2f, 
-                height: 1.5f, 
-                duration: 0.5f, 
-                onComplete: () => {
-                    stone.Release();
-                    cauldron.AddResource();
-                }
-            );
-        }
+        ItemStacker targetStacker = cauldron.GetInputStacker();
+        if (targetStacker == null) return;
+
+        IPickupAble stone = stoneStacker.PopStack();
+        if (stone == null) return;
+        Vector3 targetWorldPos = targetStacker.transform.position + targetStacker.GetNextLocalPosition();
+
+        DOParabolicMove.MoveToStaticPosition(
+            stone.Transform, 
+            targetWorldPos, 
+            height: 1.5f, 
+            duration: 0.5f, 
+            onComplete: () => {
+                targetStacker.PushStack(stone);
+            }
+        );
     }
 
     private void HandleOutput(GameObject playerObj)
@@ -85,17 +80,15 @@ public class CauldronZone : MonoBehaviour
         PotionStacker potionStacker = playerObj.GetComponentInChildren<PotionStacker>();
         if (potionStacker == null || potionStacker.IsFull || !cauldron.HasFinishedPotions) return;
 
-        // 가마솥에서 포션 수령
         Potion potion = cauldron.TakePotion();
         if (potion != null)
         {
-            // [Visual Feedback]: 플레이어 스택으로 날아가는 연출
             DOParabolicMove.MoveToDynamicTarget(
                 potion.Transform, 
                 playerObj.transform, 
                 height: 2f, 
                 duration: 0.5f, 
-                yOffset: 1.5f, // 등 위쪽 타겟
+                yOffset: 1.5f,
                 onComplete: () => {
                     potionStacker.PushStack(potion);
                 }
