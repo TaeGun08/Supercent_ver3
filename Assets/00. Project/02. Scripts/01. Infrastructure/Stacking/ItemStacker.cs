@@ -74,4 +74,9 @@ public class ItemStacker : MonoBehaviour
         
         return pickupAble;
     }
+
+    public void LimitMaxStackCount(int add)
+    {
+        maxStackCount += add;
+    }
 }

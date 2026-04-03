@@ -12,16 +12,18 @@ public class MaxUI : MonoBehaviour
     [SerializeField] private float displayDuration = 1.0f;
     [SerializeField] private Vector3 worldOffset = new Vector3(0, 2.5f, 0);
 
+    private RectTransform rectTransform;
     private TMP_Text maxText;
     private Sequence animationSequence;
-    private Vector3 originalAnchoredPosition;
     
     private Transform targetTransform;
     private Camera mainCam;
     private float currentVisualOffset;
+    private bool isShowing;
 
     private void Awake()
     {
+        rectTransform = GetComponent<RectTransform>();
         maxText = GetComponent<TMP_Text>();
         mainCam = Camera.main;
         
@@ -30,6 +32,10 @@ public class MaxUI : MonoBehaviour
     
     public void Play(Transform target)
     {
+        // [State Guard]: 이미 재생 중인 경우 중복 실행 방지
+        if (isShowing) return;
+        isShowing = true;
+
         targetTransform = target;
         currentVisualOffset = 0f;
         animationSequence?.Kill();
@@ -49,7 +55,11 @@ public class MaxUI : MonoBehaviour
             .Join(maxText.DOFade(1f, fadeDuration))
             .AppendInterval(displayDuration)
             .Append(maxText.DOFade(0f, fadeDuration))
-            .OnComplete(() => gameObject.SetActive(false));
+            .OnComplete(() => 
+            {
+                isShowing = false;
+                gameObject.SetActive(false);
+            });
     }
 
     private void LateUpdate()
@@ -82,6 +92,7 @@ public class MaxUI : MonoBehaviour
     private void OnDisable()
     {
         animationSequence?.Kill();
+        isShowing = false;
         targetTransform = null;
     }
 }

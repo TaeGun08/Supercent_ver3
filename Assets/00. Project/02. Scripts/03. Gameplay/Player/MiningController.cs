@@ -3,12 +3,11 @@ using UnityEngine;
 
 public class MiningController : MonoBehaviour
 {
-    [Header("Equipments")] [SerializeField]
-    private MiningEquipment[] miningEquipments;
+    [Header("Equipments")] 
+    [SerializeField] private MiningEquipment[] miningEquipments;
 
     private MiningEquipment currentMiningEq;
-
-    [Header("Inventory")] [SerializeField] private Inventory inventory;
+    private Inventory inventory;
 
     private PlayerAnimation playerAnimation;
     private float miningTimer;
@@ -20,6 +19,8 @@ public class MiningController : MonoBehaviour
     private void Awake()
     {
         playerAnimation = GetComponent<PlayerAnimation>();
+        inventory = GetComponent<Inventory>();
+        
         wait = new WaitForSeconds(0.2f);
         InitializeDefaultEquipment();
     }
@@ -81,30 +82,28 @@ public class MiningController : MonoBehaviour
 
         isMiningInProgress = false;
     }
-private void ExecuteMiningLogic(MiningSensor sensor)
-{
-    IMiningTarget target = sensor.GetClosestTarget(sensor.transform.position);
-    if (target == null) return;
 
-    ItemStacker stoneStacker = inventory.StoneStacker;
-    bool isFull = stoneStacker.IsFull;
-
-    // [MaxUI Trigger]: 가득 찼을 때 알림은 주되, 채굴을 중단하지는 않음
-    if (isFull)
+    private void ExecuteMiningLogic(MiningSensor sensor)
     {
-        UIManager.Instance.ShowMaxUI(transform);
-    }
+        IMiningTarget target = sensor.GetClosestTarget(sensor.transform.position);
+        if (target == null) return;
 
-    // [Destruction]: 인벤토리 상태를 전달하여 파괴 진행 (가득 찼으면 resource는 null 반환됨)
-    IPickupAble resource = target.MineResource(isFull);
-    sensor.MiningTargets?.Remove(target);
+        ItemStacker stoneStacker = inventory.StoneStacker;
+        bool isFull = stoneStacker.IsFull;
 
-    // [Collection]: 리소스가 생성된 경우에만 수집 연출 및 적재 실행
-    if (resource != null)
-    {
-        PlayMiningVisualEffect(resource, stoneStacker);
+        if (isFull)
+        {
+            UIManager.Instance.ShowMaxUI(transform);
+        }
+
+        IPickupAble resource = target.MineResource(isFull);
+        sensor.MiningTargets?.Remove(target);
+
+        if (resource != null)
+        {
+            PlayMiningVisualEffect(resource, stoneStacker);
+        }
     }
-}
 
     private void PlayMiningVisualEffect(IPickupAble resource, ItemStacker targetStacker)
     {
@@ -134,6 +133,7 @@ private void ExecuteMiningLogic(MiningSensor sensor)
         currentMiningEq = miningEquipments[index];
         currentMiningEq.gameObject.SetActive(true);
 
+        inventory.StoneStacker.LimitMaxStackCount(8 * index);
         miningTimer = currentMiningEq.MiningData.MiningDelay;
     }
 }

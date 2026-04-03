@@ -462,3 +462,11 @@
 
 **AI**:
 - **Engineering Summary**: 파괴 로직과 수집 로직을 물리적으로 분리하는 **[Non-Blocking Destructive Mining]** 구조를 적용함. `MiningController`에서 인벤토리의 `IsFull` 상태와 상관없이 `target.MineResource()`를 호출하여 대상 오브젝트의 파괴를 보장하도록 수정함. 단, 가득 찬 상태에서는 리소스 반환값을 `null`로 유도하여 인벤토리 적재 및 연출 로직만 선택적으로 차단함으로써, 조작의 연속성을 유지하는 동시에 자원 획득 제한을 시각적으로 표현함.
+
+---
+
+**User**:
+> MaxUI가 이미 재생 중일 때 중복 실행되지 않도록 수정 요청.
+
+**AI**:
+- **Engineering Summary**: 단일 UI 인스턴스의 연출 안정성을 확보하기 위해 **[Animation State Guarding]** 로직을 도입함. `MaxUI` 내부에 `isShowing` 플래그를 추가하여 재생 중 새로운 호출을 차단하고, `DOTween`의 `OnComplete` 콜백을 통해 애니메이션이 완전히 종료된 시점에만 다음 호출을 허용하도록 설계함. 이를 통해 드릴 등 고주파 동작 시 발생하는 불필요한 연출 중복과 CPU 오버헤드를 최적화함.
