@@ -3,9 +3,15 @@ using UnityEngine;
 
 public class StoneGenerator : MonoBehaviour
 {
+    private struct RespawnData
+    {
+        public Stone TargetStone;
+        public float RespawnTime;
+    }
+    
     [Header("Generator Settings")] 
     [SerializeField] private Stone stonePrefab;
-    [SerializeField] private Cobblestone cobblePrefab; // 풀 초기화를 위해 추가
+    [SerializeField] private Cobblestone cobblePrefab;
 
     [SerializeField] private Transform fieldContainer;
     [SerializeField] private float respawnDelay = 3f;
@@ -15,12 +21,6 @@ public class StoneGenerator : MonoBehaviour
     [SerializeField] private int columns = 15;
     [SerializeField] private float spacingX = 1f;
     [SerializeField] private float spacingZ = 1f;
-
-    private struct RespawnData
-    {
-        public Stone TargetStone;
-        public float RespawnTime;
-    }
 
     private Queue<RespawnData> respawnQueue = new Queue<RespawnData>();
 
@@ -32,12 +32,8 @@ public class StoneGenerator : MonoBehaviour
 
     private void InitializePools()
     {
-        Debug.Assert(stonePrefab != null, "StoneGenerator: StonePrefab missing!");
-        Debug.Assert(cobblePrefab != null, "StoneGenerator: CobblePrefab missing!");
-
-        // 필요한 만큼의 풀 사전 생성
         PoolManager.Instance.CreatePool(stonePrefab, rows * columns);
-        PoolManager.Instance.CreatePool(cobblePrefab, 20); // 초기 가용량 20개
+        PoolManager.Instance.CreatePool(cobblePrefab, 20);
     }
 
     private void Update()
@@ -63,7 +59,6 @@ public class StoneGenerator : MonoBehaviour
                 Vector3 localSpawnPos = new Vector3(startX + (x * spacingX), 0, startZ + (z * spacingZ));
                 Vector3 finalSpawnPos = transform.position + localSpawnPos;
 
-                // [Pooling 적용]: Instantiate 대신 Pool에서 획득
                 Stone stone = PoolManager.Instance.Get<Stone>();
                 stone.transform.SetPositionAndRotation(finalSpawnPos, Quaternion.identity);
                 stone.transform.SetParent(fieldContainer);
