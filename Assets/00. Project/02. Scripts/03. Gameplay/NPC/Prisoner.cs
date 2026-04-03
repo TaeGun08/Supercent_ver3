@@ -6,6 +6,8 @@ public enum PrisonerState { MovingToTableLine, WaitingInTableLine, TakingPotions
 
 public class Prisoner : Npc
 {
+    private Rigidbody rigidBody;
+    
     [Header("Prisoner Settings")]
     [SerializeField] private GameObject headObject;
     
@@ -20,6 +22,7 @@ public class Prisoner : Npc
     {
         base.Awake();
         
+        rigidBody = GetComponent<Rigidbody>();
         wait = new WaitForSeconds(0.2f);
         if (headObject != null) headObject.SetActive(false);
     }
@@ -87,13 +90,13 @@ public class Prisoner : Npc
         Vector3 waitingPoint = PrisonManager.Instance.GetRandomWaitingPoint();
         MoveTo(waitingPoint);
         
-        yield return new WaitUntil(() => !IsMoving);
+        yield return new WaitUntil(() => IsMoving == false);
         
-        transform.DORotate(new Vector3(0, transform.eulerAngles.y + 180f, 0), 0.5f);
-        
+        transform.DORotate(new Vector3(0, transform.eulerAngles.y + 180f, 0), 0.5f).Complete();
         currentState = PrisonerState.WaitingForPrisonSpace;
         
         PrisonManager.Instance.TryEnterPrison(this);
+        rigidBody.freezeRotation = true;
     }
 
     private IEnumerator ExecuteTakingPotion(ItemStacker source)
