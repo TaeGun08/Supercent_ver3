@@ -112,7 +112,7 @@ public class MiningController : MonoBehaviour
             targetStacker.transform,
             height: 0f,
             duration: 0.1f,
-            yOffset: targetStacker.CurrentCount * targetStacker.ItemHeight,
+            localOffset: targetStacker.GetNextLocalPosition(),
             onComplete: () => { targetStacker.PushStack(resource); }
         );
     }

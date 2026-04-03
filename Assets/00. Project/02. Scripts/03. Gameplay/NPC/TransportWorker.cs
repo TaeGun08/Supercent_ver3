@@ -104,7 +104,8 @@ public class TransportWorker : Npc
             myStacker.transform,
             height: 1.5f,
             duration: 0.15f,
-            yOffset: myStacker.CurrentCount * myStacker.ItemHeight,
+            localOffset: myStacker.GetNextLocalPosition(),
+            endRotY: 0f,
             onComplete: () => {
                 myStacker.PushStack(item);
                 complete = true;
@@ -116,7 +117,7 @@ public class TransportWorker : Npc
     private IEnumerator DepositItem(IPickupAble item, ItemStacker target)
     {
         bool complete = false;
-        Vector3 targetPos = target.transform.position + target.GetNextLocalPosition();
+        Vector3 targetPos = target.transform.TransformPoint(target.GetNextLocalPosition());
         DOParabolicMove.MoveToStaticPosition(
             item.Transform,
             targetPos,

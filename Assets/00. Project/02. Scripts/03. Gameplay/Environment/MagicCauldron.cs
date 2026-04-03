@@ -55,7 +55,7 @@ public class MagicCauldron : MonoBehaviour
                 DOParabolicMove.MoveToStaticPosition(
                     stone.Transform,
                     transform.position,
-                    height: 2f,
+                    height: 3f,
                     duration: moveDuration,
                     onComplete: () => { stone.Release(); }
                 );

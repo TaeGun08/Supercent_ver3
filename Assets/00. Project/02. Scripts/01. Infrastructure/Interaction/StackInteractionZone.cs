@@ -63,13 +63,13 @@ public class StackInteractionZone : MonoBehaviour
         IPickupAble item = playerSource.PopStack();
         if (item == null) return;
 
-        Vector3 targetWorldPos = targetStacker.transform.position + targetStacker.GetNextLocalPosition();
-        
+        Vector3 targetWorldPos = targetStacker.transform.TransformPoint(targetStacker.GetNextLocalPosition());
+
         DOParabolicMove.MoveToStaticPosition(
-            item.Transform, 
-            targetWorldPos, 
-            height: 1.5f, 
-            duration: 0.1f, 
+            item.Transform,
+            targetWorldPos,
+            height: 3f,
+            duration: 0.1f,
             onComplete: () => targetStacker.PushStack(item)
         );
     }
@@ -95,7 +95,7 @@ public class StackInteractionZone : MonoBehaviour
             playerTarget.transform, 
             height: 2f, 
             duration: 0.1f, 
-            yOffset: playerTarget.CurrentCount * playerTarget.ItemHeight,
+            localOffset: playerTarget.GetNextLocalPosition(),
             onComplete: () => playerTarget.PushStack(item)
         );
     }

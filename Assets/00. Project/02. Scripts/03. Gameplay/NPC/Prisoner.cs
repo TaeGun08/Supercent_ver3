@@ -147,7 +147,8 @@ public class Prisoner : Npc
             transform, 
             height: 1.5f,
             duration: 0.2f,
-            yOffset: 1.0f, 
+            localOffset: Vector3.up * 1.0f, 
+            endRotY: 0f,
             onComplete: () =>
             {
                 currentPotionCount++;
