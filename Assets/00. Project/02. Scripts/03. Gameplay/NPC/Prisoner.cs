@@ -99,7 +99,8 @@ public class Prisoner : Npc
     {
         currentState = PrisonerState.MovingToPrison;
 
-        Vector3 waitingPoint = PrisonManager.Instance.GetRandomWaitingPoint();
+        // 1. [Mandatory]: 감옥 앞 대기 구역으로 먼저 이동
+        Vector3 waitingPoint = PrisonManager.Instance.GetWaitingPoint();
         MoveTo(waitingPoint);
 
         yield return new WaitUntil(() => !IsMoving);

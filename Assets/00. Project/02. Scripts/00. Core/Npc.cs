@@ -27,24 +27,24 @@ public abstract class Npc : MonoBehaviour
     {
         moveTween?.Kill();
 
-        // 이동 시작 시 물리적 관성 제거
-        if (rb != null)
-        {
-            rb.velocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-        }
-
         float distance = Vector3.Distance(transform.position, targetPos);
-        if (distance < 0.1f) // 도착 판정 범위 소폭 확대 (안정성)
+        if (distance < 0.05f)
         {
             IsMoving = false;
             animator.SetBool(IS_WALK, false);
+            if (rb != null) 
+            {
+                rb.isKinematic = false;
+                rb.velocity = Vector3.zero;
+            }
             onArrival?.Invoke();
             return;
         }
 
+        // 이동 시작: 물리 간섭 차단
         IsMoving = true;
         animator.SetBool(IS_WALK, true);
+        if (rb != null) rb.isKinematic = true; 
 
         float duration = distance / moveSpeed;
 
@@ -56,15 +56,16 @@ public abstract class Npc : MonoBehaviour
 
         moveTween = transform.DOMove(targetPos, duration)
             .SetEase(Ease.Linear)
-            .SetUpdate(UpdateType.Fixed) // 물리 업데이트 타이밍과 동기화
             .OnComplete(() =>
             {
+                // 도착 즉시 위치 스냅 및 물리 복구
+                transform.position = targetPos;
                 IsMoving = false;
                 animator.SetBool(IS_WALK, false);
                 
-                // 도착 후 즉시 물리 완전 정지
                 if (rb != null)
                 {
+                    rb.isKinematic = false;
                     rb.velocity = Vector3.zero;
                     rb.angularVelocity = Vector3.zero;
                 }

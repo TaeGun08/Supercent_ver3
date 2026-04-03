@@ -16,11 +16,11 @@ public class PrisonManager : SingletonBase<PrisonManager>
 
     public bool IsFull => currentPrisonerCount >= maxCapacity;
     
-    public Vector3 GetRandomWaitingPoint()
+    public Vector3 GetWaitingPoint()
     {
         Debug.Assert(waitingAreaPoint != null, "[PrisonManager] waitingAreaPoint가 설정되지 않았습니다.");
-        Vector3 randomOffset = new Vector3(Random.Range(-2f, 2f), 0, Random.Range(-2f, 2f));
-        return waitingAreaPoint.position + randomOffset;
+        // [Correction]: 랜덤 오프셋을 제거하여 정확한 지점으로 유도
+        return waitingAreaPoint.position;
     }
     
     public void TryEnterPrison(Npc npc)
