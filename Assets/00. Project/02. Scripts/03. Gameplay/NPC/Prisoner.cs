@@ -1,13 +1,11 @@
-using System;
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public enum PrisonerState { MovingToTableLine, WaitingInTableLine, TakingPotions, MovingToPrison, WaitingForPrisonSpace }
 
 public class Prisoner : Npc
 {
-    private static readonly int WALK = Animator.StringToHash("IsWalk");
-
     [Header("Prisoner Settings")]
     [SerializeField] private GameObject headObject;
     
@@ -36,15 +34,12 @@ public class Prisoner : Npc
 
     private IEnumerator MainBehaviorRoutine()
     {
-        animator.SetBool(WALK, IsMoving);
         yield return StartCoroutine(EnterTableWaitingLine());
-
-        animator.SetBool(WALK, IsMoving);
+        
         yield return StartCoroutine(CollectRequiredPotions());
 
         CompleteCollection();
 
-        animator.SetBool(WALK, IsMoving);
         yield return StartCoroutine(GoToPrison());
     }
 
@@ -74,7 +69,7 @@ public class Prisoner : Npc
     private bool CanTakePotion()
     {
         return WaitingLineManager.Instance.GetFrontNpc() == this 
-               && IsMoving == false
+               && !IsMoving 
                && targetTable != null 
                && targetTable.CanDistribute;
     }
@@ -92,9 +87,12 @@ public class Prisoner : Npc
         Vector3 waitingPoint = PrisonManager.Instance.GetRandomWaitingPoint();
         MoveTo(waitingPoint);
         
-        yield return new WaitUntil(() => IsMoving == false);
+        yield return new WaitUntil(() => !IsMoving);
+        
+        transform.DORotate(new Vector3(0, transform.eulerAngles.y + 180f, 0), 0.5f);
+        
         currentState = PrisonerState.WaitingForPrisonSpace;
-
+        
         PrisonManager.Instance.TryEnterPrison(this);
     }
 
@@ -102,8 +100,24 @@ public class Prisoner : Npc
     {
         IPickupAble potion = source.PopStack();
         if (potion == null) yield break;
-        currentPotionCount++;
 
+        bool moveComplete = false;
+        
+        DOParabolicMove.MoveToDynamicTarget(
+            potion.Transform,
+            transform, 
+            height: 1.5f,
+            duration: 0.2f,
+            yOffset: 1.0f, 
+            onComplete: () =>
+            {
+                currentPotionCount++;
+                potion.Release(); 
+                moveComplete = true;
+            }
+        );
+
+        yield return new WaitUntil(() => moveComplete);
         yield return wait;
     }
 }
