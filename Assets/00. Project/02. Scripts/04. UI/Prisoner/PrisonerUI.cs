@@ -35,6 +35,7 @@ public class PrisonerUI : MonoBehaviour
     public void Hide()
     {
         uiRoot.SetActive(false);
+        targetTransform = null; // 추적 중단
     }
 
     public void UpdateCount(int count)

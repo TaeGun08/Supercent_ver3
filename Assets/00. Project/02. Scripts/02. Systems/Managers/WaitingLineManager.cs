@@ -53,4 +53,10 @@ public class WaitingLineManager : SingletonBase<WaitingLineManager>
         }
         return waitingNPCs.Count > 0 ? waitingNPCs[0] : null;
     }
+
+    public Vector3 GetPoint(int index)
+    {
+        if (index < 0 || index >= linePoints.Count) return Vector3.zero;
+        return linePoints[index].position;
+    }
 }

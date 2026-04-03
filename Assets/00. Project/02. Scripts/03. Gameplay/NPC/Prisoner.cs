@@ -2,32 +2,25 @@ using System.Collections;
 using UnityEngine;
 using DG.Tweening;
 
-public enum PrisonerState
-{
-    MovingToTableLine,
-    WaitingInTableLine,
-    TakingPotions,
-    MovingToPrison,
-    WaitingForPrisonSpace
-}
+public enum PrisonerState { MovingToTableLine, WaitingInTableLine, TakingPotions, MovingToPrison, WaitingForPrisonSpace }
 
 public class Prisoner : Npc
 {
-    [Header("Prisoner Settings")] 
+    [Header("Prisoner Settings")]
     [SerializeField] private GameObject headObject;
-
+    
     private int requiredPotionCount;
     private int currentPotionCount = 0;
     private PrisonerState currentState;
     private PotionTable targetTable;
     private bool isUIShown;
-
+    
     private WaitForSeconds wait;
 
     protected override void Awake()
     {
         base.Awake();
-
+        
         wait = new WaitForSeconds(0.2f);
         if (headObject != null) headObject.SetActive(false);
     }
@@ -38,7 +31,7 @@ public class Prisoner : Npc
         requiredPotionCount = neededPotions;
         currentPotionCount = 0;
         isUIShown = false;
-
+        
         StartCoroutine(MainBehaviorRoutine());
     }
 
@@ -46,7 +39,8 @@ public class Prisoner : Npc
     {
         yield return StartCoroutine(EnterTableWaitingLine());
 
-        if (WaitingLineManager.Instance.GetFrontNpc() == this && !IsMoving)
+        // [Spatial Guard]: 대기열 맨 앞이면서, 실제 테이블 위치에 안착했을 때만 UI 노출
+        if (IsAtTableSpot())
         {
             UIManager.Instance.ShowPrisonerUI(transform, currentPotionCount, requiredPotionCount);
             isUIShown = true;
@@ -57,6 +51,15 @@ public class Prisoner : Npc
         CompleteCollection();
 
         yield return StartCoroutine(GoToPrison());
+    }
+
+    private bool IsAtTableSpot()
+    {
+        // 대기열 맨 앞인지 + 이동 중이 아닌지 + 테이블 포인트(0번)와의 거리가 충분히 가까운지 확인
+        if (WaitingLineManager.Instance.GetFrontNpc() != this || IsMoving) return false;
+        
+        Vector3 tablePos = WaitingLineManager.Instance.GetPoint(0);
+        return Vector3.Distance(transform.position, tablePos) < 0.2f;
     }
 
     private IEnumerator EnterTableWaitingLine()
@@ -73,7 +76,8 @@ public class Prisoner : Npc
     {
         while (currentPotionCount < requiredPotionCount)
         {
-            if (!isUIShown && WaitingLineManager.Instance.GetFrontNpc() == this && !IsMoving)
+            // [Refresh Guard]: 전진 중 안착했을 때 UI 노출
+            if (!isUIShown && IsAtTableSpot())
             {
                 UIManager.Instance.ShowPrisonerUI(transform, currentPotionCount, requiredPotionCount);
                 isUIShown = true;
@@ -85,21 +89,23 @@ public class Prisoner : Npc
                 yield return StartCoroutine(ExecuteTakingPotion(targetTable.GetStacker()));
                 currentState = PrisonerState.WaitingInTableLine;
             }
-
             yield return wait;
         }
     }
 
     private bool CanTakePotion()
     {
-        return WaitingLineManager.Instance.GetFrontNpc() == this
-               && !IsMoving
-               && targetTable != null
+        return IsAtTableSpot() 
+               && targetTable != null 
                && targetTable.CanDistribute;
     }
 
     private void CompleteCollection()
     {
+        // [Unconditional Hide]: 플래그와 상관없이 UIManager에 직접 Hide 명령 (참조 무결성 확보)
+        UIManager.Instance.HidePrisonerUI();
+        isUIShown = false;
+
         if (headObject != null) headObject.SetActive(true);
 
         if (targetTable != null) targetTable.ProduceGold();
@@ -109,6 +115,7 @@ public class Prisoner : Npc
 
     private IEnumerator GoToPrison()
     {
+        // [Guaranteed Hide]: 이동 시작 시 UI 확실히 제거
         if (isUIShown)
         {
             UIManager.Instance.HidePrisonerUI();
@@ -121,7 +128,7 @@ public class Prisoner : Npc
         MoveTo(waitingPoint);
 
         yield return new WaitUntil(() => !IsMoving);
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.3f); 
 
         currentState = PrisonerState.WaitingForPrisonSpace;
 
@@ -134,24 +141,24 @@ public class Prisoner : Npc
         if (potion == null) yield break;
 
         bool moveComplete = false;
-
+        
         DOParabolicMove.MoveToDynamicTarget(
             potion.Transform,
-            transform,
+            transform, 
             height: 1.5f,
             duration: 0.2f,
-            yOffset: 1.0f,
+            yOffset: 1.0f, 
             onComplete: () =>
             {
                 currentPotionCount++;
-
+                
                 // [Sync UI]: 수령 중에는 숫자만 계속 업데이트
                 if (isUIShown)
                 {
                     UIManager.Instance.UpdatePrisonerUI(currentPotionCount);
                 }
 
-                potion.Release();
+                potion.Release(); 
                 moveComplete = true;
             }
         );
