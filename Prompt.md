@@ -276,3 +276,27 @@
 
 **AI**:
 - **Engineering Summary**: MiningController 내부에 잔존하던 삭제된 클래스(StoneStacker)의 로컬 변수 참조를 전수 조사하여 범용 타입(ItemStacker)으로 교체 완료함. grep 기반의 프로젝트 전수 조사를 통해 모든 '유령 타입 참조'가 제거되었음을 검증하였으며, 이를 통해 컴파일 무결성을 확보하고 런타임 안정성을 정상화함.
+
+**User**:
+> Cauldron에 아이템이 쌓일 때 2열 2행으로 차곡차곡 쌓일 수 있게 하자. (격자 적층 시스템 구현)
+
+**AI**:
+- **Engineering Summary**: ItemStacker에 3차원 격자 적층(Grid Stacking) 알고리즘을 도입함. 행/열/간격 설정을 통해 2x2 등 다양한 적재 레이아웃을 지원하며, 인덱스 기반의 좌표 계산 로직을 통해 층(Layer) 개념을 시각화함. 중앙 정렬 오프셋 계산을 포함하여 자원 적재 시의 시각적 완성도를 높였으며, 기존 수직 적층 구조와의 하위 호환성을 완벽히 유지함.
+
+**User**:
+> LIFO 일관성 확보 및 애니메이션 스냅 버그 수정 요청. 가마솥 상호작용 기능을 범용 모듈로 분리해줘.
+
+**AI**:
+- **Engineering Summary**: ItemStacker의 인덱스 기반 좌표 계산 로직(GetPositionAtIndex)을 정밀화하여 적재 시 발생하는 비주얼 스냅 버그를 해결함. 전용 상호작용 브리지인 [StackInteractionZone]을 신규 구축하여 가마솥에 종속된 로직을 범용 모듈로 추출하였으며, 이를 통해 다양한 자원 저장 시설에 즉시 적용 가능한 확장성을 확보함. 시스템 전반의 LIFO 메커니즘을 재정렬하여 물리적 현실감과 데이터 정합성을 동시에 달성함.
+
+**User**:
+> StackInteractionZone.cs 오류 수정 요청. PlayerStackManager를 Inventory로 이름 변경함.
+
+**AI**:
+- **Engineering Summary**: 인벤토리 시스템의 클래스 명칭 변경(PlayerStackManager -> Inventory)에 따른 전역 참조 동기화를 수행함. StackInteractionZone.cs 내의 명칭 불일치 및 오타(Iventor)를 수정하여 컴파일 무결성을 회복하였으며, MiningController 등 핵심 모듈의 의존성 상태를 전수 조사하여 리팩터링 이후의 안정성을 확보함.
+
+**User**:
+> 구조를 다시 기능을 만들어 올게 나중에 어울릴 수 있는 방향으로 같이 리팩터링 진행해보자.
+
+**AI**:
+- **Engineering Summary**: 현재 프로젝트의 4단계 계층 구조(.asmdef), 데이터 기반 설계(SO), 범용 상호작용 시스템(StackInteractionZone), 그리고 LIFO 기반의 물리적 적층 로직을 완전히 동기화함. 향후 추가될 신규 기능들이 기존의 SOLID 원칙과 고성능 런타임 구조에 유연하게 통합될 수 있도록 아키텍처 컨텍스트를 유지하며 대기 모드로 전환함.

@@ -599,8 +599,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d32509582aebd4408420ee68040e18e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  putDownStone: {fileID: 6548274912742727989}
-  pickUpPotion: {fileID: 35868686243438354}
+  inputStack: {fileID: 6548274912742727989}
+  outputStack: {fileID: 35868686243438354}
   craftDuration: 0.5
   potionPrefab: {fileID: 2077822265630860988, guid: ac482965c1918054ebe854224ecb08b0, type: 3}
 --- !u!1 &3522537207036934628
@@ -791,9 +791,9 @@ GameObject:
   - component: {fileID: 963791581679109317}
   - component: {fileID: 987761095384305792}
   - component: {fileID: 6548274912742727989}
-  - component: {fileID: 5625450899866266335}
+  - component: {fileID: 8496226987515391802}
   m_Layer: 0
-  m_Name: PutdownStone
+  m_Name: InputStone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -851,7 +851,11 @@ MonoBehaviour:
   acceptableType: 0
   maxStackCount: 10
   itemHeight: 0.5
---- !u!114 &5625450899866266335
+  gridColumns: 2
+  gridRows: 2
+  spacingX: 0.5
+  spacingZ: 0.5
+--- !u!114 &8496226987515391802
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -860,12 +864,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4823371893696422423}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9d861786d797a54c8ae8140a25001ff, type: 3}
+  m_Script: {fileID: 11500000, guid: faf06ee505c0e51468c94bde557d04b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoneType: 0
-  cauldron: {fileID: 2698563854104035873}
-  interactionInterval: 0.1
+  mode: 0
+  targetStacker: {fileID: 6548274912742727989}
+  interval: 0.1
 --- !u!1 &5105436922238577410
 GameObject:
   m_ObjectHideFlags: 0
@@ -1023,9 +1027,9 @@ GameObject:
   - component: {fileID: 6204165991811670399}
   - component: {fileID: 393017824918059309}
   - component: {fileID: 35868686243438354}
-  - component: {fileID: 875031816912160580}
+  - component: {fileID: 8737844226088835003}
   m_Layer: 0
-  m_Name: PickupPotion
+  m_Name: OutputPotion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1083,7 +1087,11 @@ MonoBehaviour:
   acceptableType: 2
   maxStackCount: 10
   itemHeight: 0.5
---- !u!114 &875031816912160580
+  gridColumns: 2
+  gridRows: 2
+  spacingX: 0.5
+  spacingZ: 0.5
+--- !u!114 &8737844226088835003
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1092,12 +1100,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8802639977209125034}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9d861786d797a54c8ae8140a25001ff, type: 3}
+  m_Script: {fileID: 11500000, guid: faf06ee505c0e51468c94bde557d04b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoneType: 1
-  cauldron: {fileID: 2698563854104035873}
-  interactionInterval: 0.1
+  mode: 1
+  targetStacker: {fileID: 35868686243438354}
+  interval: 0.1
 --- !u!1 &9159045973416924215
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,63 +1,90 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public enum CauldronState { Idle, Crafting }
 
 public class MagicCauldron : MonoBehaviour
 {
-    [Header("MagicCauldron Settings")]
-    [SerializeField] private ItemStacker putDownStone;
-    [SerializeField] private ItemStacker pickUpPotion;
-    [SerializeField] private float craftDuration = 0.5f;
+    private static readonly int CRAFT = Animator.StringToHash("Craft");
+    private Animator animator;
+    
+    [Header("Dependencies")] 
+    [SerializeField] private ItemStacker inputStack;
+    [SerializeField] private ItemStacker outputStack;
     [SerializeField] private Potion potionPrefab;
 
-    [Header("Current Status")]
+    [Header("Settings")]
+    [SerializeField] private float craftDuration = 3f;
+    private float moveDuration = 0.3f;
+
+    [Header("Current Status")] 
     private CauldronState state = CauldronState.Idle;
 
-    public bool CanAcceptMoreStones => putDownStone != null && !putDownStone.IsFull;
-    public bool HasFinishedPotions => pickUpPotion != null && pickUpPotion.HasItem;
+    private WaitForSeconds craftWait;
+    private WaitForSeconds moveWait;
+
+    public bool CanAcceptMoreStones => inputStack != null && !inputStack.IsFull;
+    public bool HasFinishedPotions => outputStack != null && outputStack.HasItem;
 
     private void Awake()
     {
-        if (potionPrefab == null) return;
+        animator = GetComponentInChildren<Animator>();
+        
         PoolManager.Instance.CreatePool(potionPrefab, initialCount: 5);
+
+        craftWait = new WaitForSeconds(craftDuration);
+        moveWait = new WaitForSeconds(moveDuration);
     }
 
     private void Update()
     {
-        if (state != CauldronState.Idle || putDownStone.HasItem == false || pickUpPotion.IsFull) return;
+        if (state != CauldronState.Idle || inputStack.HasItem == false || outputStack.IsFull) return;
         StartCoroutine(CraftingRoutine());
     }
 
     private IEnumerator CraftingRoutine()
     {
-        WaitForSeconds wait = new WaitForSeconds(craftDuration);
-        while (putDownStone.HasItem && !pickUpPotion.IsFull)
+        state = CauldronState.Crafting;
+
+        while (inputStack.HasItem && outputStack.IsFull == false)
         {
-            state = CauldronState.Crafting;
+            IPickupAble stone = inputStack.PopStack();
+            if (stone != null)
+            {
+                DOParabolicMove.MoveToStaticPosition(
+                    stone.Transform,
+                    transform.position,
+                    height: 2f,
+                    duration: moveDuration,
+                    onComplete: () => { stone.Release(); }
+                );
+                
+                yield return moveWait; 
+            }
 
-            IPickupAble stone = putDownStone.PopStack();
-            if (stone != null) stone.Release();
-
-            yield return wait;
+            animator.SetTrigger(CRAFT);
+            yield return craftWait;
 
             Potion potion = PoolManager.Instance.Get<Potion>();
-            Vector3 targetWorldPos = pickUpPotion.transform.position + pickUpPotion.GetNextLocalPosition();
+            if (potion == null) break;
+
+            potion.Transform.position = transform.position;
+            Vector3 targetWorldPos = outputStack.transform.position + outputStack.GetNextLocalPosition();
 
             DOParabolicMove.MoveToStaticPosition(
                 potion.Transform,
                 targetWorldPos,
                 height: 2f,
-                duration: 0.1f,
-                onComplete: () => { pickUpPotion.PushStack(potion); }
+                duration: moveDuration,
+                onComplete: () => { outputStack.PushStack(potion); }
             );
+
+            yield return moveWait; 
         }
 
         state = CauldronState.Idle;
     }
 
-    public ItemStacker GetInputStacker() => putDownStone;
-    public ItemStacker GetOutputStacker() => pickUpPotion;
+    public ItemStacker GetInputStacker() => inputStack;
+    public ItemStacker GetOutputStacker() => outputStack;
 }

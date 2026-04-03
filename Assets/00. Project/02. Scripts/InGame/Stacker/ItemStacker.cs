@@ -9,6 +9,12 @@ public class ItemStacker : MonoBehaviour
     [SerializeField] protected int maxStackCount = 10;
     [SerializeField] protected float itemHeight = 0.5f;
     public float ItemHeight => itemHeight;
+
+    [Header("Grid Settings")]
+    [SerializeField] private int gridColumns = 1; // 열 (X축)
+    [SerializeField] private int gridRows = 1;    // 행 (Z축)
+    [SerializeField] private float spacingX = 0.5f;
+    [SerializeField] private float spacingZ = 0.5f;
     
     protected Stack<IPickupAble> stackedItems = new();
     
@@ -21,7 +27,26 @@ public class ItemStacker : MonoBehaviour
     
     public Vector3 GetNextLocalPosition()
     {
-        return new Vector3(0, stackedItems.Count * itemHeight, 0);
+        return GetPositionAtIndex(stackedItems.Count);
+    }
+
+    public Vector3 GetPositionAtIndex(int index)
+    {
+        int layerSize = gridColumns * gridRows;
+        
+        if (layerSize <= 1) return new Vector3(0, index * itemHeight, 0);
+
+        int layer = index / layerSize;
+        int indexInLayer = index % layerSize;
+        
+        int row = indexInLayer / gridColumns;
+        int col = indexInLayer % gridColumns;
+
+        float xPos = (col - (gridColumns - 1) * 0.5f) * spacingX;
+        float zPos = (row - (gridRows - 1) * 0.5f) * spacingZ;
+        float yPos = layer * itemHeight;
+
+        return new Vector3(xPos, yPos, zPos);
     }
     
     public virtual void PushStack(IPickupAble pickupAble)
@@ -30,11 +55,14 @@ public class ItemStacker : MonoBehaviour
         if (pickupAble.Type != acceptableType) return;
         if (IsFull) return;
 
+        // 적재 전 현재 인덱스 저장
+        int targetIndex = stackedItems.Count;
         stackedItems.Push(pickupAble);
         OnCountChanged?.Invoke(stackedItems.Count);
         
         pickupAble.Transform.SetParent(transform);
-        pickupAble.Transform.SetLocalPositionAndRotation(GetNextLocalPosition(), Quaternion.identity);
+        // 저장된 정확한 인덱스로 위치 고정 (스냅 버그 해결)
+        pickupAble.Transform.SetLocalPositionAndRotation(GetPositionAtIndex(targetIndex), Quaternion.identity);
     }
     
     public virtual IPickupAble PopStack()
