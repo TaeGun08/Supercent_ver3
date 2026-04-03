@@ -826,9 +826,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9869235b5cce5c540a24362dbd6ceb19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  miningData: {fileID: 0}
-  visualObject: {fileID: 0}
-  miningSensor: {fileID: 0}
+  miningData: {fileID: 11400000, guid: bab2f3090fe8ee94c9af57d323a696e6, type: 2}
+  visualObject: {fileID: 9048265877061702189}
+  miningSensor: {fileID: 5841149615696063441}
 --- !u!1 &9048265877061702189
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 213365353455918934}
   - component: {fileID: 7197115447803479882}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Drill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9869235b5cce5c540a24362dbd6ceb19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  miningData: {fileID: 0}
-  visualObject: {fileID: 0}
-  miningSensor: {fileID: 0}
+  miningData: {fileID: 11400000, guid: f4d5622bc7bcbb649b107218058b69e5, type: 2}
+  visualObject: {fileID: 3473292065244259984}
+  miningSensor: {fileID: 8009542585389194021}
 --- !u!1 &3473292065244259984
 GameObject:
   m_ObjectHideFlags: 0
