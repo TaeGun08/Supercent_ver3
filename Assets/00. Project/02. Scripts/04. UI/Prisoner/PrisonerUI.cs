@@ -53,7 +53,7 @@ public class PrisonerUI : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (targetTransform == null || uiRoot == null || uiRoot.activeSelf == false) return;
+        if (targetTransform == null || uiRoot == null) return;
 
         Vector3 worldPos = targetTransform.position + worldOffset;
         Vector3 viewportPoint = mainCam.WorldToViewportPoint(worldPos);

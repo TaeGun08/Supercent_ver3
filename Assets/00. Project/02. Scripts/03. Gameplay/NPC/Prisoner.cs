@@ -8,12 +8,12 @@ public class Prisoner : Npc
 {
     [Header("Prisoner Settings")]
     [SerializeField] private GameObject headObject;
-    [SerializeField] private PrisonerUI prisonerUI;
     
     private int requiredPotionCount;
     private int currentPotionCount = 0;
     private PrisonerState currentState;
     private PotionTable targetTable;
+    private bool isUIShown;
     
     private WaitForSeconds wait;
 
@@ -29,44 +29,59 @@ public class Prisoner : Npc
     {
         targetTable = table;
         requiredPotionCount = neededPotions;
+        currentPotionCount = 0;
+        isUIShown = false;
         
         StartCoroutine(MainBehaviorRoutine());
     }
+private IEnumerator MainBehaviorRoutine()
+{
+    yield return StartCoroutine(EnterTableWaitingLine());
 
-    private IEnumerator MainBehaviorRoutine()
+    // [UI Activation]: 테이블 앞 대기 지점 도착 즉시 UI 노출 (배급 시작 전)
+    if (WaitingLineManager.Instance.GetFrontNpc() == this && !IsMoving)
     {
-        yield return StartCoroutine(EnterTableWaitingLine());
-        
-        yield return StartCoroutine(CollectRequiredPotions());
-
-        CompleteCollection();
-
-        yield return StartCoroutine(GoToPrison());
+        UIManager.Instance.ShowPrisonerUI(transform, currentPotionCount, requiredPotionCount);
+        isUIShown = true;
     }
 
-    private IEnumerator EnterTableWaitingLine()
-    {
-        currentState = PrisonerState.MovingToTableLine;
-        WaitingLineManager.Instance.JoinLine(this);
-        
-        yield return new WaitUntil(() => IsMoving == false);
-        
-        currentState = PrisonerState.WaitingInTableLine;
-    }
+    yield return StartCoroutine(CollectRequiredPotions());
 
-    private IEnumerator CollectRequiredPotions()
+    CompleteCollection();
+
+    yield return StartCoroutine(GoToPrison());
+}
+
+private IEnumerator EnterTableWaitingLine()
+{
+    currentState = PrisonerState.MovingToTableLine;
+    WaitingLineManager.Instance.JoinLine(this);
+
+    yield return new WaitUntil(() => IsMoving == false);
+
+    currentState = PrisonerState.WaitingInTableLine;
+}
+
+private IEnumerator CollectRequiredPotions()
+{
+    while (currentPotionCount < requiredPotionCount)
     {
-        while (currentPotionCount < requiredPotionCount)
+        // [UI Refresh]: 전진 등으로 인해 맨 앞이 되었는데 UI가 없다면 즉시 켜줌
+        if (!isUIShown && WaitingLineManager.Instance.GetFrontNpc() == this && !IsMoving)
         {
-            if (CanTakePotion())
-            {
-                currentState = PrisonerState.TakingPotions;
-                yield return StartCoroutine(ExecuteTakingPotion(targetTable.GetStacker()));
-                currentState = PrisonerState.WaitingInTableLine;
-            }
-            yield return wait;
+            UIManager.Instance.ShowPrisonerUI(transform, currentPotionCount, requiredPotionCount);
+            isUIShown = true;
         }
+
+        if (CanTakePotion())
+        {
+            currentState = PrisonerState.TakingPotions;
+            yield return StartCoroutine(ExecuteTakingPotion(targetTable.GetStacker()));
+            currentState = PrisonerState.WaitingInTableLine;
+        }
+        yield return wait;
     }
+}
 
     private bool CanTakePotion()
     {
@@ -79,7 +94,12 @@ public class Prisoner : Npc
     private void CompleteCollection()
     {
         if (headObject != null) headObject.SetActive(true);
-        if (prisonerUI != null) prisonerUI.Hide();
+        
+        if (isUIShown)
+        {
+            UIManager.Instance.HidePrisonerUI();
+            isUIShown = false;
+        }
 
         if (targetTable != null) targetTable.ProduceGold();
 
@@ -117,7 +137,10 @@ public class Prisoner : Npc
             onComplete: () =>
             {
                 currentPotionCount++;
-                if (prisonerUI != null) prisonerUI.UpdateCount(currentPotionCount);
+                if (isUIShown)
+                {
+                    UIManager.Instance.UpdatePrisonerUI(currentPotionCount);
+                }
 
                 potion.Release(); 
                 moveComplete = true;
