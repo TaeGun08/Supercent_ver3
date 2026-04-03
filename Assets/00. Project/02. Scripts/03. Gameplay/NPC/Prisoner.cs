@@ -6,18 +6,20 @@ public enum PrisonerState { MovingToTableLine, WaitingInTableLine, TakingPotions
 public class Prisoner : Npc
 {
     [Header("Prisoner Settings")]
-    [SerializeField] private ItemStacker myStacker;
     [SerializeField] private GameObject headObject;
     
     private int requiredPotionCount;
     private int currentPotionCount = 0;
     private PrisonerState currentState;
     private PotionTable targetTable;
+    
+    private WaitForSeconds wait;
 
     protected override void Awake()
     {
         base.Awake();
         
+        wait = new WaitForSeconds(0.2f);
         if (headObject != null) headObject.SetActive(false);
     }
     
@@ -51,7 +53,6 @@ public class Prisoner : Npc
 
     private IEnumerator CollectRequiredPotions()
     {
-        WaitForSeconds wait = new WaitForSeconds(0.2f);
         while (currentPotionCount < requiredPotionCount)
         {
             if (CanTakePotion())
@@ -67,7 +68,7 @@ public class Prisoner : Npc
     private bool CanTakePotion()
     {
         return WaitingLineManager.Instance.GetFrontNpc() == this 
-               && !IsMoving 
+               && IsMoving == false
                && targetTable != null 
                && targetTable.CanDistribute;
     }
@@ -89,24 +90,8 @@ public class Prisoner : Npc
     {
         IPickupAble potion = source.PopStack();
         if (potion == null) yield break;
+        currentPotionCount++;
 
-        bool moveComplete = false;
-        
-        DOParabolicMove.MoveToDynamicTarget(
-            potion.Transform,
-            myStacker.transform,
-            height: 1f,
-            duration: 0.1f,
-            yOffset: myStacker.CurrentCount * myStacker.ItemHeight,
-            onComplete: () =>
-            {
-                myStacker.PushStack(potion);
-                currentPotionCount++;
-                moveComplete = true;
-            }
-        );
-
-        yield return new WaitUntil(() => moveComplete);
-        yield return new WaitForSeconds(0.2f);
+        yield return wait;
     }
 }
