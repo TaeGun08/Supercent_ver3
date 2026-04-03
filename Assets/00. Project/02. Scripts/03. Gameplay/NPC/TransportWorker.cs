@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public enum TransportState { ToCauldron, Loading, ToTable, Unloading, Distributing }
+public enum TransportState { ToCauldron, WaitingAtCauldron, ToTable, UnloadingAtTable, Distributing }
 
 public class TransportWorker : Npc
 {
@@ -27,6 +27,7 @@ public class TransportWorker : Npc
 
     private void Start()
     {
+        if (targetCauldron == null || targetTable == null) return;
         StartCoroutine(TransportRoutine());
     }
 
@@ -34,54 +35,65 @@ public class TransportWorker : Npc
     {
         while (true)
         {
-            // 1. 가마솥으로 이동
+            // 1. 가마솥으로 이동 및 완충 대기
             currentState = TransportState.ToCauldron;
             MoveTo(cauldronPoint.position);
             yield return new WaitUntil(() => !IsMoving);
 
-            // 2. 포션 수집 (내 인벤토리가 꽉 차거나 가마솥이 비기 전까지)
-            currentState = TransportState.Loading;
+            currentState = TransportState.WaitingAtCauldron;
             ItemStacker cauldronOutput = targetCauldron.GetOutputStacker();
-            while (cauldronOutput.HasItem && !myStacker.IsFull)
+            
+            // [Strict Loading]: 내 스택이 꽉 찰 때까지 무한 대기
+            while (!myStacker.IsFull)
             {
-                IPickupAble item = cauldronOutput.PopStack();
-                if (item != null)
+                if (cauldronOutput.HasItem)
                 {
-                    yield return StartCoroutine(CollectItem(item));
+                    IPickupAble item = cauldronOutput.PopStack();
+                    if (item != null)
+                    {
+                        yield return StartCoroutine(CollectItem(item));
+                    }
                 }
+                yield return wait;
             }
 
-            // 3. 테이블로 이동
+            // 2. 테이블로 이동
             currentState = TransportState.ToTable;
             MoveTo(tablePoint.position);
             yield return new WaitUntil(() => !IsMoving);
 
-            // 4. 포션 내려놓기
-            currentState = TransportState.Unloading;
+            // 3. 하적 (내 스택이 완전히 비워질 때까지)
+            currentState = TransportState.UnloadingAtTable;
             ItemStacker tableInput = targetTable.GetStacker();
-            while (myStacker.HasItem && !tableInput.IsFull)
+            while (myStacker.HasItem)
             {
-                IPickupAble item = myStacker.PopStack();
-                if (item != null)
+                if (!tableInput.IsFull)
                 {
-                    yield return StartCoroutine(DepositItem(item, tableInput));
+                    IPickupAble item = myStacker.PopStack();
+                    if (item != null)
+                    {
+                        yield return StartCoroutine(DepositItem(item, tableInput));
+                    }
                 }
+                yield return wait;
             }
 
-            // 5. 테이블 상주 및 배급 지원 (운반할 게 없고 테이블이 비어있지 않을 때)
-            if (!myStacker.HasItem)
+            // 4. 테이블 검사 및 배급 결정
+            if (tableInput.HasItem)
             {
+                // [Distribution Phase]: 테이블에 포션이 있는 동안 상주하며 배급
                 currentState = TransportState.Distributing;
                 MoveTo(distributionStandPoint.position);
                 yield return new WaitUntil(() => !IsMoving);
-                
-                // 테이블에 상주하며 플레이어 대신 배급 상태 유지 (조건부 대기)
-                while (tableInput.HasItem && !cauldronOutput.HasItem)
+
+                // 테이블의 포션이 다 떨어질 때까지 대기 (배급 지원)
+                while (tableInput.HasItem)
                 {
                     yield return wait;
                 }
             }
             
+            // 배급 완료 혹은 테이블이 비어있으면 다시 가마솥으로 (Loop)
             yield return null;
         }
     }
