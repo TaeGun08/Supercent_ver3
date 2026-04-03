@@ -6,6 +6,7 @@ public enum CauldronState { Idle, Crafting }
 public class MagicCauldron : MonoBehaviour
 {
     private static readonly int CRAFT = Animator.StringToHash("Craft");
+    
     private Animator animator;
     
     [Header("Dependencies")] 
@@ -23,7 +24,7 @@ public class MagicCauldron : MonoBehaviour
     private WaitForSeconds craftWait;
     private WaitForSeconds moveWait;
 
-    public bool CanAcceptMoreStones => inputStack != null && !inputStack.IsFull;
+    public bool CanAcceptMoreStones => inputStack != null && inputStack.IsFull == false;
     public bool HasFinishedPotions => outputStack != null && outputStack.HasItem;
 
     private void Awake()

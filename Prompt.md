@@ -300,3 +300,39 @@
 
 **AI**:
 - **Engineering Summary**: 현재 프로젝트의 4단계 계층 구조(.asmdef), 데이터 기반 설계(SO), 범용 상호작용 시스템(StackInteractionZone), 그리고 LIFO 기반의 물리적 적층 로직을 완전히 동기화함. 향후 추가될 신규 기능들이 기존의 SOLID 원칙과 고성능 런타임 구조에 유연하게 통합될 수 있도록 아키텍처 컨텍스트를 유지하며 대기 모드로 전환함.
+
+**User**:
+> 죄수 NPC 제작 요청. 포션 수령 대기열(정렬)과 감옥 수용 대기열(비정렬)을 포함한 FSM 구축. Npc 추상 클래스 상속 필수.
+
+**AI**:
+- **Engineering Summary**: 모든 NPC의 공통 이동 및 시각 로직을 담당하는 [Abstract Npc Foundation]을 구축하고 DOTween을 통합함. 포션 테이블 앞의 정렬된 줄서기를 제어하는 WaitingLineManager와 감옥 수용량 및 비정렬 대기 영역을 관리하는 PrisonManager를 구축하여 이원화된 대기 시스템을 완성함. Criminal 구체 클래스에 상속 기반의 FSM 루틴을 구현하여 복잡한 자원 수령 및 수감 시퀀스를 안정적으로 자동화함.
+
+**User**:
+> "WaitingLineManager.cs(9,18): error CS0246: The type or namespace name 'Npc' could not be found" 버그 수정 요청.
+
+**AI**:
+- **Engineering Summary**: 어셈블리 가시성 문제를 해결하기 위해 Npc 추상 베이스 클래스를 InGame 모듈에서 Core 모듈로 이동 배치함. 이를 통해 하위 어셈블리인 Managers에서 Npc 타입을 참조할 수 없는 물리적 의존성 제약을 해소하였으며, 의존성 역전 원칙(DIP)을 준수하는 계층 구조를 재확립하여 컴파일 무결성을 확보함.
+
+**User**:
+> 죄수의 전체적인 로직(포션 수령 및 감옥 입소)을 구현해줘.
+
+**AI**:
+- **Engineering Summary**: 죄수 NPC의 행동 지능(FSM)을 [State-Based Sequential Routine]으로 구축함. 가마솥의 물리적 출력 스택에서 자원을 추출하여 죄수의 개별 스태커로 이동시키는 [Direct Resource Exchange] 시스템을 구현하였으며, DOTween 연출 완료 시점에 논리적 적재를 수행하는 동기화 코드를 적용함. WaitingLineManager(FIFO)와 PrisonManager(수용량 제어)를 유기적으로 연동하여 시스템 전반의 자원 순환 루프를 완성함.
+
+**User**:
+> 죄수 Npc 명칭을 Prisoner로 정정하고, 포션 수령 완료 시 머리 오브젝트 활성화 로직 추가해줘.
+
+**AI**:
+- **Engineering Summary**: 클래스 명칭 명명 규칙 정정(Criminal -> Prisoner) 및 물리적 파일명 동기화를 수행함. 자원 수집 완료 상태를 시각화하기 위해 headObject 활성화 메커니즘을 FSM 시퀀스에 통합하였으며, 이를 통해 NPC의 논리적 상태 변화와 월드 내 시각 피드백 간의 일관성을 확보함.
+
+**User**:
+> 포션 테이블 기능 구현 요청. 플레이어가 테이블 앞에 있어야만 죄수에게 배급되도록 설계. 모듈화 및 예외 상황 고려 필수.
+
+**AI**:
+- **Engineering Summary**: 플레이어 임석 여부를 배급 트리거로 사용하는 [Auth-Protected Distribution System]을 구축함. 범용 플레이어 감지 모듈(PlayerDetectionZone)을 독립시켜 재사용성을 확보하였으며, PotionTable 클래스에서 이를 활용해 배급 권한을 동적으로 제어함. Prisoner NPC의 FSM 시퀀스에 테이블 배급 허가 상태 체크를 통합하여 자원 흐름의 논리적 무결성을 완성함.
+
+**User**:
+> 죄수자 생성 로직 구현 요청. 감옥 및 대기열 상태에 따른 조건부 스폰 시스템 설계.
+
+**AI**:
+- **Engineering Summary**: 감옥 수용량과 물리적 대기열 공간을 실시간 모니터링하여 생성을 결정하는 [Conditional Prisoner Spawner]를 구축함. PoolManager를 통한 NPC 재사용 구조를 적용하여 런타임 Alloc 부하를 최적화하였으며, 타이머 기반의 독립적인 스폰 루틴을 통해 자원 공급과 수용 간의 밸런싱 자동화를 달성함.

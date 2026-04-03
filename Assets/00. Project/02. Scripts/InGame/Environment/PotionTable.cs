@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PotionTable : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [Header("Dependencies")]
+    [SerializeField] private ItemStacker tableStacker;
+    
+    private bool isPlayerAtTable;
+    
+    public void SetPlayerPresence(bool isPresent)
     {
-        
+        isPlayerAtTable = isPresent;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public ItemStacker GetStacker() => tableStacker;
+    
+    public bool CanDistribute => isPlayerAtTable && tableStacker.HasItem;
 }
