@@ -163,7 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   rotationSpeed: 10
-  myStacker: {fileID: 2114457865657306193}
+  myStacker: {fileID: 0}
   headObject: {fileID: 9157446365212980003}
 --- !u!1 &531447307640514967
 GameObject:
@@ -717,7 +717,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1230587682158946734}
-  - component: {fileID: 2114457865657306193}
   m_Layer: 0
   m_Name: PickupPotion
   m_TagString: Untagged
@@ -740,25 +739,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4833354298868377875}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2114457865657306193
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4178606444143469575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bdbc3f4b5dd7b9469076b7b85446faf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  acceptableType: 2
-  maxStackCount: 10
-  itemHeight: 0.5
-  gridColumns: 1
-  gridRows: 1
-  spacingX: 0.5
-  spacingZ: 0.5
 --- !u!1 &4476219344889450756
 GameObject:
   m_ObjectHideFlags: 0

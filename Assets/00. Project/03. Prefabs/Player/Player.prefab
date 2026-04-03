@@ -135,7 +135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3126381952370295833}
-  - component: {fileID: 7342909664660301782}
+  - component: {fileID: 6046636287637636453}
   m_Layer: 0
   m_Name: PickupStone
   m_TagString: Untagged
@@ -158,7 +158,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4731782389546304331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7342909664660301782
+--- !u!114 &6046636287637636453
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 766586383753548130}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bdbc3f4b5dd7b9469076b7b85446faf, type: 3}
+  m_Script: {fileID: 11500000, guid: e52f3ba56f7162b48828ac6572e016a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 0
@@ -538,7 +538,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 965027104983166577}
-  - component: {fileID: 2065030637615002854}
+  - component: {fileID: 5206235726064096976}
   m_Layer: 0
   m_Name: PickupGold
   m_TagString: Untagged
@@ -561,7 +561,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4731782389546304331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2065030637615002854
+--- !u!114 &5206235726064096976
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -570,7 +570,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2029538613856287012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bdbc3f4b5dd7b9469076b7b85446faf, type: 3}
+  m_Script: {fileID: 11500000, guid: e52f3ba56f7162b48828ac6572e016a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 1
@@ -1024,7 +1024,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8929891373574480673}
-  - component: {fileID: 6513596056010526487}
+  - component: {fileID: 51622357830205660}
   m_Layer: 0
   m_Name: PickupPotion
   m_TagString: Untagged
@@ -1047,7 +1047,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4731782389546304331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6513596056010526487
+--- !u!114 &51622357830205660
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1056,7 +1056,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4201517195302474900}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bdbc3f4b5dd7b9469076b7b85446faf, type: 3}
+  m_Script: {fileID: 11500000, guid: e52f3ba56f7162b48828ac6572e016a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 2
@@ -1688,7 +1688,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3373887073152991812}
-  - component: {fileID: 8918659475967748475}
+  - component: {fileID: 460630186896729020}
   m_Layer: 0
   m_Name: PickAxe
   m_TagString: Untagged
@@ -1712,7 +1712,7 @@ Transform:
   - {fileID: 5941808012404091837}
   m_Father: {fileID: 3834070095454711888}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8918659475967748475
+--- !u!114 &460630186896729020
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1721,10 +1721,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8621537047718914595}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9869235b5cce5c540a24362dbd6ceb19, type: 3}
+  m_Script: {fileID: 11500000, guid: 83d9c85497efe3142b4a2d2c840d8dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  miningData: {fileID: 11400000, guid: eb1d24935ba83a445bb915d7352d8d7f, type: 2}
+  miningData: {fileID: 11400000, guid: 8be14235771de2a4799b439e445a19a4, type: 2}
   visualObject: {fileID: 2939856356031543911}
   miningSensor: {fileID: 9215008639737828000}
 --- !u!1 &8698414028228524979
@@ -1761,11 +1761,11 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7087867891699510352}
+  - {fileID: 3834070095454711888}
   - {fileID: 3126381952370295833}
   - {fileID: 965027104983166577}
   - {fileID: 8929891373574480673}
-  - {fileID: 7087867891699510352}
-  - {fileID: 3834070095454711888}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &2805159961789443136
@@ -1833,10 +1833,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   miningEquipments:
-  - {fileID: 8918659475967748475}
-  - {fileID: 379096273422386197}
-  - {fileID: 2454086856149813451}
-  stack: {fileID: 4750420624723577495}
+  - {fileID: 460630186896729020}
+  - {fileID: 6048061109051110085}
+  - {fileID: 8974599280831194431}
+  inventory: {fileID: 4750420624723577495}
 --- !u!114 &4750420624723577495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1849,9 +1849,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 405c78c2df283b94ab6e64f1cae463d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stoneStacker: {fileID: 7342909664660301782}
-  goldStacker: {fileID: 2065030637615002854}
-  potionStacker: {fileID: 6513596056010526487}
+  stoneStacker: {fileID: 6046636287637636453}
+  goldStacker: {fileID: 5206235726064096976}
+  potionStacker: {fileID: 51622357830205660}
   goldOffsetWhenStoneExists: {x: 0, y: 0, z: -0.5}
 --- !u!1 &8799593228450362439
 GameObject:
@@ -2036,22 +2036,22 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 741bace384974e24ea1bd75a9b462d1c, type: 3}
---- !u!114 &2454086856149813451 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1044630641954106136, guid: 741bace384974e24ea1bd75a9b462d1c, type: 3}
-  m_PrefabInstance: {fileID: 3202601355435467731}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9869235b5cce5c540a24362dbd6ceb19, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &6777452734389065291 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8250512794997814680, guid: 741bace384974e24ea1bd75a9b462d1c, type: 3}
   m_PrefabInstance: {fileID: 3202601355435467731}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8974599280831194431 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5836034589642000108, guid: 741bace384974e24ea1bd75a9b462d1c, type: 3}
+  m_PrefabInstance: {fileID: 3202601355435467731}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83d9c85497efe3142b4a2d2c840d8dd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7395922497214448479
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2109,15 +2109,15 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 33c1787df75019643914b6e6172ada4b, type: 3}
---- !u!114 &379096273422386197 stripped
+--- !u!114 &6048061109051110085 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7197115447803479882, guid: 33c1787df75019643914b6e6172ada4b, type: 3}
+  m_CorrespondingSourceObject: {fileID: 3840620347603890586, guid: 33c1787df75019643914b6e6172ada4b, type: 3}
   m_PrefabInstance: {fileID: 7395922497214448479}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9869235b5cce5c540a24362dbd6ceb19, type: 3}
+  m_Script: {fileID: 11500000, guid: 83d9c85497efe3142b4a2d2c840d8dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &7229859581526285321 stripped

@@ -769,7 +769,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8250512794997814680}
   - component: {fileID: 1445925512833006588}
-  - component: {fileID: 1044630641954106136}
+  - component: {fileID: 5836034589642000108}
   m_Layer: 6
   m_Name: BullDozer
   m_TagString: Untagged
@@ -814,7 +814,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3, y: 3, z: 3}
   m_Center: {x: 0, y: 1.55, z: 0}
---- !u!114 &1044630641954106136
+--- !u!114 &5836034589642000108
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -823,10 +823,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8524554536735263008}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9869235b5cce5c540a24362dbd6ceb19, type: 3}
+  m_Script: {fileID: 11500000, guid: 83d9c85497efe3142b4a2d2c840d8dd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  miningData: {fileID: 11400000, guid: bab2f3090fe8ee94c9af57d323a696e6, type: 2}
+  miningData: {fileID: 11400000, guid: d7f90c49df744b4478c2de26457198e9, type: 2}
   visualObject: {fileID: 9048265877061702189}
   miningSensor: {fileID: 5841149615696063441}
 --- !u!1 &9048265877061702189

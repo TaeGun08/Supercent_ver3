@@ -342,3 +342,9 @@
 
 **AI**:
 - **Engineering Summary**: Npc 추상 클래스에 IsMoving 상태 프로퍼티를 추가하여 물리적 이동과 논리적 상호작용 간의 실행 시점을 동기화함. Prisoner의 수령 루틴에 이동 완료 검증 로직을 통합하여 이동 중 자원 수급 현상을 차단하였으며, 0.2초 단위의 고주파 상태 체크를 통해 플레이어 개입(CanDistribute)에 대한 반응성을 최적화함. 이를 통해 [Auth-Protected Distribution] 시스템의 신뢰성을 확보함.
+
+**User**:
+> MiningController.cs(9,30): error CS0246: MiningEquipment를 찾을 수 없음. (물리 구조 정리 후 발생한 버그)
+
+**AI**:
+- **Engineering Summary**: 물리적 구조 재편 과정에서 유실된 MiningEquipment 및 MiningDataSO 스크립트를 03. Gameplay/Equipment 경로에 복구 및 재생성함. 데이터 중심 설계(Data-Driven Design) 원칙을 유지하며 핵심 로직을 재구축하여 참조 무결성을 확보하였으며, 이를 통해 컴파일 타임 오류를 제거하고 아키텍처 일관성을 회복함.

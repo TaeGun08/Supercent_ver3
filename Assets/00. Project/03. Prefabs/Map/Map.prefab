@@ -816,8 +816,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d32509582aebd4408420ee68040e18e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputStack: {fileID: 6548274912742727989}
-  outputStack: {fileID: 35868686243438354}
+  inputStack: {fileID: 5988852859535154939}
+  outputStack: {fileID: 3481440360498110343}
   potionPrefab: {fileID: 2077822265630860988, guid: ac482965c1918054ebe854224ecb08b0, type: 3}
   craftDuration: 0.5
 --- !u!1 &3522537207036934628
@@ -1043,7 +1043,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae79459cd4911d4cb38d575e481945a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tableStacker: {fileID: 916521433423540368}
+  tableStacker: {fileID: 5558608101701338138}
 --- !u!1 &4823371893696422423
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,8 +1054,8 @@ GameObject:
   m_Component:
   - component: {fileID: 963791581679109317}
   - component: {fileID: 987761095384305792}
-  - component: {fileID: 6548274912742727989}
-  - component: {fileID: 8496226987515391802}
+  - component: {fileID: 5988852859535154939}
+  - component: {fileID: 54470833530177618}
   m_Layer: 0
   m_Name: InputStone
   m_TagString: Untagged
@@ -1100,7 +1100,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6548274912742727989
+--- !u!114 &5988852859535154939
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1109,17 +1109,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 4823371893696422423}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bdbc3f4b5dd7b9469076b7b85446faf, type: 3}
+  m_Script: {fileID: 11500000, guid: e52f3ba56f7162b48828ac6572e016a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 0
-  maxStackCount: 10
+  maxStackCount: 20
   itemHeight: 0.5
-  gridColumns: 2
-  gridRows: 2
+  gridColumns: 1
+  gridRows: 1
   spacingX: 0.5
   spacingZ: 0.5
---- !u!114 &8496226987515391802
+--- !u!114 &54470833530177618
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1128,12 +1128,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 4823371893696422423}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: faf06ee505c0e51468c94bde557d04b5, type: 3}
+  m_Script: {fileID: 11500000, guid: d55432a2523a90e4e8c9beb26ebf9324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 0
-  targetStacker: {fileID: 6548274912742727989}
-  interval: 0.1
+  targetStacker: {fileID: 5988852859535154939}
+  interval: 0.3
 --- !u!1 &4889866762913994841
 GameObject:
   m_ObjectHideFlags: 0
@@ -1249,8 +1249,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2459790498399176571}
   - component: {fileID: 3575344867240111018}
-  - component: {fileID: 916521433423540368}
-  - component: {fileID: 291206465733343276}
+  - component: {fileID: 5558608101701338138}
+  - component: {fileID: 7604727718314063001}
   m_Layer: 0
   m_Name: InputPotion
   m_TagString: Untagged
@@ -1294,7 +1294,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 1}
   m_Center: {x: 0.31, y: 0, z: 1.3}
---- !u!114 &916521433423540368
+--- !u!114 &5558608101701338138
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1303,17 +1303,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5003880447392588325}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bdbc3f4b5dd7b9469076b7b85446faf, type: 3}
+  m_Script: {fileID: 11500000, guid: e52f3ba56f7162b48828ac6572e016a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 2
-  maxStackCount: 10
+  maxStackCount: 20
   itemHeight: 0.5
-  gridColumns: 2
-  gridRows: 2
+  gridColumns: 1
+  gridRows: 1
   spacingX: 0.5
   spacingZ: 0.5
---- !u!114 &291206465733343276
+--- !u!114 &7604727718314063001
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1322,12 +1322,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5003880447392588325}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: faf06ee505c0e51468c94bde557d04b5, type: 3}
+  m_Script: {fileID: 11500000, guid: d55432a2523a90e4e8c9beb26ebf9324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 0
-  targetStacker: {fileID: 916521433423540368}
-  interval: 0.1
+  targetStacker: {fileID: 5558608101701338138}
+  interval: 0.3
 --- !u!1 &5105436922238577410
 GameObject:
   m_ObjectHideFlags: 0
@@ -1486,8 +1486,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6204165991811670399}
   - component: {fileID: 393017824918059309}
-  - component: {fileID: 35868686243438354}
-  - component: {fileID: 8737844226088835003}
+  - component: {fileID: 3481440360498110343}
+  - component: {fileID: 8099534914644144321}
   m_Layer: 0
   m_Name: OutputPotion
   m_TagString: Untagged
@@ -1532,7 +1532,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &35868686243438354
+--- !u!114 &3481440360498110343
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1541,17 +1541,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 8802639977209125034}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2bdbc3f4b5dd7b9469076b7b85446faf, type: 3}
+  m_Script: {fileID: 11500000, guid: e52f3ba56f7162b48828ac6572e016a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 2
-  maxStackCount: 10
+  maxStackCount: 20
   itemHeight: 0.5
-  gridColumns: 2
-  gridRows: 2
+  gridColumns: 1
+  gridRows: 1
   spacingX: 0.5
   spacingZ: 0.5
---- !u!114 &8737844226088835003
+--- !u!114 &8099534914644144321
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1560,12 +1560,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8802639977209125034}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: faf06ee505c0e51468c94bde557d04b5, type: 3}
+  m_Script: {fileID: 11500000, guid: d55432a2523a90e4e8c9beb26ebf9324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 1
-  targetStacker: {fileID: 35868686243438354}
-  interval: 0.1
+  targetStacker: {fileID: 3481440360498110343}
+  interval: 0.3
 --- !u!1 &9159045973416924215
 GameObject:
   m_ObjectHideFlags: 0
