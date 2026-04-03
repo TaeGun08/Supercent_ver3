@@ -1,16 +1,14 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class MiningController : MonoBehaviour
 {
-    [Header("Equipments")] 
-    [SerializeField] private MiningEquipment[] miningEquipments;
+    [Header("Equipments")] [SerializeField]
+    private MiningEquipment[] miningEquipments;
+
     private MiningEquipment currentMiningEq;
 
-    [Header("Inventory")] 
-    [SerializeField] private Inventory inventory;
+    [Header("Inventory")] [SerializeField] private Inventory inventory;
 
     private PlayerAnimation playerAnimation;
     private float miningTimer;
@@ -18,7 +16,7 @@ public class MiningController : MonoBehaviour
     private bool isInMiningZone;
 
     private WaitForSeconds wait;
-    
+
     private void Awake()
     {
         playerAnimation = GetComponent<PlayerAnimation>();
@@ -65,11 +63,9 @@ public class MiningController : MonoBehaviour
         }
         else
         {
-            if (miningTimer >= data.MiningDelay)
-            {
-                ExecuteMiningLogic(sensor);
-                miningTimer = 0f;
-            }
+            if (miningTimer < data.MiningDelay) return;
+            ExecuteMiningLogic(sensor);
+            miningTimer = 0f;
         }
     }
 

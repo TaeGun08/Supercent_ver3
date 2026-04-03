@@ -6,10 +6,12 @@ public class UIManager : SingletonBase<UIManager>
 {
     [Header("Prisoner UI")]
     [SerializeField] private PrisonerUI prisonerUI;
+    
+    [Header("Gold UI")]
+    [SerializeField] private GoldUI goldUI;
 
     public void ShowPrisonerUI(Transform target, int current, int total)
     {
-        if (prisonerUI == null) return;
         prisonerUI.Initialize(target, total);
         prisonerUI.UpdateCount(current);
         prisonerUI.Show();
@@ -17,13 +19,16 @@ public class UIManager : SingletonBase<UIManager>
 
     public void UpdatePrisonerUI(int current)
     {
-        if (prisonerUI == null) return;
         prisonerUI.UpdateCount(current);
     }
 
     public void HidePrisonerUI()
     {
-        if (prisonerUI == null) return;
         prisonerUI.Hide();
+    }
+
+    public void UpdateGoldUI(int gold)
+    {
+        goldUI.UpdateText(gold);
     }
 }

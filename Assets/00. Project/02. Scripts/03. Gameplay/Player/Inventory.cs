@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    private UIManager uIManager;
+    
     [Header("Stackers")]
     [SerializeField] private ItemStacker stoneStacker;
     [SerializeField] private ItemStacker goldStacker;
@@ -11,7 +14,7 @@ public class Inventory : MonoBehaviour
     private readonly Dictionary<ItemType, ItemStacker> stackerMap = new();
 
     [Header("Gold Offset Settings")]
-    [SerializeField] private Vector3 goldOffsetWhenStoneExists = new Vector3(0, 0, -0.5f);
+    [SerializeField] private Vector3 goldOffsetWhenStoneExists = new(0, 0, -0.5f);
     private Vector3 goldOriginalLocalPos;
 
     private void Awake()
@@ -22,12 +25,21 @@ public class Inventory : MonoBehaviour
         stoneStacker.OnCountChanged += UpdateGoldStackerPosition;
     }
 
+    private void Start()
+    {
+        uIManager = UIManager.Instance;
+    }
+
     private void InitializeStackerMap()
     {
-        // 명시적 등록 (Fail-Fast 포함)
         RegisterStacker(stoneStacker);
         RegisterStacker(goldStacker);
         RegisterStacker(potionStacker);
+    }
+
+    private void LateUpdate()
+    {
+        uIManager.UpdateGoldUI(goldStacker.CurrentCount);
     }
 
     private void RegisterStacker(ItemStacker stacker)
@@ -35,17 +47,12 @@ public class Inventory : MonoBehaviour
         if (stacker == null) return;
         
         ItemType type = stacker.AcceptableType;
-        if (stackerMap.ContainsKey(type))
-        {
-            Debug.LogWarning($"[Inventory] 중복된 타입의 스태커가 등록되었습니다: {type}");
-            return;
-        }
-        stackerMap.Add(type, stacker);
+        stackerMap.TryAdd(type, stacker);
     }
 
     public ItemStacker GetStacker(ItemType type)
     {
-        return stackerMap.TryGetValue(type, out var stacker) ? stacker : null;
+        return stackerMap.GetValueOrDefault(type);
     }
 
     private void UpdateGoldStackerPosition(int stoneCount)

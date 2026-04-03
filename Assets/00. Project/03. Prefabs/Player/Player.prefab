@@ -171,9 +171,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 0
-  maxStackCount: 15
+  maxStackCount: 16
   itemHeight: 0.5
-  gridColumns: 1
+  gridColumns: 2
   gridRows: 1
   spacingX: 0.5
   spacingZ: 0.5
@@ -574,12 +574,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 1
-  maxStackCount: 30
+  maxStackCount: 100
   itemHeight: 0.25
   gridColumns: 1
-  gridRows: 1
+  gridRows: 2
   spacingX: 0.5
-  spacingZ: 0.5
+  spacingZ: 0.35
 --- !u!1 &2178785256853370884
 GameObject:
   m_ObjectHideFlags: 0
@@ -1851,7 +1851,7 @@ MonoBehaviour:
   stoneStacker: {fileID: 6046636287637636453}
   goldStacker: {fileID: 5206235726064096976}
   potionStacker: {fileID: 51622357830205660}
-  goldOffsetWhenStoneExists: {x: 0, y: 0, z: -0.5}
+  goldOffsetWhenStoneExists: {x: 0, y: 0, z: -0.6}
 --- !u!1 &8799593228450362439
 GameObject:
   m_ObjectHideFlags: 0
