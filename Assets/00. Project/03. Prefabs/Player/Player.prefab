@@ -574,7 +574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 1
-  maxStackCount: 100
+  maxStackCount: 50
   itemHeight: 0.25
   gridColumns: 1
   gridRows: 2

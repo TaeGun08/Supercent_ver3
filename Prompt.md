@@ -112,7 +112,7 @@
 > 너와 나의 대화를 항상 Prompt.md 추가 및 최신화 해줘.
 
 **AI**:
-- **Engineering Summary**: 세션 내 모든 주요 의사결정과 기술적 논의를 `Prompt.md`에 실시간 기록하는 **[Context Synchronization]** 프로토콜을 활성화함. 이를 통해 장기적인 프로젝트 진행 과정에서 컨텍스트 유실을 방지하고, 과거의 결정 근거(Rationale)를 명확히 추적할 수 있는 엔지니어링 로그 시스템을 구축함.
+- **Engineering Summary**: 세션 내 모든 주요 의사결정과 기술적 논의를 `Prompt.md`에 실시간 기록하는 **[Context Synchronization]** 프로토콜을 활성화함. 이를 통해 장기적인 프로젝트 진행 과정에서 컨텍스트 유실을 방지하고, 과거의 결정 근거(Rationale)를 명확히 추적할 수 있는 엔지령 로그 시스템을 구축함.
 
 **User**:
 > [CLI 로그 기록 교정용 프롬프트]
@@ -149,13 +149,7 @@
 > 내가 만들고 있는 게임의 프로젝트 스크립트 파일 내부 코드들은 전체적으로 자세히 분석해줘. 파일 이름은 "02. Scripts"이야.
 
 **AI**:
-- **Engineering Summary**: `Assets/00. Project/02. Scripts` 내 전수 조사를 통해 `SingletonBase`의 `FindObjectOfType` 오버헤드와 `PoolManager`의 `Type` 기반 관리 한계, 그리고 `.asmdef` 부재로 인한 컴파일 비효율성을 핵심 결함으로 식별함. 시스템 전반의 물리적/논리적 결합도를 낮추고 **[Fail-Fast]** 원칙을 강화하기 위한 4대 영역(구조, 안정성, 성능, 환경) 진단 브리핑을 제출함.
-
-**User**:
-> 내가 만들고 있는 게임의 프로젝트 스크립트 파일 내부 코드들은 전체적으로 자세히 분석해줘. 파일 이름은 "02. Scripts"이야.
-
-**AI**:
-- **Engineering Summary**: Assets/00. Project/02. Scripts 내 전수 조사를 통해 SingletonBase of FindObjectOfType 오버헤드와 PoolManager의 Type 기반 관리 한계, 그리고 .asmdef 부재로 인한 컴파일 비효율성을 핵심 결함으로 식별함. 시스템 전반의 물리적/논리적 결합도를 낮추고 [Fail-Fast] 원칙을 강화하기 위한 4대 영역(구조, 안정성, 성능, 환경) 진단 브리핑을 제출함.
+- **Engineering Summary**: Assets/00. Project/02. Scripts 내 전수 조사를 통해 SingletonBase of FindObjectOfType 오버헤드와 PoolManager of Type 기반 관리 한계, 그리고 .asmdef 부재로 인한 컴파일 비효율성을 핵심 결함으로 식별함. 시스템 전반의 물리적/논리적 결합도를 낮추고 [Fail-Fast] 원칙을 강화하기 위한 4대 영역(구조, 안정성, 성능, 환경) 진단 브리핑을 제출함.
 
 **User**:
 > 리팩터링을 진행해줘. 혹시 모르니 내가 전체적으로 되돌리고 싶다고 하면 현재 프로젝트의 상태로 되돌리면 돼.
@@ -444,3 +438,11 @@
 
 **AI**:
 - **Engineering Summary**: 월드 좌표 추적과 시각적 연출 간의 논리적 충돌을 방지하기 위해 **[Animation Offset Decoupling]** 기법을 적용함. `currentVisualOffset` 변수를 DOTween으로 제어하여 타겟의 스크린 좌표에 합산하는 방식으로 설계함. 이를 통해 타겟이 이동하는 중에도 상승 연출이 안정적으로 유지되도록 보장하였으며, `OutCubic` 이징을 적용하여 팝업 피드백의 품질을 고도화함.
+
+---
+
+**User**:
+> 플레이어가 해당 영역에 들어가면 보유하고 있는 골드를 사용해서 해금을 할 수 있는 해금 시스템 구현 요청. 장비 해금, NPC 추가, 감옥 확장 등 다양한 보상 포함 필수.
+
+**AI**:
+- **Engineering Summary**: 다양한 보상 유형을 유연하게 처리하기 위한 **[Strategy-Based Unlock System]** 아키텍처를 설계함. 범용 상호작용 컴포넌트인 `UnlockZone`을 구축하고, `IUnlockReward` 인터페이스를 통해 보상 로직을 캡슐화하여 결합도를 낮춤. 플레이어의 골드를 일정 간격으로 흡수하여 비용을 충당하는 연출 중심의 로직을 제안하여 방치형 게임의 성장 피드백을 강화함.

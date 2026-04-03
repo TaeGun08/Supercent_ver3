@@ -19,6 +19,13 @@ public class PrisonManager : SingletonBase<PrisonManager>
 
     public bool IsFull => activePrisoners >= maxCapacity;
     
+    public void ExpandCapacity(int additionalAmount)
+    {
+        maxCapacity += additionalAmount;
+        UpdateUI();
+        Debug.Log($"[Prison] 수용량이 확장되었습니다. 현재 최대 수용량: {maxCapacity}");
+    }
+
     public void RegisterNewPrisoner()
     {
         activePrisoners++;
@@ -45,7 +52,7 @@ public class PrisonManager : SingletonBase<PrisonManager>
     private void EnterPrisonLogic(Npc npc)
     {
         currentPrisonerCount++;
-        prisonerCountText.text = $"{currentPrisonerCount} / {maxCapacity}";
+        UpdateUI();
         waitingNPCs.Remove(npc);
 
         enteringCount++;
@@ -68,6 +75,14 @@ public class PrisonManager : SingletonBase<PrisonManager>
                     }
                 });
         });
+    }
+
+    private void UpdateUI()
+    {
+        if (prisonerCountText != null)
+        {
+            prisonerCountText.text = $"{currentPrisonerCount} / {maxCapacity}";
+        }
     }
     
     public void RefreshWaitingQueue()
