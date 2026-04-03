@@ -14,7 +14,7 @@ public class Stone : MonoBehaviour, IMiningTarget
         stoneGenerator = generator;
     }
 
-    public Cobblestone MineResource(bool isFull)
+    public IPickupAble MineResource(bool isFull)
     {
         // 리스폰 큐에 등록
         stoneGenerator?.RegisterRespawn(this);

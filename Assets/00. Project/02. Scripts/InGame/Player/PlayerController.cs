@@ -1,34 +1,31 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-[System.Serializable]
-public class PlayerData
-{
-    public float MoveSpeed;
-    public float Gravity;
-}
-
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IPlayer
 {
     private CharacterController charCtr;
+    private IInputProvider inputProvider;
 
-    [Header("Joystick")]
+    public Transform Transform => transform;
+
+    [Header("Dependencies")]
     [SerializeField] private MonoBehaviour inputSource;
-
-    public IInputProvider InputProvider { get; private set; }
-
-    [Header("PlayerData")] 
-    [SerializeField] private PlayerData playerData;
+    [SerializeField] private PlayerDataSO playerData;
 
     private float verticalVelocity;
     
     private void Awake()
     {
-        InputProvider = inputSource as IInputProvider;
+        // [Fail-Fast]: 필수 컴포넌트 및 데이터 주입 검증
         charCtr = GetComponent<CharacterController>();
+        Debug.Assert(charCtr != null, "[PlayerController] CharacterController가 누락되었습니다.");
+        
+        inputProvider = inputSource as IInputProvider;
+        Debug.Assert(inputProvider != null, "[PlayerController] IInputProvider가 inputSource에서 발견되지 않았습니다.");
+        
+        Debug.Assert(playerData != null, "[PlayerController] PlayerDataSO가 할당되지 않았습니다.");
     }
+
+    public IInputProvider InputProvider => inputProvider;
 
     private void Update()
     {
@@ -39,16 +36,17 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 velocity = Vector3.zero;
 
-        if (InputProvider.IsInputActive)
+        if (inputProvider.IsInputActive)
         {
-            Vector3 inputDir = InputProvider.MoveDirection;
+            Vector3 inputDir = inputProvider.MoveDirection;
 
             if (inputDir.sqrMagnitude > 0.01f)
             {
                 Vector3 moveDir = inputDir.normalized;
                 velocity += moveDir * playerData.MoveSpeed;
 
-                transform.forward = moveDir;
+                // 부드러운 회전 적용 (기존 직접 transform.forward 대신 Lerp 권장)
+                transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * playerData.RotationSpeed);
             }
         }
 

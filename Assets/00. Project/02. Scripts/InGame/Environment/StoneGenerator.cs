@@ -32,8 +32,8 @@ public class StoneGenerator : MonoBehaviour
 
     private void InitializePools()
     {
-        PoolManager.Instance.CreatePool(stonePrefab, rows * columns);
-        PoolManager.Instance.CreatePool(cobblePrefab, 20);
+        PoolManager.Instance.CreatePool(stonePrefab, initialCount: rows * columns);
+        PoolManager.Instance.CreatePool(cobblePrefab, initialCount: 20);
     }
 
     private void Update()

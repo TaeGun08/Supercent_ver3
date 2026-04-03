@@ -6,7 +6,7 @@ public class GameManager : SingletonBase<GameManager>
 {
     [Header("Player")]
     [SerializeField] private PlayerController player;
-    public PlayerController Player => player;
+    public IPlayer Player => player;
 
     protected override void Awake()
     {

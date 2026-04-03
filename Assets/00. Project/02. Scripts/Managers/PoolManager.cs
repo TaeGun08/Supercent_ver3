@@ -4,33 +4,39 @@ using UnityEngine;
 
 public class PoolManager : SingletonBase<PoolManager>
 {
-    private Dictionary<Type, object> poolDict = new Dictionary<Type, object>();
+    private Dictionary<string, object> poolDict = new();
     
-    public void CreatePool<T>(T prefab, int initialCount = 10) where T : MonoBehaviour
+    public void CreatePool<T>(T prefab, string key = null, int initialCount = 10) where T : MonoBehaviour
     {
-        Type type = typeof(T);
+        string poolKey = key ?? typeof(T).Name;
 
-        if (poolDict.ContainsKey(type)) return;
-        GameObject poolParent = new GameObject($"{type.Name}_Pool");
+        if (poolDict.ContainsKey(poolKey)) return;
+        
+        GameObject poolParent = new GameObject($"{poolKey}_Pool");
         poolParent.transform.SetParent(this.transform);
 
         ObjectPool<T> newPool = new ObjectPool<T>(prefab, initialCount, poolParent.transform);
-            
-        poolDict.Add(type, newPool);
+        poolDict.Add(poolKey, newPool);
     }
     
-    public T Get<T>() where T : MonoBehaviour
+    public T Get<T>(string key = null) where T : MonoBehaviour
     {
-        Type type = typeof(T);
+        string poolKey = key ?? typeof(T).Name;
         
-        return poolDict.TryGetValue(type, out object poolObj) ? ((ObjectPool<T>)poolObj).Get() : null;
+        if (poolDict.TryGetValue(poolKey, out object poolObj))
+        {
+            return ((ObjectPool<T>)poolObj).Get();
+        }
+        
+        Debug.LogError($"[PoolManager] ν  : {poolKey}");
+        return null;
     }
     
-    public void Return<T>(T obj) where T : MonoBehaviour
+    public void Return<T>(T obj, string key = null) where T : MonoBehaviour
     {
-        Type type = typeof(T);
+        string poolKey = key ?? typeof(T).Name;
         
-        if (poolDict.TryGetValue(type, out object poolObj))
+        if (poolDict.TryGetValue(poolKey, out object poolObj))
         {
             ((ObjectPool<T>)poolObj).Return(obj);
         }

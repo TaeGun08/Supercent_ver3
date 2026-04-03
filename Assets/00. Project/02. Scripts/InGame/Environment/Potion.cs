@@ -1,7 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Potion : MonoBehaviour
+public class Potion : MonoBehaviour, IPickupAble
 {
+    public Transform Transform => transform;
+
+    public void Release()
+    {
+        if (PoolManager.Instance != null)
+        {
+            PoolManager.Instance.Return(this);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 }

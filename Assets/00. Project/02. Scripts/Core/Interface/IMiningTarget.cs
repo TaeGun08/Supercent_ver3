@@ -4,5 +4,5 @@ public interface IMiningTarget
 {
     public Transform Transform { get; }
 
-    public Cobblestone MineResource(bool isFull);
+    public IPickupAble MineResource(bool isFull);
 }

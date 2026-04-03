@@ -7,7 +7,6 @@ public abstract class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
     protected static T instance;
     private static readonly object lockObj = new();
     private static bool applicationIsQuitting;
-    private static bool isInitialized;
 
     public static T Instance
     {
@@ -15,24 +14,12 @@ public abstract class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
         {
             if (applicationIsQuitting)
             {
-                Debug.LogWarning($"[Singleton] {typeof(T)} Á¢±Ù ½ÃµµµÊ: ¾ÖÇÃ¸®ÄÉÀÌ¼Ç Á¾·á Áß");
                 return null;
             }
 
             lock (lockObj)
             {
-                if (instance != null) return instance;
-                instance = FindObjectOfType<T>();
-
-                if (instance == null)
-                {
-                    var singletonObject = new GameObject(typeof(T).Name);
-                    instance = singletonObject.AddComponent<T>();
-                    DontDestroyOnLoad(singletonObject);
-                }
-
-                isInitialized = true;
-
+                Debug.Assert(instance != null, $"[Singleton] {typeof(T).Name} Î½Í½  Ê½Ï´. Ù¸ Awake  Ê¿Õ´Ï´.");
                 return instance;
             }
         }
@@ -44,12 +31,10 @@ public abstract class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
         {
             instance = this as T;
             DontDestroyOnLoad(gameObject);
-
-            isInitialized = true;
         }
         else if (instance != this)
         {
-            Debug.LogWarning($"Áßº¹µÈ ÀÎ½ºÅÍ½º°¡ Á¸ÀçÇÏ¿© ÆÄ±«ÇÏ¿´½À´Ï´Ù.");
+            Debug.LogWarning($"[Singleton] {typeof(T).Name} ßº Î½Í½ Ä±.");
             Destroy(gameObject);
         }
     }
@@ -61,9 +46,9 @@ public abstract class SingletonBase<T> : MonoBehaviour where T : MonoBehaviour
 
     protected virtual void OnDestroy()
     {
-        if (instance != this) return;
-        instance = null;
-        isInitialized = false;
-        applicationIsQuitting = true;
+        if (instance == this)
+        {
+            instance = null;
+        }
     }
 }

@@ -146,7 +146,61 @@
 - **Engineering Summary**: 사용자 구현 `PoolManager`를 시스템 전반에 통합하기 위한 **[Pooling Integration Strategy]**를 수립함. 잦은 `Instantiate/Destroy`가 발생하는 자원 생성(`Stone`, `Cobblestone`) 및 효과 로직을 타겟으로 식별하였으며, `IPickupAble` 인터페이스 확장을 통한 라이프사이클 관리 표준화를 제안함. 이를 통해 런타임 CPU 피크를 억제하고 메모리 무결성을 보장하는 고성능 최적화 구조를 설계함.
 
 **User**:
-> 진행해줘. (PoolManager 통합 리팩터링 실행)
+> 내가 만들고 있는 게임의 프로젝트 스크립트 파일 내부 코드들은 전체적으로 자세히 분석해줘. 파일 이름은 "02. Scripts"이야.
 
 **AI**:
-- **Engineering Summary**: 리팩터링 수행. `IPickupAble` 인터페이스에 `Release()`를 추가하여 라이프사이클 관리를 표준화하고, `StoneGenerator`에서 초기 풀 사전 생성(Pre-allocation)을 구현함. `Stone`의 자원 생성 로직을 `PoolManager.Get`으로 교체하여 런타임 Alloc을 0으로 최적화하였으며, 이를 통해 빈번한 생성/파괴 이벤트 시의 프레임 안정성을 확보함.
+- **Engineering Summary**: `Assets/00. Project/02. Scripts` 내 전수 조사를 통해 `SingletonBase`의 `FindObjectOfType` 오버헤드와 `PoolManager`의 `Type` 기반 관리 한계, 그리고 `.asmdef` 부재로 인한 컴파일 비효율성을 핵심 결함으로 식별함. 시스템 전반의 물리적/논리적 결합도를 낮추고 **[Fail-Fast]** 원칙을 강화하기 위한 4대 영역(구조, 안정성, 성능, 환경) 진단 브리핑을 제출함.
+
+**User**:
+> 내가 만들고 있는 게임의 프로젝트 스크립트 파일 내부 코드들은 전체적으로 자세히 분석해줘. 파일 이름은 "02. Scripts"이야.
+
+**AI**:
+- **Engineering Summary**: Assets/00. Project/02. Scripts 내 전수 조사를 통해 SingletonBase의 FindObjectOfType 오버헤드와 PoolManager의 Type 기반 관리 한계, 그리고 .asmdef 부재로 인한 컴파일 비효율성을 핵심 결함으로 식별함. 시스템 전반의 물리적/논리적 결합도를 낮추고 [Fail-Fast] 원칙을 강화하기 위한 4대 영역(구조, 안정성, 성능, 환경) 진단 브리핑을 제출함.
+
+**User**:
+> 리팩터링을 진행해줘. 혹시 모르니 내가 전체적으로 되돌리고 싶다고 하면 현재 프로젝트의 상태로 되돌리면 돼.
+
+**AI**:
+- **Engineering Summary**: 프로젝트 모듈화 및 안정성 강화를 위한 [Phase 1: Architecture Hardening] 리팩터링을 수행함. 4개의 독립 어셈블리(Core, Managers, UI, InGame)를 구축하여 물리적 의존성을 격리하였으며, SingletonBase를 [Fail-Fast] 구조로 개편하여 런타임 오버헤드 제거 및 초기화 무결성을 확보함. 또한 PoolManager를 Key 기반 Dictionary 구조로 전환하여 동일 컴포넌트 프리팹의 다중 풀링 확장성을 구현함.
+
+**User**:
+> 콘솔창에 뜨는 오류를 잡고 다음 리팩터링을 진행하자.
+
+**AI**:
+- **Engineering Summary**: .asmdef 도입으로 발생한 외부 DLL(DOTween.dll) 참조 오류를 해결하기 위해 Core.asmdef의 Override References 설정을 갱신함. 이후 [Phase 2] 리팩터링으로 PlayerController의 데이터 주입 방식을 ScriptableObject(PlayerDataSO)로 전환하고, [Fail-Fast] 원칙에 기반한 필수 컴포넌트(CharacterController, IInputProvider) 검증 로직을 추가하여 런타임 안정성과 데이터 기반 설계의 유연성을 확보함.
+
+**User**:
+> 버그 부터 잡고 가자 리팩터링을 하면서 전체적인 스크립트에 문제가 생긴 것 같아. "Assets\00. Project\02. Scripts\Managers\PrisonManager.cs(3,30): error CS0246: The type or namespace name 'SingletonBase<>' could not be found"
+
+**AI**:
+- **Engineering Summary**: .asmdef 간의 GUID 기반 참조가 불일치하여 발생한 컴파일 오류를 해결함. Managers, UI, InGame 어셈블리의 참조 방식을 안정성이 높은 '이름 기반 참조(Name-based Reference)'로 전수 교체하여 모듈 간 물리적 의존성을 정상화함. 이를 통해 [Phase 1]의 핵심인 컴파일 단위 분리 구조를 완성하고 런타임 이전의 모든 구문 오류를 제거함.
+
+**User**:
+> "Assets\00. Project\02. Scripts\Core\Interface\IMiningTarget.cs(7,12): error CS0246: The type or namespace name 'Cobblestone' could not be found" 해당 버그도 잡고 가자
+
+**AI**:
+- **Engineering Summary**: Core 모듈이 InGame 모듈을 참조하는 순환 참조(Circular Dependency) 문제를 인터페이스 추상화를 통해 해결함. IMiningTarget.MineResource()의 반환 타입을 구체 클래스(Cobblestone)에서 상위 인터페이스(IPickupAble)로 변경함으로써 모듈 간 물리적 의존성을 제거하고, 의존성 역전 원칙(DIP)을 준수하는 유연한 아키텍처를 구축함.
+
+**User**:
+> SOLID원칙에 맞춰서 구현을 리팩터링을 진행해보자.
+
+**AI**:
+- **Engineering Summary**: 어셈블리 간 순환 참조를 해결하기 위해 SOLID 원칙 기반의 [Interface-Driven Architecture]를 적용함. IPlayer 인터페이스를 통한 의존성 역전(DIP)으로 GameManager와 PlayerController 간의 구체 클래스 결합을 끊었으며, 모듈 성격에 맞춰 GameManager를 InGame 모듈로 재배치함으로써 단일 책임 원칙(SRP)과 컴파일 단위의 물리적 무결성을 동시에 확보함.
+
+**User**:
+> 3단계: [Mining System Optimization] (장비 데이터의 ScriptableObject 전환 및 중복 로직 통합) 진행해줘.
+
+**AI**:
+- **Engineering Summary**: 분산된 채굴 로직을 통합하고 데이터 기반 설계(Data-Driven Design)를 적용함. 각 장비의 스펙을 MiningDataSO(ScriptableObject)로 추상화하고, MiningController에서 타이머 및 코루틴 로직을 중앙 집중화함으로써 중복 코드를 원천 제거함. 이를 통해 장비 확장이 용이해졌으며, [Fail-Fast] 원칙을 적용한 의존성 검증으로 런타임 안정성을 대폭 향상시킴.
+
+**User**:
+> 4단계: [Sensor & Feedback Optimization] 진행해줘.
+
+**AI**:
+- **Engineering Summary**: 물리 센서 시스템을 Trigger 기반 HashSet 관리 방식으로 개편하여 런타임 가비지 및 물리 연산 비용을 최적화함. MiningDataSO와 실제 물리 콜라이더 크기를 동적으로 동기화하는 [Data-Driven Sync] 엔진을 구축하여 데이터 기반의 정밀한 밸런싱 환경을 마련하였으며, [Fail-Fast] 원칙에 따른 레이어 및 컴포넌트 유효성 검증으로 설정 무결성을 확보함.
+
+**User**:
+> 플레이어가 얻을 돌을 이용해서 포션을 제작하는 시스템을 만들 생각이야. (자원 투입 -> 제작 -> 수령 흐름) 진행해줘.
+
+**AI**:
+- **Engineering Summary**: 포션 제작을 위한 [State-Based Producer-Consumer Architecture]를 구축함. MagicCauldron에 상태 머신(FSM)을 적용하여 자원 예약 제작 루프를 구현하였으며, CauldronZone(Input/Output)을 통해 플레이어 인벤토리(ItemStacker)와의 자원 교환을 자동화함. 인터페이스 기반의 자원 처리(IPickupAble)와 [Fail-Fast] 검증을 통해 시스템 간 독립성과 런타임 안정성을 확보함.

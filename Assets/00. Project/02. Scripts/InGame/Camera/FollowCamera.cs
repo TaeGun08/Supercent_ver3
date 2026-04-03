@@ -11,8 +11,7 @@ public class FollowCamera : MonoBehaviour
     private void Start()
     {
         gameManager = GameManager.Instance;
-
-        targetTrs = gameManager.Player.transform;
+        
         offsetPos = transform.position;
     }
 
