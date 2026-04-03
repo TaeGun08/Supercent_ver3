@@ -1,26 +1,36 @@
 using UnityEngine;
 using Project.Core.Interfaces;
+using System.Collections.Generic;
 
 public class NpcWorkerUnlockReward : MonoBehaviour, IUnlockReward
 {
     [Header("Reward Settings")]
-    [SerializeField] private GameObject workerSpawner;
+    [SerializeField] private List<GameObject> workersToActivate;
 
     private void Awake()
     {
-        // 시작 시 스포너를 비활성화 상태로 둡니다 (해금 전까지)
-        if (workerSpawner != null)
+        // 시작 시 모든 대상 워커를 비활성화 상태로 둡니다.
+        if (workersToActivate != null)
         {
-            workerSpawner.SetActive(false);
+            foreach (var worker in workersToActivate)
+            {
+                if (worker != null) worker.SetActive(false);
+            }
         }
     }
 
     public void Execute()
     {
-        if (workerSpawner != null)
+        if (workersToActivate != null)
         {
-            workerSpawner.SetActive(true);
-            Debug.Log($"[Unlock] 새로운 인부 스포너가 활성화되었습니다: {workerSpawner.name}");
+            foreach (var worker in workersToActivate)
+            {
+                if (worker != null)
+                {
+                    worker.SetActive(true);
+                    Debug.Log($"[Unlock] 인부 활성화 완료: {worker.name}");
+                }
+            }
         }
     }
 }

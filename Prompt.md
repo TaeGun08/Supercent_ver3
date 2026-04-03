@@ -470,3 +470,19 @@
 
 **AI**:
 - **Engineering Summary**: 단일 UI 인스턴스의 연출 안정성을 확보하기 위해 **[Animation State Guarding]** 로직을 도입함. `MaxUI` 내부에 `isShowing` 플래그를 추가하여 재생 중 새로운 호출을 차단하고, `DOTween`의 `OnComplete` 콜백을 통해 애니메이션이 완전히 종료된 시점에만 다음 호출을 허용하도록 설계함. 이를 통해 드릴 등 고주파 동작 시 발생하는 불필요한 연출 중복과 CPU 오버헤드를 최적화함.
+
+---
+
+**User**:
+> 직선 방향으로 전진하며 전방의 돌을 채굴하고, 끝에 도달하면 처음 위치로 복귀하는 채굴 인부(Mining Worker) NPC 구현 요청. 채굴된 자원은 보관소로 즉시 전송 필수.
+
+**AI**:
+- **Engineering Summary**: 자동화된 자원 수확을 위해 **[Scan-and-Transport FSM]** 기반의 `MiningWorker` 시스템을 구축함. 레이캐스트로 전방 돌을 감지하고, 채굴 성공 시 생성된 리소스를 `targetStorage`의 다음 적재 위치로 `DOParabolicMove`를 이용해 즉시 날려 보내는 로직을 구현함. 경로 끝 도달 시 시작 지점으로 복귀하는 루프 구조를 통해 채굴 및 운송 프로세스를 자동화함.
+
+---
+
+**User**:
+> 해금을 통해 인부 NPC들이 생성되도록 구현 요청. 채굴 인부 3명과 운반/배급 인부 1명을 각각 별도로 해금할 수 있도록 설계 필수.
+
+**AI**:
+- **Engineering Summary**: 자동화된 물류 및 서비스를 위해 **[Multi-Role Worker & Batch Unlocking]** 시스템을 설계함. 가마솥에서 포션을 수거해 테이블로 옮기고 배급 대행까지 수행하는 `TransportWorker` 클래스를 구현함. 기존 `NpcWorkerUnlockReward`를 확장하여 복수의 워커를 리스트 기반으로 일괄 활성화하는 구조를 수립하고, `PotionTable`의 배급 권한 로직을 수정하여 워커의 상주 여부를 감지하도록 연동함으로써 생산-물류-배급의 완전 자동화 라인을 완성함.

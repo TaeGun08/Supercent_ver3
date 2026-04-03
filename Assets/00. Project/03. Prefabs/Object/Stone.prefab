@@ -129,7 +129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf5dfa1409e9bf94b813dbfffabb1082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cobblestone: {fileID: 4482288098283253247, guid: 2898473c827b69b4793ca1eda3f7bd62, type: 3}
 --- !u!65 &1373061233023359805
 BoxCollider:
   m_ObjectHideFlags: 0
