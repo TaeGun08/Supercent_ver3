@@ -33,6 +33,7 @@ public class UIManager : SingletonBase<UIManager>
 
     public void HidePrisonerUI()
     {
+        Debug.Log("Hide");
         prisonerUI.Hide();
     }
 
