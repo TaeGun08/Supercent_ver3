@@ -408,3 +408,9 @@
 
 **AI**:
 - **Engineering Summary**: NPC 이동 시스템을 [Kinematic-Tween Hybrid] 구조로 업그레이드함. 이동 중 Rigidbody 물리 연산을 일시 차단(isKinematic)하여 관성으로 인한 위치 이탈을 원천 제거하였으며, 도착 완료 시점에 물리 복구 및 좌표 스냅을 병행하여 100%의 도착 정밀도를 확보함. PrisonManager의 대기 지점 랜덤성을 제거하고 대기 지점 도착 후 명시적 정지 시퀀스(0.3s)를 추가하여 시각적 개연성을 완성함.
+
+**User**:
+> 감옥 인원수가 꽉 차면 Prisoner를 더 이상 생성하지 않도록 로직 추가 요청. (과잉 스폰 방지)
+
+**AI**:
+- **Engineering Summary**: 감옥 수용량 관리 로직을 [Potential Occupancy Registry] 구조로 개편함. PrisonerSpawner와 PrisonManager 간의 스폰 즉시 등록 메커니즘을 구축하여, 월드 내 이동 중인 NPC를 포함한 전체 수용량 합계가 Max Capacity를 초과하지 않도록 보장함. 이를 통해 포션 테이블 대기열의 정체와 상관없이 최종 수감 가능 인원만을 정밀하게 통제하는 스폰 밸런싱 시스템을 완성함.

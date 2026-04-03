@@ -11,23 +11,33 @@ public class PrisonManager : SingletonBase<PrisonManager>
     [SerializeField] private GameObject prisonDoor; // 감옥 문 오브젝트
 
     private int currentPrisonerCount;
-    private int enteringCount = 0; // 현재 입구로 이동 중인 인원 수
+    private int activePrisoners = 0; // 현재 월드에 존재하는 전체 죄수 수 (스폰된 인원 포함)
+    private int enteringCount = 0; 
     private readonly HashSet<Npc> waitingNPCs = new();
 
-    public bool IsFull => currentPrisonerCount >= maxCapacity;
-    
+    public bool IsFull => activePrisoners >= maxCapacity;
+
+    /// <summary>
+    /// 새로운 죄수가 스폰되었을 때 호출 (수용량 예약)
+    /// </summary>
+    public void RegisterNewPrisoner()
+    {
+        activePrisoners++;
+    }
+
     public Vector3 GetWaitingPoint()
     {
         Debug.Assert(waitingAreaPoint != null, "[PrisonManager] waitingAreaPoint가 설정되지 않았습니다.");
-        // [Correction]: 랜덤 오프셋을 제거하여 정확한 지점으로 유도
         return waitingAreaPoint.position;
     }
-    
+
     public void TryEnterPrison(Npc npc)
     {
         if (npc == null) return;
 
-        if (IsFull)
+        // 실제 수감 로직은 이미 등록된 인원을 처리하는 것이므로 IsFull 체크가 아닌 
+        // 물리적 공간(enteringCount) 등을 관리합니다.
+        if (currentPrisonerCount >= maxCapacity)
         {
             waitingNPCs.Add(npc);
             return;
@@ -38,10 +48,10 @@ public class PrisonManager : SingletonBase<PrisonManager>
 
     private void EnterPrisonLogic(Npc npc)
     {
+        // 이미 activePrisoners에 포함되어 있으므로 카운트만 수감 완료로 전이
         currentPrisonerCount++;
         waitingNPCs.Remove(npc);
-        
-        // [Door Control]: 입소 시작 시 문 열기 (비활성화)
+
         enteringCount++;
         if (prisonDoor != null) prisonDoor.SetActive(false);
 
@@ -50,7 +60,6 @@ public class PrisonManager : SingletonBase<PrisonManager>
                 .OnComplete(() => {
                     if (npc.Rb != null) npc.Rb.freezeRotation = true;
 
-                    // [Door Control]: 정렬 완료 후 문 닫기 체크
                     enteringCount--;
                     if (enteringCount <= 0 && prisonDoor != null)
                     {
