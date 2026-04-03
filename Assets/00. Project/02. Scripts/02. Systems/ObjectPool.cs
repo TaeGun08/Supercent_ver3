@@ -51,6 +51,10 @@ public class ObjectPool<T> where T : MonoBehaviour
     public void Return(T obj)
     {
         obj.gameObject.SetActive(false);
+        if (parent != null)
+        {
+            obj.transform.SetParent(parent);
+        }
         pool.Enqueue(obj);
     }
 }

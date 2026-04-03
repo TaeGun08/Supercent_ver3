@@ -81,28 +81,30 @@ public class MiningController : MonoBehaviour
 
         isMiningInProgress = false;
     }
+private void ExecuteMiningLogic(MiningSensor sensor)
+{
+    IMiningTarget target = sensor.GetClosestTarget(sensor.transform.position);
+    if (target == null) return;
 
-    private void ExecuteMiningLogic(MiningSensor sensor)
+    ItemStacker stoneStacker = inventory.StoneStacker;
+    bool isFull = stoneStacker.IsFull;
+
+    // [MaxUI Trigger]: 가득 찼을 때 알림은 주되, 채굴을 중단하지는 않음
+    if (isFull)
     {
-        IMiningTarget target = sensor.GetClosestTarget(sensor.transform.position);
-        if (target == null) return;
-
-        ItemStacker stoneStacker = inventory.StoneStacker;
-        
-        if (stoneStacker.IsFull)
-        {
-            UIManager.Instance.ShowMaxUI(transform);
-            return;
-        }
-
-        IPickupAble resource = target.MineResource(false);
-        sensor.MiningTargets?.Remove(target);
-
-        if (resource != null)
-        {
-            PlayMiningVisualEffect(resource, stoneStacker);
-        }
+        UIManager.Instance.ShowMaxUI(transform);
     }
+
+    // [Destruction]: 인벤토리 상태를 전달하여 파괴 진행 (가득 찼으면 resource는 null 반환됨)
+    IPickupAble resource = target.MineResource(isFull);
+    sensor.MiningTargets?.Remove(target);
+
+    // [Collection]: 리소스가 생성된 경우에만 수집 연출 및 적재 실행
+    if (resource != null)
+    {
+        PlayMiningVisualEffect(resource, stoneStacker);
+    }
+}
 
     private void PlayMiningVisualEffect(IPickupAble resource, ItemStacker targetStacker)
     {
