@@ -1133,7 +1133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mode: 0
   targetStacker: {fileID: 5988852859535154939}
-  interval: 0.3
+  interval: 0.1
 --- !u!1 &4889866762913994841
 GameObject:
   m_ObjectHideFlags: 0
@@ -1327,7 +1327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mode: 0
   targetStacker: {fileID: 5558608101701338138}
-  interval: 0.3
+  interval: 0.1
 --- !u!1 &5105436922238577410
 GameObject:
   m_ObjectHideFlags: 0
@@ -1565,7 +1565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mode: 1
   targetStacker: {fileID: 3481440360498110343}
-  interval: 0.3
+  interval: 0.1
 --- !u!1 &9159045973416924215
 GameObject:
   m_ObjectHideFlags: 0
