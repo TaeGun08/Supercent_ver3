@@ -132,6 +132,12 @@ public class TransportWorker : Npc
 
     public bool IsAtDistributionPoint() 
     {
-        return currentState == TransportState.Distributing && !IsMoving;
+        // 1. 현재 상태가 Distributing이어야 함
+        // 2. 물리적으로 정지 상태여야 함
+        // 3. 배급 지점과의 거리가 매우 가까워야 함 (안전장치)
+        if (currentState != TransportState.Distributing || IsMoving) return false;
+        
+        float dist = Vector3.Distance(transform.position, distributionStandPoint.position);
+        return dist < 0.5f;
     }
 }

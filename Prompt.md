@@ -209,7 +209,7 @@
 > InQuarry영역에 들어가야지만 내가 장비들이 활성화 되게 만들었는데 전체적인 리팩터링 이후 그 기능이 사라진 것 같아. 보완해줘.
 
 **AI**:
-- **Engineering Summary**: 리팩터링 과정에서 누락된 채굴 구역 활성화 로직을 [Centralized Control] 구조로 복구함. MiningController에 isInMiningZone 플래그와 SetMiningZoneActive 인터페이스를 추가하여 구역 외 채굴 타이머를 차단하였으며, InQuarry 트리거와 연동하여 장비 외형의 동적 활성화를 보장함. [Fail-Fast] 원칙에 따른 컴포넌트 검증을 추가하여 런타임 안정성을 확보함.
+- **Engineering Summary**: 리팩터링 과정에서 누락된 채굴 구역 활성화 로직을 [Centralized Control] 구조로 복구함. MiningController에 isInMiningZone 플래그와 SetMiningZoneActive 인터페이스를 추가하여구역 외 채굴 타이머를 차단하였으며, InQuarry 트리거와 연동하여 장비 외형의 동적 활성화를 보장함. [Fail-Fast] 원칙에 따른 컴포넌트 검증을 추가하여 런타임 안정성을 확보함.
 
 **User**:
 > 이동 연출 로직을 어디에서 사용할 건지 정해야할 것 같아. (Stacker vs Sender) 보완해줘.
@@ -494,3 +494,11 @@
 
 **AI**:
 - **Engineering Summary**: 작업 상황에 따른 NPC의 방향 정렬을 위해 **[Fixed Directional Alignment]** 기능을 구현함. `TransportWorker`가 테이블 및 배급 지점 도착 직후 `DORotate`를 사용하여 즉시 `Vector3.back`(180도) 방향을 바라보게 함으로써, 플레이어의 시선과 일치하는 작업 방향성을 확보하고 게임 내 시각적 개연성을 강화함.
+
+---
+
+**User**:
+> 운반 인부가 배급 지점에 상주함에도 배급이 이루어지지 않는 버그 수정 요청.
+
+**AI**:
+- **Engineering Summary**: 시스템 간 참조 무결성 확보를 위해 **[Dynamic Worker Discovery]** 메커니즘을 `PotionTable`에 적용함. 인부가 해금 전 비활성화 상태였다가 런타임에 활성화되는 시나리오를 대응하기 위해, 배급 권한 체크 시점에 인부 인스턴스를 동적으로 재탐색하는 로직을 추가함. 또한 `IsAtDistributionPoint()`에 정밀한 **거리 검사(Distance Check)**를 보완하여, 인부가 물리적으로 정확한 위치에 정지했을 때만 배급 권한을 승인하도록 로직 안정성을 강화함.

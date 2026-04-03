@@ -9,13 +9,11 @@ public class PotionTable : MonoBehaviour
     [SerializeField] private PlayerDetectionZone playerDetectionZone;
     
     private bool isPlayerAtTable;
-    private TransportWorker transportWorker;
+    private TransportWorker cachedWorker; // 캐싱용
 
     private void Awake()
     {
         playerDetectionZone.OnPlayerDetected += SetPlayerPresence;
-        transportWorker = FindObjectOfType<TransportWorker>();
-
         PoolManager.Instance.CreatePool(goldPrefab, initialCount: 10);
     }
 
@@ -50,8 +48,13 @@ public class PotionTable : MonoBehaviour
     {
         get
         {
-            // 플레이어가 테이블에 있거나, 운반 인부가 배급 위치에서 대기 중일 때 true
-            bool isWorkerAtPoint = transportWorker != null && transportWorker.gameObject.activeInHierarchy && transportWorker.IsAtDistributionPoint();
+            // 인부가 해금되어 활성화된 시점에 다시 찾을 수 있도록 동적 검색 포함
+            if (cachedWorker == null || !cachedWorker.gameObject.activeInHierarchy)
+            {
+                cachedWorker = FindObjectOfType<TransportWorker>();
+            }
+
+            bool isWorkerAtPoint = cachedWorker != null && cachedWorker.IsAtDistributionPoint();
             return (isPlayerAtTable || isWorkerAtPoint) && tableStacker.HasItem;
         }
     }

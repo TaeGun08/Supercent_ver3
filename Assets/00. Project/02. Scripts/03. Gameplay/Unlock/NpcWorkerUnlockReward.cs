@@ -9,7 +9,6 @@ public class NpcWorkerUnlockReward : MonoBehaviour, IUnlockReward
 
     private void Awake()
     {
-        // 시작 시 모든 대상 워커를 비활성화 상태로 둡니다.
         if (workersToActivate != null)
         {
             foreach (var worker in workersToActivate)
@@ -21,15 +20,12 @@ public class NpcWorkerUnlockReward : MonoBehaviour, IUnlockReward
 
     public void Execute()
     {
-        if (workersToActivate != null)
+        if (workersToActivate == null) return;
+        foreach (var worker in workersToActivate)
         {
-            foreach (var worker in workersToActivate)
+            if (worker != null)
             {
-                if (worker != null)
-                {
-                    worker.SetActive(true);
-                    Debug.Log($"[Unlock] 인부 활성화 완료: {worker.name}");
-                }
+                worker.SetActive(true);
             }
         }
     }
