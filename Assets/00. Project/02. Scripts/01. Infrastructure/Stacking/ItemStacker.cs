@@ -2,7 +2,17 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemStacker : MonoBehaviour
+public interface IStackHolder
+{
+    bool IsFull { get; }
+    bool HasItem { get; }
+    int CurrentCount { get; }
+    Vector3 GetNextLocalPosition();
+    IPickupAble PopStack();
+    void PushStack(IPickupAble item);
+}
+
+public class ItemStacker : MonoBehaviour, IStackHolder
 {
     [Header("Stacker Settings")]
     [SerializeField] private ItemType acceptableType;
@@ -23,44 +33,34 @@ public class ItemStacker : MonoBehaviour
     public int CurrentCount => stackedItems.Count;
     public ItemType AcceptableType => acceptableType;
     
-    public Action<int> OnCountChanged;
-    
-    public Vector3 GetNextLocalPosition()
-    {
-        return GetPositionAtIndex(stackedItems.Count);
-    }
+    public event Action OnStackChanged; // 범용 이벤트로 통합
+
+    public Vector3 GetNextLocalPosition() => GetPositionAtIndex(stackedItems.Count);
 
     public Vector3 GetPositionAtIndex(int index)
     {
         int layerSize = gridColumns * gridRows;
-        
         if (layerSize <= 1) return new Vector3(0, index * itemHeight, 0);
 
         int layer = index / layerSize;
         int indexInLayer = index % layerSize;
-        
         int row = indexInLayer / gridColumns;
         int col = indexInLayer % gridColumns;
 
         float xPos = (col - (gridColumns - 1) * 0.5f) * spacingX;
         float zPos = (row - (gridRows - 1) * 0.5f) * spacingZ;
-        float yPos = layer * itemHeight;
-
-        return new Vector3(xPos, yPos, zPos);
+        return new Vector3(xPos, layer * itemHeight, zPos);
     }
     
     public void PushStack(IPickupAble pickupAble)
     {
-        if (pickupAble == null) return;
-        if (pickupAble.Type != acceptableType) return;
-        if (IsFull) return;
+        if (pickupAble == null || pickupAble.Type != acceptableType || IsFull) return;
 
-        int targetIndex = stackedItems.Count;
         stackedItems.Push(pickupAble);
-        OnCountChanged?.Invoke(stackedItems.Count);
-        
         pickupAble.Transform.SetParent(transform);
-        pickupAble.Transform.SetLocalPositionAndRotation(GetPositionAtIndex(targetIndex), Quaternion.identity);
+        pickupAble.Transform.SetLocalPositionAndRotation(GetPositionAtIndex(stackedItems.Count - 1), Quaternion.identity);
+        
+        OnStackChanged?.Invoke();
     }
     
     public IPickupAble PopStack()
@@ -68,15 +68,11 @@ public class ItemStacker : MonoBehaviour
         if (!HasItem) return null;
         
         IPickupAble pickupAble = stackedItems.Pop();
-        OnCountChanged?.Invoke(stackedItems.Count);
-        
         pickupAble.Transform.SetParent(null);
         
+        OnStackChanged?.Invoke();
         return pickupAble;
     }
 
-    public void LimitMaxStackCount(int add)
-    {
-        maxStackCount += add;
-    }
+    public void LimitMaxStackCount(int add) => maxStackCount += add;
 }

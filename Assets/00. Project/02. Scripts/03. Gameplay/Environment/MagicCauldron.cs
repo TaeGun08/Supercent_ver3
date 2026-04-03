@@ -7,8 +7,6 @@ public class MagicCauldron : MonoBehaviour
 {
     private static readonly int CRAFT = Animator.StringToHash("Craft");
     
-    private Animator animator;
-    
     [Header("Dependencies")] 
     [SerializeField] private ItemStacker inputStack;
     [SerializeField] private ItemStacker outputStack;
@@ -18,36 +16,47 @@ public class MagicCauldron : MonoBehaviour
     [SerializeField] private float craftDuration = 3f;
     private float moveDuration = 0.3f;
 
-    [Header("Current Status")] 
     private CauldronState state = CauldronState.Idle;
-
+    private Animator animator;
     private WaitForSeconds craftWait;
     private WaitForSeconds moveWait;
-
-    public bool CanAcceptMoreStones => inputStack != null && inputStack.IsFull == false;
-    public bool HasFinishedPotions => outputStack != null && outputStack.HasItem;
 
     private void Awake()
     {
         animator = GetComponentInChildren<Animator>();
-        
         PoolManager.Instance.CreatePool(potionPrefab, initialCount: 5);
 
         craftWait = new WaitForSeconds(craftDuration);
         moveWait = new WaitForSeconds(moveDuration);
     }
 
-    private void Update()
+    private void OnEnable()
     {
-        if (state != CauldronState.Idle || inputStack.HasItem == false || outputStack.IsFull) return;
-        StartCoroutine(CraftingRoutine());
+        // [Event-Driven]: 스택 변화를 감시하여 능동적으로 제작 시작
+        if (inputStack != null) inputStack.OnStackChanged += CheckAndStartCrafting;
+        if (outputStack != null) outputStack.OnStackChanged += CheckAndStartCrafting;
+    }
+
+    private void OnDisable()
+    {
+        if (inputStack != null) inputStack.OnStackChanged -= CheckAndStartCrafting;
+        if (outputStack != null) outputStack.OnStackChanged -= CheckAndStartCrafting;
+    }
+
+    private void CheckAndStartCrafting()
+    {
+        // 제작 조건: Idle 상태이고, 재료가 있으며, 결과물 보관소에 자리가 있을 때
+        if (state == CauldronState.Idle && inputStack.HasItem && !outputStack.IsFull)
+        {
+            StartCoroutine(CraftingRoutine());
+        }
     }
 
     private IEnumerator CraftingRoutine()
     {
         state = CauldronState.Crafting;
 
-        while (inputStack.HasItem && outputStack.IsFull == false)
+        while (inputStack.HasItem && !outputStack.IsFull)
         {
             IPickupAble stone = inputStack.PopStack();
             if (stone != null)
@@ -57,9 +66,8 @@ public class MagicCauldron : MonoBehaviour
                     transform.position,
                     height: 3f,
                     duration: moveDuration,
-                    onComplete: () => { stone.Release(); }
+                    onComplete: () => stone.Release()
                 );
-                
                 yield return moveWait; 
             }
 
@@ -67,23 +75,25 @@ public class MagicCauldron : MonoBehaviour
             yield return craftWait;
 
             Potion potion = PoolManager.Instance.Get<Potion>();
-            if (potion == null) break;
+            if (potion != null)
+            {
+                potion.Transform.position = transform.position;
+                Vector3 targetWorldPos = outputStack.transform.position + outputStack.GetNextLocalPosition();
 
-            potion.Transform.position = transform.position;
-            Vector3 targetWorldPos = outputStack.transform.position + outputStack.GetNextLocalPosition();
-
-            DOParabolicMove.MoveToStaticPosition(
-                potion.Transform,
-                targetWorldPos,
-                height: 2f,
-                duration: moveDuration,
-                onComplete: () => { outputStack.PushStack(potion); }
-            );
-
-            yield return moveWait; 
+                DOParabolicMove.MoveToStaticPosition(
+                    potion.Transform,
+                    targetWorldPos,
+                    height: 2f,
+                    duration: moveDuration,
+                    onComplete: () => outputStack.PushStack(potion)
+                );
+                yield return moveWait; 
+            }
         }
 
         state = CauldronState.Idle;
+        // 루프 종료 후 남은 재료가 있는지 마지막으로 한 번 더 확인 (상태 불일치 방지)
+        CheckAndStartCrafting();
     }
 
     public ItemStacker GetInputStacker() => inputStack;

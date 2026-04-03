@@ -485,7 +485,7 @@
 > 해금을 통해 인부 NPC들이 생성되도록 구현 요청. 채굴 인부 3명과 운반/배급 인부 1명을 각각 별도로 해금할 수 있도록 설계 필수. 운반 인부는 완충 대기 및 하적 우선 사이클을 준수해야 함.
 
 **AI**:
-- **Engineering Summary**: 고효율 물류 자동화를 위해 **[Strict Buffer-and-Distribute FSM]**을 탑재한 `TransportWorker` 시스템을 구축함. 인벤토리가 가득 찰 때까지 가마솥에서 대기하고, 테이블에서는 인벤토리가 완전히 비워질 때까지 하적하며, 이후 테이블에 물량이 있는 동안만 상주하여 배급 권한을 승인하는 엄격한 상태 전이 로직을 구현함. `NpcWorkerUnlockReward`를 확장하여 복수 인부의 배기 활성화를 지원함으로써 생산-물류-배급 라인의 자동화 완성도를 높임.
+- **Engineering Summary**: 고효율 물류 자동화를 위해 **[Strict Buffer-and-Combine FSM]**을 탑재한 `TransportWorker` 시스템을 구축함. 인벤토리가 가득 찰 때까지 가마솥에서 대기하고, 테이블에서는 인벤토리가 완전히 비워질 때까지 하적하며, 이후 테이블에 물량이 있는 동안만 상주하여 배급 권한을 승인하는 엄격한 상태 전이 로직을 구현함. `NpcWorkerUnlockReward`를 확장하여 복수 인부의 배기 활성화를 지원함으로써 생산-물류-배급 라인의 자동화 완성도를 높임.
 
 ---
 
@@ -542,3 +542,27 @@
 
 **AI**:
 - **Engineering Summary**: 물리적 연출의 안정성과 정밀도 확보를 위해 **[Quadratic Bezier Trajectory]** 시스템으로 전격 개편함. 기존의 고정 높이 가산 방식 대신, 시작점과 끝점의 중간 정점(Control Point)을 기준으로 궤적을 산출하는 2차 베지어 공식을 적용하여 스택 고도 차이에 관계없는 자연스러운 아치를 구현함. 또한 타겟 추격 로직을 정교화하고 `OnComplete` 시점에 최종 좌표를 강제 동기화하는 **[Final Position Snap]** 로직을 추가하여 안착 오차를 원천 제거함.
+
+---
+
+**User**:
+> 가마솥 생산 로직 및 NPC 운송 루틴의 비효율적 폴링 제거 및 의존성 주입 구조 리팩터링 요청.
+
+**AI**:
+- **Engineering Summary**: 시스템 성능 최적화와 확장성 확보를 위해 **[Event-Driven Architecture & DI]** 리팩터링을 수행함. `ItemStacker`에 범용 `OnStackChanged` 이벤트를 도입하고 `MagicCauldron`이 이를 구독하게 함으로써 `Update` 기반 폴링을 0%로 제거함. `TransportWorker`에 명시적 `Initialize`를 통한 의존성 주입(DI) 구조를 적용하여 구체 클래스 간의 강한 결합을 해소하고, `IStackHolder` 인터페이스 추상화를 통해 다중 시설 대응이 가능한 유연한 물류 아키텍처를 구축함.
+
+---
+
+**User**:
+> NPC 행동 로직의 코루틴 의존성 제거 및 State Pattern 기반 아키텍처 개편 요청.
+
+**AI**:
+- **Engineering Summary**: 런타임 가비지(GC) 최소화와 복잡한 AI 로직의 가독성 확보를 위해 **[State Pattern NPC Framework]** 리팩터링을 수행함. `INpcState` 인터페이스를 정의하고 `Npc` 베이스 클래스에 경량 상태 머신 엔진을 통합함. `TransportWorker`의 복잡한 코루틴을 클래스 단위로 캡슐화된 상태 객체들(`ToCauldron`, `Loading`, `ToTable` 등)로 분리하고 `Flyweight Pattern`을 적용해 상태 객체를 재사용함으로써, 매 프레임 발생하는 오버헤드와 메모리 할당을 획기적으로 낮춘 고성능 AI 기반을 마련함.
+
+---
+
+**User**:
+> 리팩터링 과정에서 발생한 MagicCauldron 오타 및 Inventory 이벤트 참조 오류 수정 요청.
+
+**AI**:
+- **Engineering Summary**: 시스템 무결성 복구를 위해 **[Event Signature & Naming Alignment]** 수정을 수행함. `ItemStacker`의 이벤트를 인자 없는 `OnStackChanged`로 단일화하고, 이를 사용하는 `Inventory`의 핸들러(`UpdateGoldStackerPosition`)를 최신 규격에 맞춰 갱신함. `MagicCauldron` 내의 오타를 제거하고 `uIManager` 널 체크 등 방어적 로직을 추가하여 리팩터링 이후의 컴파일 무결성과 런타임 안정성을 확보함.

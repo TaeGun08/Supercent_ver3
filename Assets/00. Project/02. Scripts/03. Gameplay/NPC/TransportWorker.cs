@@ -1,8 +1,7 @@
 using System.Collections;
 using DG.Tweening;
 using UnityEngine;
-
-public enum TransportState { ToCauldron, WaitingAtCauldron, ToTable, UnloadingAtTable, Distributing }
+using Project.Core.Interfaces;
 
 public class TransportWorker : Npc
 {
@@ -16,129 +15,153 @@ public class TransportWorker : Npc
     
     private MagicCauldron targetCauldron;
     private PotionTable targetTable;
-    private TransportState currentState;
-    private WaitForSeconds wait;
+
+    // 캐싱된 상태 객체들
+    private INpcState stateToCauldron;
+    private INpcState stateLoading;
+    private INpcState stateToTable;
+    private INpcState stateUnloading;
+    private INpcState stateDistributing;
 
     protected override void Awake()
     {
         base.Awake();
-        wait = new WaitForSeconds(0.3f);
-        targetCauldron = FindObjectOfType<MagicCauldron>();
-        targetTable = FindObjectOfType<PotionTable>();
+        
+        // 상태 객체 초기화 (Flyweight)
+        stateToCauldron = new State_ToCauldron(this);
+        stateLoading = new State_Loading(this);
+        stateToTable = new State_ToTable(this);
+        stateUnloading = new State_Unloading(this);
+        stateDistributing = new State_Distributing(this);
     }
 
-    private void Start()
+    public void Initialize(MagicCauldron cauldron, PotionTable table)
     {
-        if (targetCauldron == null || targetTable == null) return;
-        StartCoroutine(TransportRoutine());
-    }
-
-    private IEnumerator TransportRoutine()
-    {
-        while (true)
+        targetCauldron = cauldron;
+        targetTable = table;
+        
+        if (targetCauldron != null && targetTable != null)
         {
-            currentState = TransportState.ToCauldron;
-            MoveTo(cauldronPoint.position);
-            yield return new WaitUntil(() => !IsMoving);
-
-            currentState = TransportState.WaitingAtCauldron;
-            ItemStacker cauldronOutput = targetCauldron.GetOutputStacker();
-            
-            while (!myStacker.IsFull)
-            {
-                if (cauldronOutput.HasItem)
-                {
-                    IPickupAble item = cauldronOutput.PopStack();
-                    if (item != null)
-                    {
-                        yield return StartCoroutine(CollectItem(item));
-                    }
-                }
-                yield return wait;
-            }
-
-            currentState = TransportState.ToTable;
-            MoveTo(tablePoint.position);
-            yield return new WaitUntil(() => !IsMoving);
-            
-            transform.DORotate(new Vector3(0, 180f, 0), 0.3f);
-
-            currentState = TransportState.UnloadingAtTable;
-            ItemStacker tableInput = targetTable.GetStacker();
-            while (myStacker.HasItem)
-            {
-                if (!tableInput.IsFull)
-                {
-                    IPickupAble item = myStacker.PopStack();
-                    if (item != null)
-                    {
-                        yield return StartCoroutine(DepositItem(item, tableInput));
-                    }
-                }
-                yield return wait;
-            }
-
-            if (tableInput.HasItem)
-            {
-                currentState = TransportState.Distributing;
-                MoveTo(distributionStandPoint.position);
-                yield return new WaitUntil(() => !IsMoving);
-                
-                transform.DORotate(new Vector3(0, 180f, 0), 0.3f);
-
-                while (tableInput.HasItem)
-                {
-                    yield return wait;
-                }
-            }
-            
-            yield return null;
+            ChangeState(stateToCauldron);
         }
-    }
-
-    private IEnumerator CollectItem(IPickupAble item)
-    {
-        bool complete = false;
-        DOParabolicMove.MoveToDynamicTarget(
-            item.Transform,
-            myStacker.transform,
-            height: 1.5f,
-            duration: 0.15f,
-            localOffset: myStacker.GetNextLocalPosition(),
-            endRotY: 0f,
-            onComplete: () => {
-                myStacker.PushStack(item);
-                complete = true;
-            }
-        );
-        yield return new WaitUntil(() => complete);
-    }
-
-    private IEnumerator DepositItem(IPickupAble item, ItemStacker target)
-    {
-        bool complete = false;
-        Vector3 targetPos = target.transform.TransformPoint(target.GetNextLocalPosition());
-        DOParabolicMove.MoveToStaticPosition(
-            item.Transform,
-            targetPos,
-            height: 1.5f,
-            duration: 0.15f,
-            onComplete: () => {
-                target.PushStack(item);
-                complete = true;
-            }
-        );
-        yield return new WaitUntil(() => complete);
     }
 
     public bool IsAtDistributionPoint() 
     {
-        // 1. 현재 상태가 Distributing이어야 함
-        // 2. 물리적으로 정지 상태여야 함
-        // 3. 배급 지점과의 거리가 매우 가까워야 함 (안전장치)
-        if (currentState != TransportState.Distributing || IsMoving) return false;
-        
-        float dist = Vector3.Distance(transform.position, distributionStandPoint.position);
-        return dist < 0.5f;
+        if (currentState != stateDistributing || IsMoving) return false;
+        return Vector3.Distance(transform.position, distributionStandPoint.position) < 0.5f;
     }
+
+    #region Concrete States (Concrete Strategy)
+
+    private class State_ToCauldron : INpcState
+    {
+        private TransportWorker worker;
+        public State_ToCauldron(TransportWorker w) => worker = w;
+        public void Enter() => worker.MoveTo(worker.cauldronPoint.position);
+        public void Execute() { if (!worker.IsMoving) worker.ChangeState(worker.stateLoading); }
+        public void Exit() { }
+    }
+
+    private class State_Loading : INpcState
+    {
+        private TransportWorker worker;
+        private bool isHandling;
+        public State_Loading(TransportWorker w) => worker = w;
+        public void Enter() => isHandling = false;
+        public void Execute()
+        {
+            if (isHandling) return;
+            if (worker.myStacker.IsFull) { worker.ChangeState(worker.stateToTable); return; }
+
+            ItemStacker output = worker.targetCauldron.GetOutputStacker();
+            if (output.HasItem)
+            {
+                IPickupAble item = output.PopStack();
+                if (item != null) worker.StartCoroutine(HandleCollect(item));
+            }
+        }
+        private IEnumerator HandleCollect(IPickupAble item)
+        {
+            isHandling = true;
+            bool complete = false;
+            DOParabolicMove.MoveToDynamicTarget(item.Transform, worker.myStacker.transform, 1.5f, 0.15f, 
+                worker.myStacker.GetNextLocalPosition(), 0f, () => { worker.myStacker.PushStack(item); complete = true; });
+            yield return new WaitUntil(() => complete);
+            isHandling = false;
+        }
+        public void Exit() { }
+    }
+
+    private class State_ToTable : INpcState
+    {
+        private TransportWorker worker;
+        public State_ToTable(TransportWorker w) => worker = w;
+        public void Enter() => worker.MoveTo(worker.tablePoint.position);
+        public void Execute() 
+        { 
+            if (!worker.IsMoving) 
+            {
+                worker.transform.DORotate(new Vector3(0, 180f, 0), 0.3f);
+                worker.ChangeState(worker.stateUnloading); 
+            }
+        }
+        public void Exit() { }
+    }
+
+    private class State_Unloading : INpcState
+    {
+        private TransportWorker worker;
+        private bool isHandling;
+        public State_Unloading(TransportWorker w) => worker = w;
+        public void Enter() => isHandling = false;
+        public void Execute()
+        {
+            if (isHandling) return;
+            if (!worker.myStacker.HasItem)
+            {
+                if (worker.targetTable.GetStacker().HasItem) worker.ChangeState(worker.stateDistributing);
+                else worker.ChangeState(worker.stateToCauldron);
+                return;
+            }
+
+            ItemStacker tableInput = worker.targetTable.GetStacker();
+            if (!tableInput.IsFull)
+            {
+                IPickupAble item = worker.myStacker.PopStack();
+                if (item != null) worker.StartCoroutine(HandleDeposit(item, tableInput));
+            }
+        }
+        private IEnumerator HandleDeposit(IPickupAble item, ItemStacker target)
+        {
+            isHandling = true;
+            bool complete = false;
+            Vector3 targetPos = target.transform.TransformPoint(target.GetNextLocalPosition());
+            DOParabolicMove.MoveToStaticPosition(item.Transform, targetPos, 1.5f, 0.15f, 0f, () => { target.PushStack(item); complete = true; });
+            yield return new WaitUntil(() => complete);
+            isHandling = false;
+        }
+        public void Exit() { }
+    }
+
+    private class State_Distributing : INpcState
+    {
+        private TransportWorker worker;
+        public State_Distributing(TransportWorker w) => worker = w;
+        public void Enter() => worker.MoveTo(worker.distributionStandPoint.position);
+        public void Execute()
+        {
+            if (worker.IsMoving) return;
+            worker.transform.rotation = Quaternion.Lerp(worker.transform.rotation, Quaternion.Euler(0, 180f, 0), Time.deltaTime * worker.rotationSpeed);
+            
+            // 테이블이 비워지거나 가마솥에 물건이 나오면 다시 수집 모드로
+            if (!worker.targetTable.GetStacker().HasItem || worker.targetCauldron.GetOutputStacker().HasItem)
+            {
+                worker.ChangeState(worker.stateToCauldron);
+            }
+        }
+        public void Exit() { }
+    }
+
+    #endregion
 }

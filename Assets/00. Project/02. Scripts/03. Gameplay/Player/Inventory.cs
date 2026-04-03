@@ -22,7 +22,8 @@ public class Inventory : MonoBehaviour
         InitializeStackerMap();
         
         goldOriginalLocalPos = goldStacker.transform.localPosition;
-        stoneStacker.OnCountChanged += UpdateGoldStackerPosition;
+        // [Sync]: 변경된 이벤트 명칭(OnStackChanged) 적용
+        stoneStacker.OnStackChanged += UpdateGoldStackerPosition;
     }
 
     private void Start()
@@ -39,7 +40,10 @@ public class Inventory : MonoBehaviour
 
     private void LateUpdate()
     {
-        uIManager.UpdateGoldUI(goldStacker.CurrentCount);
+        if (uIManager != null)
+        {
+            uIManager.UpdateGoldUI(goldStacker.CurrentCount);
+        }
     }
 
     private void RegisterStacker(ItemStacker stacker)
@@ -55,16 +59,17 @@ public class Inventory : MonoBehaviour
         return stackerMap.GetValueOrDefault(type);
     }
 
-    private void UpdateGoldStackerPosition(int stoneCount)
+    private void UpdateGoldStackerPosition()
     {
+        // [Sync]: 인자 없는 이벤트 방식으로 로직 변경
         goldStacker.transform.localPosition =
-            stoneCount > 0 ? goldOriginalLocalPos + goldOffsetWhenStoneExists : goldOriginalLocalPos;
+            stoneStacker.CurrentCount > 0 ? goldOriginalLocalPos + goldOffsetWhenStoneExists : goldOriginalLocalPos;
     }
 
     private void OnDestroy()
     {
         if (stoneStacker == null) return;
-        stoneStacker.OnCountChanged -= UpdateGoldStackerPosition;
+        stoneStacker.OnStackChanged -= UpdateGoldStackerPosition;
     }
     
     public ItemStacker StoneStacker => stoneStacker;
