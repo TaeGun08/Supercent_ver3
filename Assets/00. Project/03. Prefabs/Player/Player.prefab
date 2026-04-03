@@ -171,9 +171,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 0
-  maxStackCount: 1
+  maxStackCount: 8
   itemHeight: 0.5
-  gridColumns: 8
+  gridColumns: 2
   gridRows: 1
   spacingX: 0.5
   spacingZ: 0.5

@@ -44,8 +44,8 @@ public class PrisonManager : SingletonBase<PrisonManager>
 
     private void EnterPrisonLogic(Npc npc)
     {
-        // 이미 activePrisoners에 포함되어 있으므로 카운트만 수감 완료로 전이
         currentPrisonerCount++;
+        prisonerCountText.text = $"{currentPrisonerCount} / {maxCapacity}";
         waitingNPCs.Remove(npc);
 
         enteringCount++;
@@ -56,6 +56,11 @@ public class PrisonManager : SingletonBase<PrisonManager>
                 .OnComplete(() => {
                     if (npc.Rb != null) npc.Rb.freezeRotation = true;
 
+                    float randomPosX = Random.Range(-0.5f, 0.5f);
+                    float randomPosZ = Random.Range(-1f, 1f);
+                    Vector3 randomPos = new Vector3(randomPosX, 0f, randomPosZ) + npc.transform.position;
+                    npc.transform.DOMove(randomPos, 1f);
+                    
                     enteringCount--;
                     if (enteringCount <= 0 && prisonDoor != null)
                     {

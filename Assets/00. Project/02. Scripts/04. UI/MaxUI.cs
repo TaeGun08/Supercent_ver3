@@ -12,18 +12,16 @@ public class MaxUI : MonoBehaviour
     [SerializeField] private float displayDuration = 1.0f;
     [SerializeField] private Vector3 worldOffset = new Vector3(0, 2.5f, 0);
 
-    private RectTransform rectTransform;
     private TMP_Text maxText;
     private Sequence animationSequence;
     private Vector3 originalAnchoredPosition;
     
     private Transform targetTransform;
     private Camera mainCam;
-    private float currentVisualOffset; // 상승 연출용 오프셋
+    private float currentVisualOffset;
 
     private void Awake()
     {
-        rectTransform = GetComponent<RectTransform>();
         maxText = GetComponent<TMP_Text>();
         mainCam = Camera.main;
         
