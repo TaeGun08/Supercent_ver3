@@ -1,64 +1,63 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum CauldronState { Idle, Crafting }
 
 public class MagicCauldron : MonoBehaviour
 {
-    [Header("Dependencies")]
-    [SerializeField] private ItemStacker inputStack;
-    [SerializeField] private float craftDuration = 3f;
+    [Header("MagicCauldron Settings")]
+    [SerializeField] private ItemStacker putDownStone;
+    [SerializeField] private ItemStacker pickUpPotion;
+    [SerializeField] private float craftDuration = 0.5f;
     [SerializeField] private Potion potionPrefab;
-    [SerializeField] private Transform potionSpawnPoint;
 
     [Header("Current Status")]
     private CauldronState state = CauldronState.Idle;
-    private int producedPotions = 0;
 
-    public bool CanAcceptMoreStones => inputStack != null && !inputStack.IsFull;
-    public bool HasFinishedPotions => producedPotions > 0;
+    public bool CanAcceptMoreStones => putDownStone != null && !putDownStone.IsFull;
+    public bool HasFinishedPotions => pickUpPotion != null && pickUpPotion.HasItem;
 
     private void Awake()
     {
+        if (potionPrefab == null) return;
         PoolManager.Instance.CreatePool(potionPrefab, initialCount: 5);
     }
 
     private void Update()
     {
-        if (state == CauldronState.Idle && inputStack.HasItem)
-        {
-            StartCoroutine(CraftingRoutine());
-        }
+        if (state != CauldronState.Idle || putDownStone.HasItem == false || pickUpPotion.IsFull) return;
+        StartCoroutine(CraftingRoutine());
     }
 
     private IEnumerator CraftingRoutine()
     {
         WaitForSeconds wait = new WaitForSeconds(craftDuration);
-        while (inputStack.HasItem)
+        while (putDownStone.HasItem && !pickUpPotion.IsFull)
         {
             state = CauldronState.Crafting;
 
-            IPickupAble stone = inputStack.PopStack();
+            IPickupAble stone = putDownStone.PopStack();
             if (stone != null) stone.Release();
 
             yield return wait;
 
-            producedPotions++;
+            Potion potion = PoolManager.Instance.Get<Potion>();
+            Vector3 targetWorldPos = pickUpPotion.transform.position + pickUpPotion.GetNextLocalPosition();
+
+            DOParabolicMove.MoveToStaticPosition(
+                potion.Transform,
+                targetWorldPos,
+                height: 2f,
+                duration: 0.1f,
+                onComplete: () => { pickUpPotion.PushStack(potion); }
+            );
         }
 
         state = CauldronState.Idle;
     }
 
-    public Potion TakePotion()
-    {
-        if (producedPotions <= 0) return null;
-        producedPotions--;
-        
-        Potion potion = PoolManager.Instance.Get<Potion>();
-        potion.transform.SetPositionAndRotation(potionSpawnPoint.position, Quaternion.identity);
-        return potion;
-    }
-
-    public ItemStacker GetInputStacker() => inputStack;
+    public ItemStacker GetInputStacker() => putDownStone;
+    public ItemStacker GetOutputStacker() => pickUpPotion;
 }

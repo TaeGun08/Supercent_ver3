@@ -135,7 +135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3126381952370295833}
-  - component: {fileID: 5744781686934415316}
+  - component: {fileID: 7342909664660301782}
   m_Layer: 0
   m_Name: PickupStone
   m_TagString: Untagged
@@ -158,7 +158,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4731782389546304331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5744781686934415316
+--- !u!114 &7342909664660301782
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -167,12 +167,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 766586383753548130}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cac0243eb21e0bd44bce7baabdd410a7, type: 3}
+  m_Script: {fileID: 11500000, guid: 2bdbc3f4b5dd7b9469076b7b85446faf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceptableType: 0
   maxStackCount: 10
   itemHeight: 0.5
-  pickupGold: {fileID: 965027104983166577}
 --- !u!1 &880185107996034715
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,7 +534,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 965027104983166577}
-  - component: {fileID: 3559317084441912076}
+  - component: {fileID: 2065030637615002854}
   m_Layer: 0
   m_Name: PickupGold
   m_TagString: Untagged
@@ -557,7 +557,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4731782389546304331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3559317084441912076
+--- !u!114 &2065030637615002854
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -566,9 +566,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2029538613856287012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b84cfd76bdd8f164a8b631f2655b7622, type: 3}
+  m_Script: {fileID: 11500000, guid: 2bdbc3f4b5dd7b9469076b7b85446faf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceptableType: 1
   maxStackCount: 10
   itemHeight: 0.5
 --- !u!1 &2178785256853370884
@@ -1015,7 +1016,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8929891373574480673}
-  - component: {fileID: 7265794542729529909}
+  - component: {fileID: 6513596056010526487}
   m_Layer: 0
   m_Name: PickupPotion
   m_TagString: Untagged
@@ -1038,7 +1039,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4731782389546304331}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7265794542729529909
+--- !u!114 &6513596056010526487
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1047,9 +1048,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4201517195302474900}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ea456801324a3042ad2a2aee39689e1, type: 3}
+  m_Script: {fileID: 11500000, guid: 2bdbc3f4b5dd7b9469076b7b85446faf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceptableType: 2
   maxStackCount: 10
   itemHeight: 0.5
 --- !u!1 &4510539283618525121
@@ -1726,6 +1728,7 @@ GameObject:
   - component: {fileID: 5680374754298433812}
   - component: {fileID: 6785226089058530645}
   - component: {fileID: 7221200558233369282}
+  - component: {fileID: 4750420624723577495}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -1821,8 +1824,23 @@ MonoBehaviour:
   - {fileID: 8918659475967748475}
   - {fileID: 379096273422386197}
   - {fileID: 2454086856149813451}
-  stoneStacker: {fileID: 5744781686934415316}
-  potionStacker: {fileID: 7265794542729529909}
+  stack: {fileID: 4750420624723577495}
+--- !u!114 &4750420624723577495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8698414028228524979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 405c78c2df283b94ab6e64f1cae463d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stoneStacker: {fileID: 7342909664660301782}
+  goldStacker: {fileID: 2065030637615002854}
+  potionStacker: {fileID: 6513596056010526487}
+  goldOffsetWhenStoneExists: {x: 0, y: 0, z: -0.5}
 --- !u!1 &8799593228450362439
 GameObject:
   m_ObjectHideFlags: 0

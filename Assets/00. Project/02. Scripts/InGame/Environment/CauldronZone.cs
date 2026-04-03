@@ -54,7 +54,9 @@ public class CauldronZone : MonoBehaviour
 
     private void HandleInput(GameObject playerObj)
     {
-        StoneStacker stoneStacker = playerObj.GetComponentInChildren<StoneStacker>();
+        if (!playerObj.TryGetComponent(out Inventory stackManager)) return;
+
+        ItemStacker stoneStacker = stackManager.StoneStacker;
         if (stoneStacker == null || !stoneStacker.HasItem || !cauldron.CanAcceptMoreStones) return;
 
         ItemStacker targetStacker = cauldron.GetInputStacker();
@@ -62,13 +64,14 @@ public class CauldronZone : MonoBehaviour
 
         IPickupAble stone = stoneStacker.PopStack();
         if (stone == null) return;
+
         Vector3 targetWorldPos = targetStacker.transform.position + targetStacker.GetNextLocalPosition();
 
         DOParabolicMove.MoveToStaticPosition(
-            stone.Transform, 
-            targetWorldPos, 
-            height: 1.5f, 
-            duration: 0.5f, 
+            stone.Transform,
+            targetWorldPos,
+            height: 1.5f,
+            duration: 0.5f,
             onComplete: () => {
                 targetStacker.PushStack(stone);
             }
@@ -77,20 +80,27 @@ public class CauldronZone : MonoBehaviour
 
     private void HandleOutput(GameObject playerObj)
     {
-        PotionStacker potionStacker = playerObj.GetComponentInChildren<PotionStacker>();
+        if (!playerObj.TryGetComponent(out Inventory stackManager)) return;
+
+        ItemStacker potionStacker = stackManager.PotionStacker;
         if (potionStacker == null || potionStacker.IsFull || !cauldron.HasFinishedPotions) return;
 
-        Potion potion = cauldron.TakePotion();
-        if (potion != null)
+        ItemStacker sourceStacker = cauldron.GetOutputStacker();
+        if (sourceStacker == null || !sourceStacker.HasItem) return;
+
+        IPickupAble potionItem = sourceStacker.PopStack();
+        if (potionItem != null)
         {
             DOParabolicMove.MoveToDynamicTarget(
-                potion.Transform, 
-                playerObj.transform, 
-                height: 2f, 
-                duration: 0.5f, 
+                potionItem.Transform,
+                playerObj.transform,
+                height: 2f,
+                duration: 0.5f,
                 yOffset: 1.5f,
-                onComplete: () => {
-                    potionStacker.PushStack(potion);
+                onComplete: () =>
+                {
+                    // [Universal Sync]: 캐스팅 없이 직접 삽입
+                    potionStacker.PushStack(potionItem);
                 }
             );
         }

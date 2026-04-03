@@ -5,13 +5,13 @@ using UnityEngine.Serialization;
 
 public class MiningController : MonoBehaviour
 {
-    [Header("Equipments")] [SerializeField]
-    private MiningEquipment[] miningEquipments;
+    [Header("Equipments")] 
+    [SerializeField] private MiningEquipment[] miningEquipments;
 
     private MiningEquipment currentMiningEq;
 
-    [Header("Stackers")] [SerializeField] private StoneStacker stoneStacker;
-    [SerializeField] private PotionStacker potionStacker;
+    [Header("Inventory")] 
+    [SerializeField] private Inventory stack;
 
     private PlayerAnimation playerAnimation;
     private float miningTimer;
@@ -30,7 +30,7 @@ public class MiningController : MonoBehaviour
     private void Update()
     {
         if (isInMiningZone == false) return;
-        if (potionStacker != null && potionStacker.HasItem) return;
+        if (stack.PotionStacker != null && stack.PotionStacker.HasItem) return;
         if (currentMiningEq == null || isMiningInProgress) return;
 
         UpdateMiningProcess();
@@ -60,13 +60,11 @@ public class MiningController : MonoBehaviour
                 StartCoroutine(PerformBurstMining(sensor));
             }
         }
-        else // Continuous (Drill, Bulldozer)
+        else
         {
-            if (miningTimer >= data.MiningDelay)
-            {
-                ExecuteMining(sensor);
-                miningTimer = 0f;
-            }
+            if (miningTimer < data.MiningDelay) return;
+            ExecuteMining(sensor);
+            miningTimer = 0f;
         }
     }
 
@@ -87,22 +85,21 @@ public class MiningController : MonoBehaviour
     {
         IMiningTarget target = sensor.GetClosestTarget(sensor.transform.position);
 
-        if (target != null)
-        {
-            IPickupAble resource = target.MineResource(stoneStacker.IsFull);
-            sensor.MiningTargets?.Remove(target);
+        if (target == null) return;
+        ItemStacker stoneStacker = stack.StoneStacker;
+        IPickupAble resource = target.MineResource(stoneStacker.IsFull);
+        sensor.MiningTargets?.Remove(target);
 
-            if (resource != null && !stoneStacker.IsFull)
-            {
-                DOParabolicMove.MoveToDynamicTarget(
-                    resource.Transform,
-                    stoneStacker.transform,
-                    height: 1.5f,
-                    duration: 0.3f,
-                    yOffset: stoneStacker.CurrentCount * 0.5f,
-                    onComplete: () => { stoneStacker.PushStack(resource); }
-                );
-            }
+        if (resource != null && !stoneStacker.IsFull)
+        {
+            DOParabolicMove.MoveToDynamicTarget(
+                resource.Transform,
+                stoneStacker.transform,
+                height: 1.5f,
+                duration: 0.1f,
+                yOffset: stoneStacker.CurrentCount * stoneStacker.ItemHeight,
+                onComplete: () => { stoneStacker.PushStack(resource); }
+            );
         }
     }
 

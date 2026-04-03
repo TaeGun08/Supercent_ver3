@@ -9,19 +9,26 @@ public class ObjectPool<T> where T : MonoBehaviour
 
     public ObjectPool(T prefab, int initialCount, Transform parent = null)
     {
+        Debug.Assert(prefab != null, $"[ObjectPool] {typeof(T).Name} 프리팹이 null입니다. 풀을 생성할 수 없습니다.");
+        if (prefab == null) return;
+
         this.prefab = prefab;
         this.parent = parent;
 
         for (int i = 0; i < initialCount; i++)
         {
             var obj = CreatePool();
-            obj.gameObject.SetActive(false);
-            pool.Enqueue(obj);
+            if (obj != null)
+            {
+                obj.gameObject.SetActive(false);
+                pool.Enqueue(obj);
+            }
         }
     }
 
     private T CreatePool()
     {
+        if (prefab == null) return null;
         var obj = Object.Instantiate(prefab, parent);
         return obj;
     }

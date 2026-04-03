@@ -240,3 +240,39 @@
 
 **AI**:
 - **Engineering Summary**: 사용자의 요구에 따라 SingletonBase를 리팩터링 이전의 [Lazy-Initialization & Auto-Creation] 방식으로 복구함. FindObjectOfType을 통한 런타임 인스턴스 탐색 및 부재 시 자동 GameObject 생성 로직을 재활성화하여, 씬 구성의 유연성과 개발 편의성을 최우선으로 확보함.
+
+**User**:
+> 가마솥 제작 시스템을 더 정교하게 만들어줘. (입력 구역과 출력 구역의 물리적 분리 및 적재 로직) 보완해줘.
+
+**AI**:
+- **Engineering Summary**: 가마솥 시스템을 [Double-Buffer Physical Pipeline]으로 고도화함. 입력 적재소(Input Stacker)와 출력 보관소(Output Stacker)를 명확히 분리하여 자원의 흐름을 시각화하였으며, 제작 완료 시 포션이 자동으로 보관소에 적재되는 연출을 구현함. 이를 통해 플레이어의 개입 없이도 독립적으로 동작하는 비동기 생산 시스템과 고품질의 자원 순환 피드백을 완성함.
+
+**User**:
+> ArgumentException: The Object you want to instantiate is null. (MagicCauldron.Awake 오류 해결)
+
+**AI**:
+- **Engineering Summary**: MagicCauldron의 프리팹 미할당으로 인한 런타임 예외를 해결함. ObjectPool 생성자와 MagicCauldron.Awake에 [Fail-Fast] 원칙을 적용한 명시적 Null 검증 로직을 추가하여 설정 오류를 조기 진단 가능케 함. 방어적 프로그래밍을 통해 시스템 안정성을 높이고 구체적인 오류 메시지를 제공함으로써 디버깅 효율을 극대화함.
+
+**User**:
+> 플레이어 인벤토리(Gold, Stone, Potion) 스태킹 시스템을 더 깔끔하게 통합해줘. 조약돌 유무에 따른 골드 위치 자동 보정 및 계층 구조(Transform) 활용 필수.
+
+**AI**:
+- **Engineering Summary**: 개별 스태커들을 [Hierarchical Anchor System] 기반의 PlayerStackManager로 통합함. StoneStacker의 상태 변화를 이벤트로 수신하여 GoldStacker의 로컬 좌표를 동적으로 보정하는 [Dynamic Offset] 시스템을 구축하였으며, 이를 통해 조약돌 유무에 따른 시각적 적층 위치 변화를 최적의 성능으로 구현함. MiningController의 의존성을 일원화하여 아키텍처 결합도를 대폭 낮춤.
+
+**User**:
+> ItemStacker를 범용으로 통합하고 중복 클래스 삭제해줘. Enum 기반으로 아이템 수용 제한 기능 추가 필수.
+
+**AI**:
+- **Engineering Summary**: 중복된 스태커 하위 클래스들을 삭제하고, ItemType 필터링 로직을 내장한 단일 [Universal ItemStacker]로 통합함. IPickupAble 인터페이스에 자원 식별 프로퍼티를 추가하여 형식 안전성을 확보하였으며, [Fail-Fast] 원칙에 따른 타입 검증 로직을 통해 잘못된 자원 적재를 방지함. 이를 통해 프로젝트의 스크립트 복잡도를 획기적으로 낮추고 자원 확장성을 극대화함.
+
+**User**:
+> 전체 코드 분석 후 버그 수정 및 불필요한 스크립트 삭제 진행해줘.
+
+**AI**:
+- **Engineering Summary**: 범용 Stacker 통합 이후 발생한 Stale Reference(삭제된 클래스 참조)를 전수 조사하여 수정함. CauldronZone의 의존성을 PlayerStackManager로 일원화하고 불필요한 구체 클래스 캐스팅을 제거함. 하드코딩된 시각적 오프셋을 ItemStacker의 메타데이터(ItemHeight)와 동기화하여 SSOT를 달성함. PotionGenerator 등 사용 계획이 없는 잔여 스크립트를 삭제하여 프로젝트의 물리적/논리적 무결성을 완성함.
+
+**User**:
+> MiningController.cs(93,13): error CS0246: The type or namespace name 'StoneStacker' could not be found. (버그 수정 요청)
+
+**AI**:
+- **Engineering Summary**: MiningController 내부에 잔존하던 삭제된 클래스(StoneStacker)의 로컬 변수 참조를 전수 조사하여 범용 타입(ItemStacker)으로 교체 완료함. grep 기반의 프로젝트 전수 조사를 통해 모든 '유령 타입 참조'가 제거되었음을 검증하였으며, 이를 통해 컴파일 무결성을 확보하고 런타임 안정성을 정상화함.

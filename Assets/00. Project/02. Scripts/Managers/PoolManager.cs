@@ -23,13 +23,7 @@ public class PoolManager : SingletonBase<PoolManager>
     {
         string poolKey = key ?? typeof(T).Name;
         
-        if (poolDict.TryGetValue(poolKey, out object poolObj))
-        {
-            return ((ObjectPool<T>)poolObj).Get();
-        }
-        
-        Debug.LogError($"[PoolManager] ν  : {poolKey}");
-        return null;
+        return poolDict.TryGetValue(poolKey, out object poolObj) ? ((ObjectPool<T>)poolObj).Get() : null;
     }
     
     public void Return<T>(T obj, string key = null) where T : MonoBehaviour
