@@ -1898,17 +1898,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1235009460830366144, guid: a3f421177a7dcd3479e17170d6c201b1, type: 3}
+    - target: {fileID: 2592320620515247272, guid: a3f421177a7dcd3479e17170d6c201b1, type: 3}
       propertyPath: nextZone
       value: 
       objectReference: {fileID: 5982860924946610715}
     - target: {fileID: 4302082725274655097, guid: a3f421177a7dcd3479e17170d6c201b1, type: 3}
       propertyPath: m_Name
       value: Unlock_Drill
-      objectReference: {fileID: 0}
-    - target: {fileID: 4302082725274655097, guid: a3f421177a7dcd3479e17170d6c201b1, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

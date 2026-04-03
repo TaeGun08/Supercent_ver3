@@ -299,6 +299,7 @@ GameObject:
   - component: {fileID: 6152488081209240783}
   - component: {fileID: 6259130867250558517}
   - component: {fileID: 5529075391135502026}
+  - component: {fileID: 2592320620515247272}
   m_Layer: 5
   m_Name: Unlock_Drill
   m_TagString: Untagged
@@ -429,6 +430,20 @@ MonoBehaviour:
   goldTargetPoint: {fileID: 666076927625449177}
   costText: {fileID: 9123810216974567752}
   costImage: {fileID: 4033783113883964405}
+--- !u!114 &2592320620515247272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4302082725274655097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97b610409a4ca6f46a25980750684508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equipmentIndex: 1
+  nextZone: {fileID: 0}
 --- !u!1 &7326140979227713572
 GameObject:
   m_ObjectHideFlags: 0
