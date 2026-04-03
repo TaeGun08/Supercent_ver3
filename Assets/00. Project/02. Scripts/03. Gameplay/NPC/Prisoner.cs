@@ -38,7 +38,6 @@ private IEnumerator MainBehaviorRoutine()
 {
     yield return StartCoroutine(EnterTableWaitingLine());
 
-    // [UI Activation]: 테이블 앞 대기 지점 도착 즉시 UI 노출 (배급 시작 전)
     if (WaitingLineManager.Instance.GetFrontNpc() == this && !IsMoving)
     {
         UIManager.Instance.ShowPrisonerUI(transform, currentPotionCount, requiredPotionCount);
@@ -66,7 +65,6 @@ private IEnumerator CollectRequiredPotions()
 {
     while (currentPotionCount < requiredPotionCount)
     {
-        // [UI Refresh]: 전진 등으로 인해 맨 앞이 되었는데 UI가 없다면 즉시 켜줌
         if (!isUIShown && WaitingLineManager.Instance.GetFrontNpc() == this && !IsMoving)
         {
             UIManager.Instance.ShowPrisonerUI(transform, currentPotionCount, requiredPotionCount);
@@ -93,13 +91,13 @@ private IEnumerator CollectRequiredPotions()
 
     private void CompleteCollection()
     {
-        if (headObject != null) headObject.SetActive(true);
-        
         if (isUIShown)
         {
             UIManager.Instance.HidePrisonerUI();
             isUIShown = false;
         }
+
+        if (headObject != null) headObject.SetActive(true);
 
         if (targetTable != null) targetTable.ProduceGold();
 

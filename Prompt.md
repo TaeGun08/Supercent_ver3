@@ -94,7 +94,7 @@
 > 예시 코드를 보여줄 수 있어?
 
 **AI**:
-- **Engineering Summary**: `IInputProvider` 인터페이스를 통한 입력 계층 추상화와 `ItemStacker`의 인덱스 기반 위치 연산(`stackedItems.Count * itemHeight`) 예시를 제시함. `static` 의존성을 제거하여 입력 장치 확장이 용이한 구조를 설계하였으며, 가변 상태 변수(`offsetY`)를 제거하고 데이터 본연의 상태(Count)로부터 위치를 도출함으로써 런타임 논리 오류를 원천 봉쇄하는 고성능/고안정성 코드를 제안함.
+- **Engineering Summary**: `IInputProvider` 인터페이스를 통한 입력 계층 추상화와 `ItemStacker`의 인덱스 기반 위치 연산(`stackedItems.Count * itemHeight`) 예시 제시함. `static` 의존성을 제거하여 입력 장치 확장이 용이한 구조를 설계하였으며, 가변 상태 변수(`offsetY`)를 제거하고 데이터 본연의 상태(Count)로부터 위치를 도출함으로써 런타임 논리 오류를 원천 봉쇄하는 고성능/고안정성 코드를 제안함.
 
 **User**:
 > 채굴 시스템의 경우 방향을 잡고 싶은데, 내가 생각한 구조 및 방향은 마이닝 컨트롤러를 장비가 보유하고 있는 채굴 딜레이에 따라 채굴을 하는 방식이야 마이닝스캐너는 장비 장착을 뭐하냐에 따라 변경해줄 생각이었고. 하지만 일단 장비를 IEquippable를 상속 시록 만들긴 했는데 원하는 구조가 안 나올 것 같아서 고민이야. 좋은 방안이 없을까?
@@ -420,3 +420,13 @@
 
 **AI**:
 - **Engineering Summary**: 자원 배급 루프의 최종 보상 단계인 [Gold Reward System]을 구축함. PotionTable 클래스에 골드 프리팹 및 moneyStacker 참조를 통합하고, Prisoner NPC의 수령 완료 시점에 이를 트리거하는 인터페이스를 구현함. 요청 사항에 따라 Parabolic Tween을 생략한 즉시 적재(PushStack) 방식을 채택하여 보상 획득의 직관성을 높임.
+
+---
+
+## [2026-04-04] Prisoner UI Leasing System Refactoring
+
+**User**:
+> PrisonerUI가 배급 중인 NPC에게만 동적으로 노출되도록 개선 요청. 테이블 도착 시 활성화, 배급 완료 시 즉시 비활성화 필수.
+
+**AI**:
+- **Engineering Summary**: 단일 PrisonerUI를 여러 NPC가 공유하는 **[UI Leasing]** 시스템을 구축함. UIManager를 싱글톤 기반의 소유권자로 설정하여 UI 인스턴스 관리를 일원화함. Prisoner NPC가 대기열 맨 앞(테이블 앞) 지점에 완벽히 정지(!IsMoving)했을 때만 UI를 요청(Show)하고, 필요한 포션을 모두 수령한 즉시(CompleteCollection 최상단) 반납(Hide)하는 상태 기반 제어 로직을 구현함. 이를 통해 런타임 드로우 콜과 메모리 오버헤드를 최적화하고, 플레이어의 시각적 피드백을 현재 활성 타겟에게만 집중시키는 고품질 UI 아키텍처를 완성함.
