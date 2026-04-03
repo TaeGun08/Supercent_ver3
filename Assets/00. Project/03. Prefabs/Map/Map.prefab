@@ -1115,8 +1115,8 @@ MonoBehaviour:
   acceptableType: 0
   maxStackCount: 20
   itemHeight: 0.5
-  gridColumns: 1
-  gridRows: 1
+  gridColumns: 2
+  gridRows: 2
   spacingX: 0.5
   spacingZ: 0.5
 --- !u!114 &54470833530177618
@@ -1309,8 +1309,8 @@ MonoBehaviour:
   acceptableType: 2
   maxStackCount: 20
   itemHeight: 0.5
-  gridColumns: 1
-  gridRows: 1
+  gridColumns: 2
+  gridRows: 2
   spacingX: 0.5
   spacingZ: 0.5
 --- !u!114 &7604727718314063001
@@ -1547,8 +1547,8 @@ MonoBehaviour:
   acceptableType: 2
   maxStackCount: 20
   itemHeight: 0.5
-  gridColumns: 1
-  gridRows: 1
+  gridColumns: 2
+  gridRows: 2
   spacingX: 0.5
   spacingZ: 0.5
 --- !u!114 &8099534914644144321

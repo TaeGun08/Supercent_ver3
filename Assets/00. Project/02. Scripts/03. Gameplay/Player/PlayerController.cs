@@ -2,22 +2,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IPlayer
 {
-    private CharacterController charCtr;
+    private CharacterController controller;
     private IInputProvider inputProvider;
 
     public Transform Transform => transform;
 
     [Header("Dependencies")]
-    [SerializeField] private MonoBehaviour inputSource;
     [SerializeField] private PlayerDataSO playerData;
 
     private float verticalVelocity;
     
     private void Awake()
     {
-        charCtr = GetComponent<CharacterController>();
-        
-        inputProvider = inputSource as IInputProvider;
+        controller = GetComponent<CharacterController>();
+        inputProvider = FindFirstObjectByType<Joystick>();
     }
 
     public IInputProvider InputProvider => inputProvider;
@@ -48,12 +46,12 @@ public class PlayerController : MonoBehaviour, IPlayer
 
         velocity.y = verticalVelocity;
 
-        charCtr.Move(velocity * Time.deltaTime);
+        controller.Move(velocity * Time.deltaTime);
     }
 
     private void UpdateGravity()
     {
-        if (charCtr.isGrounded) verticalVelocity = -1f;
+        if (controller.isGrounded) verticalVelocity = -1f;
         else verticalVelocity -= playerData.Gravity * Time.deltaTime;
     }
 }
