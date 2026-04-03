@@ -39,7 +39,8 @@ public class Prisoner : Npc
 
         while (currentPotionCount < requiredPotionCount)
         {
-            if (WaitingLineManager.Instance.GetFrontNpc() == this)
+            // [Check Conditions]: 1. 줄의 맨 앞인가? 2. 이동 중이 아닌가? 3. 배급 가능한가?
+            if (WaitingLineManager.Instance.GetFrontNpc() == this && !IsMoving)
             {
                 if (targetTable.CanDistribute)
                 {
@@ -47,7 +48,7 @@ public class Prisoner : Npc
                     yield return StartCoroutine(ExecuteTakingPotion(targetTable.GetStacker()));
                 }
             }
-            yield return wait;
+            yield return new WaitForSeconds(0.2f);
         }
 
         if (headObject != null) headObject.SetActive(true);

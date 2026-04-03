@@ -19,6 +19,8 @@ public abstract class Npc : MonoBehaviour
         Debug.Assert(animator != null, $"[Npc] {gameObject.name}에 Animator가 누락되었습니다.");
     }
     
+    public bool IsMoving { get; private set; }
+
     public virtual void MoveTo(Vector3 targetPos, System.Action onArrival = null)
     {
         moveTween?.Kill();
@@ -26,10 +28,12 @@ public abstract class Npc : MonoBehaviour
         float distance = Vector3.Distance(transform.position, targetPos);
         if (distance < 0.05f)
         {
+            IsMoving = false;
             onArrival?.Invoke();
             return;
         }
 
+        IsMoving = true;
         float duration = distance / moveSpeed;
 
         Vector3 dir = (targetPos - transform.position).normalized;
@@ -44,6 +48,7 @@ public abstract class Npc : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
+                IsMoving = false;
                 animator.SetBool(IS_WALK, false);
                 onArrival?.Invoke();
             });

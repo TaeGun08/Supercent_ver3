@@ -336,3 +336,9 @@
 
 **AI**:
 - **Engineering Summary**: 감옥 수용량과 물리적 대기열 공간을 실시간 모니터링하여 생성을 결정하는 [Conditional Prisoner Spawner]를 구축함. PoolManager를 통한 NPC 재사용 구조를 적용하여 런타임 Alloc 부하를 최적화하였으며, 타이머 기반의 독립적인 스폰 루틴을 통해 자원 공급과 수용 간의 밸런싱 자동화를 달성함.
+
+**User**:
+> 죄수가 도착하고 플레이어가 도착 시 배급이 안 되는 버그 수정 요청. 구현 미비점 보완.
+
+**AI**:
+- **Engineering Summary**: Npc 추상 클래스에 IsMoving 상태 프로퍼티를 추가하여 물리적 이동과 논리적 상호작용 간의 실행 시점을 동기화함. Prisoner의 수령 루틴에 이동 완료 검증 로직을 통합하여 이동 중 자원 수급 현상을 차단하였으며, 0.2초 단위의 고주파 상태 체크를 통해 플레이어 개입(CanDistribute)에 대한 반응성을 최적화함. 이를 통해 [Auth-Protected Distribution] 시스템의 신뢰성을 확보함.
