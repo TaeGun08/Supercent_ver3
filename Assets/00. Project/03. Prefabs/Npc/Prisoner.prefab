@@ -163,7 +163,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2
   rotationSpeed: 10
-  myStacker: {fileID: 0}
   headObject: {fileID: 9157446365212980003}
 --- !u!1 &531447307640514967
 GameObject:
@@ -665,7 +664,7 @@ Animator:
   m_GameObject: {fileID: 3949739584728783552}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 41f081d5c6d286c47a33bed3f84de79a, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 41bc4ac233b36d44da502c12e27bec78, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ public enum PrisonerState { MovingToTableLine, WaitingInTableLine, TakingPotions
 
 public class Prisoner : Npc
 {
+    private static readonly int WALK = Animator.StringToHash("IsWalk");
+
     [Header("Prisoner Settings")]
     [SerializeField] private GameObject headObject;
     
@@ -22,7 +25,7 @@ public class Prisoner : Npc
         wait = new WaitForSeconds(0.2f);
         if (headObject != null) headObject.SetActive(false);
     }
-    
+
     public void Initialize(PotionTable table, int neededPotions)
     {
         targetTable = table;
@@ -33,12 +36,15 @@ public class Prisoner : Npc
 
     private IEnumerator MainBehaviorRoutine()
     {
+        animator.SetBool(WALK, IsMoving);
         yield return StartCoroutine(EnterTableWaitingLine());
 
+        animator.SetBool(WALK, IsMoving);
         yield return StartCoroutine(CollectRequiredPotions());
 
         CompleteCollection();
 
+        animator.SetBool(WALK, IsMoving);
         yield return StartCoroutine(GoToPrison());
     }
 
@@ -47,7 +53,7 @@ public class Prisoner : Npc
         currentState = PrisonerState.MovingToTableLine;
         WaitingLineManager.Instance.JoinLine(this);
         
-        yield return new WaitUntil(() => !IsMoving);
+        yield return new WaitUntil(() => IsMoving == false);
         currentState = PrisonerState.WaitingInTableLine;
     }
 
@@ -82,8 +88,14 @@ public class Prisoner : Npc
     private IEnumerator GoToPrison()
     {
         currentState = PrisonerState.MovingToPrison;
+        
+        Vector3 waitingPoint = PrisonManager.Instance.GetRandomWaitingPoint();
+        MoveTo(waitingPoint);
+        
+        yield return new WaitUntil(() => IsMoving == false);
+        currentState = PrisonerState.WaitingForPrisonSpace;
+
         PrisonManager.Instance.TryEnterPrison(this);
-        yield break; 
     }
 
     private IEnumerator ExecuteTakingPotion(ItemStacker source)

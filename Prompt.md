@@ -348,3 +348,15 @@
 
 **AI**:
 - **Engineering Summary**: 물리적 구조 재편 과정에서 유실된 MiningEquipment 및 MiningDataSO 스크립트를 03. Gameplay/Equipment 경로에 복구 및 재생성함. 데이터 중심 설계(Data-Driven Design) 원칙을 유지하며 핵심 로직을 재구축하여 참조 무결성을 확보하였으며, 이를 통해 컴파일 타임 오류를 제거하고 아키텍처 일관성을 회복함.
+
+**User**:
+> 감옥 입장 전에 웨이팅 포인트(대기 구역)를 반드시 한 번 거쳐서 들어가도록 보완해줘.
+
+**AI**:
+- **Engineering Summary**: 죄수의 수감 시퀀스에 [Mandatory Buffer Zone] 방문 단계를 추가함. PrisonManager에서 대기 구역 내 좌표 공급 로직을 구축하고, Prisoner FSM에서 이동 완료 검증 후 최종 입소 요청을 수행하는 2단계 검증 구조를 적용함. 이를 통해 감옥 수용 상태와 관계없이 입소 전 정체 구간을 시각화하여 게임의 공간적 몰입감을 강화함.
+
+**User**:
+> PlayerDetectionZone을 통해 이벤트를 실행시켜도 true가 안 되는 버그 수정 요청.
+
+**AI**:
+- **Engineering Summary**: 물리 트리거의 신뢰성을 강화하기 위해 [Counter-based Overlap Detection] 로직을 PlayerDetectionZone에 적용함. 복수 콜라이더 간섭으로 인한 상태 깜빡임(Flickering) 현상을 카운팅 방식으로 해결하였으며, 명시적 디버깅 로그를 통해 레이어 및 물리 설정 오류를 즉각 식별할 수 있도록 가시성을 확보함. 이를 통해 PotionTable의 배급 권한 승인 프로세스의 안정성을 보장함.
