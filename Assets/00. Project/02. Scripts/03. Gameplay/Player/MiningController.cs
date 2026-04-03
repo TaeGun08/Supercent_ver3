@@ -88,10 +88,17 @@ public class MiningController : MonoBehaviour
         if (target == null) return;
 
         ItemStacker stoneStacker = inventory.StoneStacker;
-        IPickupAble resource = target.MineResource(stoneStacker.IsFull);
+        
+        if (stoneStacker.IsFull)
+        {
+            UIManager.Instance.ShowMaxUI(transform);
+            return;
+        }
+
+        IPickupAble resource = target.MineResource(false);
         sensor.MiningTargets?.Remove(target);
 
-        if (resource != null && !stoneStacker.IsFull)
+        if (resource != null)
         {
             PlayMiningVisualEffect(resource, stoneStacker);
         }
@@ -102,7 +109,7 @@ public class MiningController : MonoBehaviour
         DOParabolicMove.MoveToDynamicTarget(
             resource.Transform,
             targetStacker.transform,
-            height: 1f,
+            height: 0f,
             duration: 0.1f,
             yOffset: targetStacker.CurrentCount * targetStacker.ItemHeight,
             onComplete: () => { targetStacker.PushStack(resource); }

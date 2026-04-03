@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class PrisonManager : SingletonBase<PrisonManager>
@@ -8,18 +9,16 @@ public class PrisonManager : SingletonBase<PrisonManager>
     [SerializeField] private int maxCapacity = 20;
     [SerializeField] private Transform prisonEntrance;
     [SerializeField] private Transform waitingAreaPoint;
-    [SerializeField] private GameObject prisonDoor; // 감옥 문 오브젝트
+    [SerializeField] private GameObject prisonDoor;
+    [SerializeField] private TMP_Text prisonerCountText;
 
     private int currentPrisonerCount;
-    private int activePrisoners = 0; // 현재 월드에 존재하는 전체 죄수 수 (스폰된 인원 포함)
-    private int enteringCount = 0; 
+    private int activePrisoners;
+    private int enteringCount; 
     private readonly HashSet<Npc> waitingNPCs = new();
 
     public bool IsFull => activePrisoners >= maxCapacity;
-
-    /// <summary>
-    /// 새로운 죄수가 스폰되었을 때 호출 (수용량 예약)
-    /// </summary>
+    
     public void RegisterNewPrisoner()
     {
         activePrisoners++;
@@ -27,16 +26,13 @@ public class PrisonManager : SingletonBase<PrisonManager>
 
     public Vector3 GetWaitingPoint()
     {
-        Debug.Assert(waitingAreaPoint != null, "[PrisonManager] waitingAreaPoint가 설정되지 않았습니다.");
         return waitingAreaPoint.position;
     }
 
     public void TryEnterPrison(Npc npc)
     {
         if (npc == null) return;
-
-        // 실제 수감 로직은 이미 등록된 인원을 처리하는 것이므로 IsFull 체크가 아닌 
-        // 물리적 공간(enteringCount) 등을 관리합니다.
+        
         if (currentPrisonerCount >= maxCapacity)
         {
             waitingNPCs.Add(npc);

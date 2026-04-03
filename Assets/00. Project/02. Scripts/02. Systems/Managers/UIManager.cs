@@ -10,6 +10,15 @@ public class UIManager : SingletonBase<UIManager>
     [Header("Gold UI")]
     [SerializeField] private GoldUI goldUI;
 
+    [Header("Max UI")]
+    [SerializeField] private MaxUI maxUI;
+
+    public void ShowMaxUI(Transform target)
+    {
+        if (maxUI == null) return;
+        maxUI.Play(target);
+    }
+
     public void ShowPrisonerUI(Transform target, int current, int total)
     {
         prisonerUI.Initialize(target, total);

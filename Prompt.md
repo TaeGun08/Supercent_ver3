@@ -155,7 +155,7 @@
 > 내가 만들고 있는 게임의 프로젝트 스크립트 파일 내부 코드들은 전체적으로 자세히 분석해줘. 파일 이름은 "02. Scripts"이야.
 
 **AI**:
-- **Engineering Summary**: Assets/00. Project/02. Scripts 내 전수 조사를 통해 SingletonBase의 FindObjectOfType 오버헤드와 PoolManager의 Type 기반 관리 한계, 그리고 .asmdef 부재로 인한 컴파일 비효율성을 핵심 결함으로 식별함. 시스템 전반의 물리적/논리적 결합도를 낮추고 [Fail-Fast] 원칙을 강화하기 위한 4대 영역(구조, 안정성, 성능, 환경) 진단 브리핑을 제출함.
+- **Engineering Summary**: Assets/00. Project/02. Scripts 내 전수 조사를 통해 SingletonBase of FindObjectOfType 오버헤드와 PoolManager의 Type 기반 관리 한계, 그리고 .asmdef 부재로 인한 컴파일 비효율성을 핵심 결함으로 식별함. 시스템 전반의 물리적/논리적 결합도를 낮추고 [Fail-Fast] 원칙을 강화하기 위한 4대 영역(구조, 안정성, 성능, 환경) 진단 브리핑을 제출함.
 
 **User**:
 > 리팩터링을 진행해줘. 혹시 모르니 내가 전체적으로 되돌리고 싶다고 하면 현재 프로젝트의 상태로 되돌리면 돼.
@@ -287,7 +287,7 @@
 > LIFO 일관성 확보 및 애니메이션 스냅 버그 수정 요청. 가마솥 상호작용 기능을 범용 모듈로 분리해줘.
 
 **AI**:
-- **Engineering Summary**: ItemStacker의 인덱스 기반 좌표 계산 로직(GetPositionAtIndex)을 정밀화하여 적재 시 발생하는 비주얼 스냅 버그를 해결함. 전용 상호작용 브리지인 [StackInteractionZone]을 신규 구축하여 가마솥에 종속된 로직을 범용 모듈로 추출하였으며, 이를 통해 다양한 자원 저장 시설에 즉시 적용 가능한 확장성을 확보함. 시스템 전반의 LIFO 메커니즘을 재정렬하여 물리적 현실감과 데이터 정합성을 동시에 달성함.
+- **Engineering Summary**: ItemStacker의 인덱스 기반 좌표 계산 로직(GetPositionAtIndex)을 정밀화하여 적재 시 발생하는 비주얼 스냅 버그를 해결함. 전용 상호작용 브리지인 [StackInteractionZone] 신규 구축하여 가마솥에 종속된 로직을 범용 모듈로 추출하였으며, 이를 통해 다양한 자원 저장 시설에 즉시 적용 가능한 확장성을 확보함. 시스템 전반의 LIFO 메커니즘을 재정렬하여 물리적 현실감과 데이터 정합성을 동시에 달성함.
 
 **User**:
 > StackInteractionZone.cs 오류 수정 요청. PlayerStackManager를 Inventory로 이름 변경함.
@@ -423,10 +423,24 @@
 
 ---
 
-## [2026-04-04] Prisoner UI Leasing System Refactoring
-
 **User**:
 > PrisonerUI가 배급 중인 NPC에게만 동적으로 노출되도록 개선 요청. 테이블 도착 시 활성화, 배급 완료 시 즉시 비활성화 필수.
 
 **AI**:
 - **Engineering Summary**: 단일 PrisonerUI를 여러 NPC가 공유하는 **[UI Leasing]** 시스템을 구축함. UIManager를 싱글톤 기반의 소유권자로 설정하여 UI 인스턴스 관리를 일원화함. Prisoner NPC가 대기열 맨 앞(테이블 앞) 지점에 완벽히 정지(!IsMoving)했을 때만 UI를 요청(Show)하고, 필요한 포션을 모두 수령한 즉시(CompleteCollection 최상단) 반납(Hide)하는 상태 기반 제어 로직을 구현함. 이를 통해 런타임 드로우 콜과 메모리 오버헤드를 최적화하고, 플레이어의 시각적 피드백을 현재 활성 타겟에게만 집중시키는 고품질 UI 아키텍처를 완성함.
+
+---
+
+**User**:
+> 플레이어나 보관소의 인벤토리가 가득 찼을 때 노출되는 MaxUI 시스템 구현 요청.
+
+**AI**:
+- **Engineering Summary**: 자원 수집/이동 제한 상태를 시각화하는 **[Context-Aware MaxUI Notification]** 전략을 수립함. `ItemStacker`의 `IsFull` 상태를 트리거로 활용하며, `UIManager`를 통해 플레이어나 특정 보관소 위치에 `MaxUI`를 동적으로 할당하는 구조를 설계함. 이를 통해 행동의 거부 원인을 플레이어에게 즉각 피드백하고, 게임의 물리적 제약 조건을 시각적으로 명확히 전달하는 UX 강화 설계를 제안함.
+
+---
+
+**User**:
+> MaxUI가 나타날 때 위로 천천히 올라가는 상승 연출 추가 요청.
+
+**AI**:
+- **Engineering Summary**: 월드 좌표 추적과 시각적 연출 간의 논리적 충돌을 방지하기 위해 **[Animation Offset Decoupling]** 기법을 적용함. `currentVisualOffset` 변수를 DOTween으로 제어하여 타겟의 스크린 좌표에 합산하는 방식으로 설계함. 이를 통해 타겟이 이동하는 중에도 상승 연출이 안정적으로 유지되도록 보장하였으며, `OutCubic` 이징을 적용하여 팝업 피드백의 품질을 고도화함.

@@ -51,7 +51,14 @@ public class StackInteractionZone : MonoBehaviour
     {
         ItemStacker playerSource = inventory.GetStacker(targetStacker.AcceptableType);
         
-        if (playerSource == null || !playerSource.HasItem || targetStacker.IsFull) return;
+        if (playerSource == null || !playerSource.HasItem) return;
+
+        // [MaxUI Trigger]: 타겟 보관소가 가득 찼을 때
+        if (targetStacker.IsFull)
+        {
+            UIManager.Instance.ShowMaxUI(targetStacker.transform);
+            return;
+        }
 
         IPickupAble item = playerSource.PopStack();
         if (item == null) return;
@@ -71,7 +78,14 @@ public class StackInteractionZone : MonoBehaviour
     {
         ItemStacker playerTarget = inventory.GetStacker(targetStacker.AcceptableType);
         
-        if (playerTarget == null || playerTarget.IsFull || !targetStacker.HasItem) return;
+        if (playerTarget == null || !targetStacker.HasItem) return;
+
+        // [MaxUI Trigger]: 플레이어 인벤토리가 가득 찼을 때
+        if (playerTarget.IsFull)
+        {
+            UIManager.Instance.ShowMaxUI(inventory.transform);
+            return;
+        }
 
         IPickupAble item = targetStacker.PopStack();
         if (item == null) return;
