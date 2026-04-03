@@ -8,8 +8,10 @@ public class PrisonManager : SingletonBase<PrisonManager>
     [SerializeField] private int maxCapacity = 20;
     [SerializeField] private Transform prisonEntrance;
     [SerializeField] private Transform waitingAreaPoint;
+    [SerializeField] private GameObject prisonDoor; // 감옥 문 오브젝트
 
     private int currentPrisonerCount;
+    private int enteringCount = 0; // 현재 입구로 이동 중인 인원 수
     private readonly HashSet<Npc> waitingNPCs = new();
 
     public bool IsFull => currentPrisonerCount >= maxCapacity;
@@ -39,10 +41,21 @@ public class PrisonManager : SingletonBase<PrisonManager>
         currentPrisonerCount++;
         waitingNPCs.Remove(npc);
         
+        // [Door Control]: 입소 시작 시 문 열기 (비활성화)
+        enteringCount++;
+        if (prisonDoor != null) prisonDoor.SetActive(false);
+
         npc.MoveTo(prisonEntrance.position, () => {
             npc.transform.DORotate(new Vector3(0, npc.transform.eulerAngles.y + 180f, 0), 0.5f)
                 .OnComplete(() => {
                     if (npc.Rb != null) npc.Rb.freezeRotation = true;
+
+                    // [Door Control]: 정렬 완료 후 문 닫기 체크
+                    enteringCount--;
+                    if (enteringCount <= 0 && prisonDoor != null)
+                    {
+                        prisonDoor.SetActive(true);
+                    }
                 });
         });
     }

@@ -195,6 +195,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42e6b82c320be6a48b0efaa373d2cfc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &212104553 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3314454589549109188, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+  m_PrefabInstance: {fileID: 5781783370106455885}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &267271881
 GameObject:
   m_ObjectHideFlags: 0
@@ -1040,9 +1045,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcda3e32b927b2544beaca38d94203db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxCapacity: 20
+  maxCapacity: 1
   prisonEntrance: {fileID: 447144963}
   waitingAreaPoint: {fileID: 55400170}
+  prisonDoor: {fileID: 212104553}
 --- !u!1 &1423326171
 GameObject:
   m_ObjectHideFlags: 0
