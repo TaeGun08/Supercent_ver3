@@ -43,7 +43,9 @@ public class PrisonManager : SingletonBase<PrisonManager>
         waitingNPCs.Remove(npc);
         
         npc.MoveTo(prisonEntrance.position, () => {
-            npc.gameObject.SetActive(false);
+            // [User Request]: 죄수가 사라지지 않고 감옥에 머물도록 수정
+            // npc.gameObject.SetActive(false); 
+            Debug.Log($"[PrisonManager] 죄수 {npc.name} 수감 완료. (현재 수감 인원: {currentPrisonerCount})");
         });
     }
     

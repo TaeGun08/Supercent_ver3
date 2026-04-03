@@ -378,3 +378,9 @@
 
 **AI**:
 - **Engineering Summary**: 물리 구조 재편 및 대규모 리팩터링 중 발생한 Npc.cs의 구문 오류(중복 선언 및 괄호 불일치)를 해결함. Prisoner NPC의 상속 관계 및 DOTween 네임스페이스 참조를 정상화하였으며, [IsMoving] 프로퍼티와 애니메이션 파라미터 간의 동기화 로직을 최적화하여 물리적 이동과 시각적 피드백의 일치성을 확보함. 이를 통해 프로젝트 전반의 컴파일 무결성을 복구함.
+
+**User**:
+> 죄수자는 감옥에 도착해서 사라지면 안 돼. 계속 모아둬야 해.
+
+**AI**:
+- **Engineering Summary**: Prisoner NPC의 최종 수감 단계를 [Disappearing]에서 [Persistent Presence] 구조로 변경함. PrisonManager의 입소 완료 콜백에서 비활성화(SetActive) 로직을 주석 처리하여 죄수가 감옥 구역에 상주하도록 수정하였으며, 논리적 수용량 카운팅은 유지하여 대기열 시스템과의 연동 무결성을 확보함.
