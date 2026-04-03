@@ -502,3 +502,11 @@
 
 **AI**:
 - **Engineering Summary**: 시스템 간 참조 무결성 확보를 위해 **[Dynamic Worker Discovery]** 메커니즘을 `PotionTable`에 적용함. 인부가 해금 전 비활성화 상태였다가 런타임에 활성화되는 시나리오를 대응하기 위해, 배급 권한 체크 시점에 인부 인스턴스를 동적으로 재탐색하는 로직을 추가함. 또한 `IsAtDistributionPoint()`에 정밀한 **거리 검사(Distance Check)**를 보완하여, 인부가 물리적으로 정확한 위치에 정지했을 때만 배급 권한을 승인하도록 로직 안정성을 강화함.
+
+---
+
+**User**:
+> Prisoner NPC가 감옥으로 이동을 시작할 때 PrisonerUI가 즉시 숨겨지도록 수정 요청.
+
+**AI**:
+- **Engineering Summary**: 이동 시퀀스와 UI 상태의 시각적 일관성을 확보하기 위해 **[Guaranteed UI Release on Move]** 로직을 적용함. `GoToPrison` 코루틴 진입 시점에 `UIManager.HidePrisonerUI()`를 명시적으로 호출하여, 포션 수령 완료 직후의 시점 차이로 인해 발생할 수 있는 UI 잔존 현상을 차단함. 이를 통해 NPC의 상태 전이(수령 완료 -> 감옥 이동)와 월드 내 피드백 간의 물리적 타이밍을 완벽히 동기화함.

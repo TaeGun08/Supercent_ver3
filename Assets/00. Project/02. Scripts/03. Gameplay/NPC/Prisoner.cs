@@ -106,6 +106,13 @@ private IEnumerator CollectRequiredPotions()
 
     private IEnumerator GoToPrison()
     {
+        // [Guaranteed Hide]: 이동 시작 시 UI 확실히 제거
+        if (isUIShown)
+        {
+            UIManager.Instance.HidePrisonerUI();
+            isUIShown = false;
+        }
+
         currentState = PrisonerState.MovingToPrison;
 
         Vector3 waitingPoint = PrisonManager.Instance.GetWaitingPoint();

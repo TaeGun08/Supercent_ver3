@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Unlock_TransportWorker
   m_EditorClassIdentifier: 
   unlockId: 0
-  requiredGold: 1
+  requiredGold: 50
