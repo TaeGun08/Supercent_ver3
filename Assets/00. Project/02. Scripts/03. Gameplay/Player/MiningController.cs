@@ -102,7 +102,7 @@ public class MiningController : MonoBehaviour
         DOParabolicMove.MoveToDynamicTarget(
             resource.Transform,
             targetStacker.transform,
-            height: 1.5f,
+            height: 1f,
             duration: 0.1f,
             yOffset: targetStacker.CurrentCount * targetStacker.ItemHeight,
             onComplete: () => { targetStacker.PushStack(resource); }
