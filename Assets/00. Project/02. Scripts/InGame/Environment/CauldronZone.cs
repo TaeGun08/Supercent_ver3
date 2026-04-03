@@ -60,17 +60,23 @@ public class CauldronZone : MonoBehaviour
 
     private void HandleInput(GameObject playerObj)
     {
-        // [DIP]: 플레이어의 스톤 스태커 탐색
         StoneStacker stoneStacker = playerObj.GetComponentInChildren<StoneStacker>();
         if (stoneStacker == null || !stoneStacker.HasItem) return;
 
-        // 돌 1개 추출 후 가마솥 투입
-        IPickupAble stone = stoneStacker.PopStack();
+        IPickupAble stone = stoneStacker.PopStack(playerObj.transform.position);
         if (stone != null)
         {
-            // [Visual Feedback]: 가마솥으로 날아가는 연출 (임시: 즉시 투입)
-            stone.Release(); 
-            cauldron.AddResource();
+            // [Visual Feedback]: 가마솥으로 날아가는 연출 후 투입
+            DOParabolicMove.MoveToStaticPosition(
+                stone.Transform, 
+                cauldron.transform.position + Vector3.up * 2f, 
+                height: 1.5f, 
+                duration: 0.5f, 
+                onComplete: () => {
+                    stone.Release();
+                    cauldron.AddResource();
+                }
+            );
         }
     }
 
@@ -83,8 +89,17 @@ public class CauldronZone : MonoBehaviour
         Potion potion = cauldron.TakePotion();
         if (potion != null)
         {
-            // [Visual Feedback]: 플레이어 스택으로 추가
-            potionStacker.PushStack(potion);
+            // [Visual Feedback]: 플레이어 스택으로 날아가는 연출
+            DOParabolicMove.MoveToDynamicTarget(
+                potion.Transform, 
+                playerObj.transform, 
+                height: 2f, 
+                duration: 0.5f, 
+                yOffset: 1.5f, // 등 위쪽 타겟
+                onComplete: () => {
+                    potionStacker.PushStack(potion);
+                }
+            );
         }
     }
 }

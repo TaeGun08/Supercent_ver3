@@ -204,3 +204,15 @@
 
 **AI**:
 - **Engineering Summary**: 포션 제작을 위한 [State-Based Producer-Consumer Architecture]를 구축함. MagicCauldron에 상태 머신(FSM)을 적용하여 자원 예약 제작 루프를 구현하였으며, CauldronZone(Input/Output)을 통해 플레이어 인벤토리(ItemStacker)와의 자원 교환을 자동화함. 인터페이스 기반의 자원 처리(IPickupAble)와 [Fail-Fast] 검증을 통해 시스템 간 독립성과 런타임 안정성을 확보함.
+
+**User**:
+> 이제는 필요없어진 기능 또는 스크립트들이 있다면 삭제해줘. 그리고 지금 내가 원하는 건 돌을 특정 구역에 놓고 가마솥에서 놓은 돌들을 이용해서 포션을 제작하는 시스템이야. 추가적으로 빨려들어가는 연출까지 만들면 좋을 것 같아.
+
+**AI**:
+- **Engineering Summary**: 중복된 장비 하위 클래스(PickAxe, Drill 등)를 삭제하여 아키텍처를 정화하고, 가마솥 제작 시스템에 [Visual Feedback]을 통합함. DOParabolicMove를 활용해 자원이 가마솥으로 빨려 들어가는 포물선 연출을 구현하였으며, 애니메이션 완료 시점에 논리적 상태를 갱신하는 콜백 기반 동기화 로직을 구축하여 시각적 생동감과 데이터 무결성을 동시에 확보함.
+
+**User**:
+> InQuarry영역에 들어가야지만 내가 장비들이 활성화 되게 만들었는데 전체적인 리팩터링 이후 그 기능이 사라진 것 같아. 보완해줘.
+
+**AI**:
+- **Engineering Summary**: 리팩터링 과정에서 누락된 채굴 구역 활성화 로직을 [Centralized Control] 구조로 복구함. MiningController에 isInMiningZone 플래그와 SetMiningZoneActive 인터페이스를 추가하여 구역 외 채굴 타이머를 차단하였으며, InQuarry 트리거와 연동하여 장비 외형의 동적 활성화를 보장함. [Fail-Fast] 원칙에 따른 컴포넌트 검증을 추가하여 런타임 안정성을 확보함.

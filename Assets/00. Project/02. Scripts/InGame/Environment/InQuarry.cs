@@ -15,12 +15,20 @@ public class InQuarry : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.layer != playerLayer) return;
-        other.GetComponent<MiningController>().SetActiveEquipment(true);
+
+        if (other.TryGetComponent(out MiningController controller))
+        {
+            controller.SetMiningZoneActive(true);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.layer != playerLayer) return;
-        other.GetComponent<MiningController>().SetActiveEquipment(false);
+
+        if (other.TryGetComponent(out MiningController controller))
+        {
+            controller.SetMiningZoneActive(false);
+        }
     }
 }

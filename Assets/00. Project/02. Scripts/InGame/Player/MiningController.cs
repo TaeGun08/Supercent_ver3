@@ -15,6 +15,7 @@ public class MiningController : MonoBehaviour
     private PlayerAnimation playerAnimation;
     private float miningTimer;
     private bool isMiningInProgress;
+    private bool isInMiningZone;
 
     private void Awake()
     {
@@ -32,18 +33,31 @@ public class MiningController : MonoBehaviour
             }
         }
 
-        // 초기 장비 설정
+        // 초기 장비 설정 및 비활성화 (구역 진입 전까지)
         currentMiningEq = miningEquipments[0];
         miningTimer = currentMiningEq.MiningData.MiningDelay;
+        SetMiningZoneActive(false);
     }
 
     private void Update()
     {
-        // 포션 스택이 있거나 장비가 없으면 중단
+        // 채굴 구역이 아니거나, 포션 스택이 있거나, 제작 중이면 중단
+        if (!isInMiningZone) return;
         if (potionStacker != null && potionStacker.HasItem) return;
         if (currentMiningEq == null || isMiningInProgress) return;
 
         UpdateMiningProcess();
+    }
+
+    public void SetMiningZoneActive(bool active)
+    {
+        isInMiningZone = active;
+        
+        // 시각적 활성화/비활성화
+        if (currentMiningEq != null && currentMiningEq.VisualObject != null)
+        {
+            currentMiningEq.VisualObject.SetActive(active);
+        }
     }
 
     private void UpdateMiningProcess()
