@@ -1046,6 +1046,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tableStacker: {fileID: 5558608101701338138}
+  moneyStacker: {fileID: 827919403025452506}
+  goldPrefab: {fileID: 4048303701322086229, guid: 0268145eb5169ad4cb6548416dc50408, type: 3}
   playerDetectionZone: {fileID: 4115039689051466531}
 --- !u!1 &4823371893696422423
 GameObject:
@@ -1548,11 +1550,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4288152084789612169}
   - component: {fileID: 5060924202750385439}
-  - component: {fileID: 3687405064927482804}
   - component: {fileID: 827919403025452506}
   - component: {fileID: 3340421607033523852}
   m_Layer: 0
-  m_Name: MoneyZone
+  m_Name: OutputGold
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1594,33 +1595,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.5, y: 1, z: 1.5}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &3687405064927482804
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6574165605444205962}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!114 &827919403025452506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1634,12 +1608,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 1
-  maxStackCount: 30
-  itemHeight: 0.5
+  maxStackCount: 50
+  itemHeight: 0.25
   gridColumns: 2
-  gridRows: 2
-  spacingX: 0.5
-  spacingZ: 0.5
+  gridRows: 3
+  spacingX: 0.8
+  spacingZ: 0.4
 --- !u!114 &3340421607033523852
 MonoBehaviour:
   m_ObjectHideFlags: 0

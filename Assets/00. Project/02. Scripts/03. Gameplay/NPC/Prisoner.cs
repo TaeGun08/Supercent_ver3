@@ -92,6 +92,9 @@ public class Prisoner : Npc
         if (headObject != null) headObject.SetActive(true);
         if (prisonerUI != null) prisonerUI.Hide();
 
+        // [Reward Trigger]: 배급 완료 시 골드 생성 요청
+        if (targetTable != null) targetTable.ProduceGold();
+
         WaitingLineManager.Instance.OnFrontPersonLeft();
     }
 

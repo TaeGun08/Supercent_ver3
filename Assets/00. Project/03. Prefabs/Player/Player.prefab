@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 0
-  maxStackCount: 10
+  maxStackCount: 15
   itemHeight: 0.5
   gridColumns: 1
   gridRows: 1
@@ -574,8 +574,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 1
-  maxStackCount: 10
-  itemHeight: 0.5
+  maxStackCount: 30
+  itemHeight: 0.25
   gridColumns: 1
   gridRows: 1
   spacingX: 0.5
@@ -1060,7 +1060,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   acceptableType: 2
-  maxStackCount: 10
+  maxStackCount: 20
   itemHeight: 0.5
   gridColumns: 1
   gridRows: 1
@@ -1818,7 +1818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42e6b82c320be6a48b0efaa373d2cfc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputSource: {fileID: 0}
   playerData: {fileID: 11400000, guid: e6a8e9fd80208c54bab3fcb36a3de6a4, type: 2}
 --- !u!114 &7221200558233369282
 MonoBehaviour:

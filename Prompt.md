@@ -414,3 +414,9 @@
 
 **AI**:
 - **Engineering Summary**: 감옥 수용량 관리 로직을 [Potential Occupancy Registry] 구조로 개편함. PrisonerSpawner와 PrisonManager 간의 스폰 즉시 등록 메커니즘을 구축하여, 월드 내 이동 중인 NPC를 포함한 전체 수용량 합계가 Max Capacity를 초과하지 않도록 보장함. 이를 통해 포션 테이블 대기열의 정체와 상관없이 최종 수감 가능 인원만을 정밀하게 통제하는 스폰 밸런싱 시스템을 완성함.
+
+**User**:
+> 배급 완료 시 골드 생성 및 moneyZone 적재 로직 구현 요청. 연출 없이 즉시 생성 필수.
+
+**AI**:
+- **Engineering Summary**: 자원 배급 루프의 최종 보상 단계인 [Gold Reward System]을 구축함. PotionTable 클래스에 골드 프리팹 및 moneyStacker 참조를 통합하고, Prisoner NPC의 수령 완료 시점에 이를 트리거하는 인터페이스를 구현함. 요청 사항에 따라 Parabolic Tween을 생략한 즉시 적재(PushStack) 방식을 채택하여 보상 획득의 직관성을 높임.
