@@ -384,3 +384,15 @@
 
 **AI**:
 - **Engineering Summary**: Prisoner NPC의 최종 수감 단계를 [Disappearing]에서 [Persistent Presence] 구조로 변경함. PrisonManager의 입소 완료 콜백에서 비활성화(SetActive) 로직을 주석 처리하여 죄수가 감옥 구역에 상주하도록 수정하였으며, 논리적 수용량 카운팅은 유지하여 대기열 시스템과의 연동 무결성을 확보함.
+
+**User**:
+> Prisoner 이동 정밀도 보정 및 도착 후 Rigidbody 회전 고정 요청. (오버슈팅 및 물리 불안정 해결)
+
+**AI**:
+- **Engineering Summary**: Npc 베이스 클래스의 MoveTo 시퀀스에 물리 속도 초기화 루틴을 삽입하고 FixedUpdate 동기화 설정을 적용하여 이동 정밀도를 극대화함. Prisoner NPC의 수감 루틴 중 회전 연출 완료 시점에 Rigidbody Constraints를 조작하여 모든 축의 회전을 잠금(Freeze Rotation) 처리함으로써 외부 충돌 안정성을 확보함. 도착 판정 로직의 수치 보정을 통해 고질적인 오버슈팅 현상을 해결하고 아키텍처의 물리적 신뢰성을 강화함.
+
+**User**:
+> Prisoner 대기 구역 도착 정밀도 보정 및 감옥 도착 후 180도 회전 로직 수정 요청.
+
+**AI**:
+- **Engineering Summary**: 죄수 수감 시퀀스를 [Verification-Based Sequential Flow]로 개편함. WaitingPoint 도착 시 0.3초의 강제 정지 타임을 삽입하여 오버슈팅 현상을 시각적으로 해결하였으며, 180도 회전 및 물리 고정 로직을 감옥 최종 도착 완료(OnComplete) 시점으로 이전하여 기획 의도에 부합하는 수감 연출을 완성함. PrisonManager로 최종 연출 책임을 일원화하여 도메인 간 결합도를 낮추고 런타임 안정성을 강화함.

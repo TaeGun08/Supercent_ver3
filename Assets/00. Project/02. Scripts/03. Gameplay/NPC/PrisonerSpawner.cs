@@ -13,9 +13,6 @@ public class PrisonerSpawner : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Assert(prisonerPrefab != null, "[PrisonerSpawner] prisonerPrefab이 누락되었습니다.");
-        Debug.Assert(potionTable != null, "[PrisonerSpawner] potionTable 참조가 누락되었습니다.");
-
         PoolManager.Instance.CreatePool(prisonerPrefab, initialCount: 5);
     }
 
@@ -46,7 +43,6 @@ public class PrisonerSpawner : MonoBehaviour
         newPrisoner.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
         newPrisoner.gameObject.SetActive(true);
 
-        // 의존성 주입
         int needed = Random.Range(1, 4);
         newPrisoner.Initialize(potionTable, needed);
     }

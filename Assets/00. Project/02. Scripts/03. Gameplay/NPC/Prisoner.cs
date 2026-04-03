@@ -10,6 +10,7 @@ public class Prisoner : Npc
     
     [Header("Prisoner Settings")]
     [SerializeField] private GameObject headObject;
+    [SerializeField] private PrisonerUI prisonerUI;
     
     private int requiredPotionCount;
     private int currentPotionCount = 0;
@@ -25,12 +26,18 @@ public class Prisoner : Npc
         rigidBody = GetComponent<Rigidbody>();
         wait = new WaitForSeconds(0.2f);
         if (headObject != null) headObject.SetActive(false);
+        if (prisonerUI != null) prisonerUI.Hide();
     }
 
     public void Initialize(PotionTable table, int neededPotions)
     {
         targetTable = table;
         requiredPotionCount = neededPotions;
+        
+        if (prisonerUI != null)
+        {
+            prisonerUI.Initialize(transform, requiredPotionCount);
+        }
         
         StartCoroutine(MainBehaviorRoutine());
     }
@@ -52,6 +59,9 @@ public class Prisoner : Npc
         WaitingLineManager.Instance.JoinLine(this);
         
         yield return new WaitUntil(() => IsMoving == false);
+
+        if (prisonerUI != null) prisonerUI.Show();
+
         currentState = PrisonerState.WaitingInTableLine;
     }
 
@@ -80,23 +90,24 @@ public class Prisoner : Npc
     private void CompleteCollection()
     {
         if (headObject != null) headObject.SetActive(true);
+        if (prisonerUI != null) prisonerUI.Hide();
+
         WaitingLineManager.Instance.OnFrontPersonLeft();
     }
 
     private IEnumerator GoToPrison()
     {
         currentState = PrisonerState.MovingToPrison;
-        
+
         Vector3 waitingPoint = PrisonManager.Instance.GetRandomWaitingPoint();
         MoveTo(waitingPoint);
-        
-        yield return new WaitUntil(() => IsMoving == false);
-        
-        transform.DORotate(new Vector3(0, transform.eulerAngles.y + 180f, 0), 0.5f).Complete();
+
+        yield return new WaitUntil(() => !IsMoving);
+        yield return new WaitForSeconds(0.3f); 
+
         currentState = PrisonerState.WaitingForPrisonSpace;
-        
+
         PrisonManager.Instance.TryEnterPrison(this);
-        rigidBody.freezeRotation = true;
     }
 
     private IEnumerator ExecuteTakingPotion(ItemStacker source)
@@ -115,6 +126,8 @@ public class Prisoner : Npc
             onComplete: () =>
             {
                 currentPotionCount++;
+                if (prisonerUI != null) prisonerUI.UpdateCount(currentPotionCount);
+
                 potion.Release(); 
                 moveComplete = true;
             }
