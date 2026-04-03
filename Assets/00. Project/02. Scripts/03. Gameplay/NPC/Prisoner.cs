@@ -6,8 +6,6 @@ public enum PrisonerState { MovingToTableLine, WaitingInTableLine, TakingPotions
 
 public class Prisoner : Npc
 {
-    private Rigidbody rigidBody;
-    
     [Header("Prisoner Settings")]
     [SerializeField] private GameObject headObject;
     [SerializeField] private PrisonerUI prisonerUI;
@@ -23,21 +21,14 @@ public class Prisoner : Npc
     {
         base.Awake();
         
-        rigidBody = GetComponent<Rigidbody>();
         wait = new WaitForSeconds(0.2f);
         if (headObject != null) headObject.SetActive(false);
-        if (prisonerUI != null) prisonerUI.Hide();
     }
 
     public void Initialize(PotionTable table, int neededPotions)
     {
         targetTable = table;
         requiredPotionCount = neededPotions;
-        
-        if (prisonerUI != null)
-        {
-            prisonerUI.Initialize(transform, requiredPotionCount);
-        }
         
         StartCoroutine(MainBehaviorRoutine());
     }
@@ -59,9 +50,7 @@ public class Prisoner : Npc
         WaitingLineManager.Instance.JoinLine(this);
         
         yield return new WaitUntil(() => IsMoving == false);
-
-        if (prisonerUI != null) prisonerUI.Show();
-
+        
         currentState = PrisonerState.WaitingInTableLine;
     }
 
@@ -92,7 +81,6 @@ public class Prisoner : Npc
         if (headObject != null) headObject.SetActive(true);
         if (prisonerUI != null) prisonerUI.Hide();
 
-        // [Reward Trigger]: 배급 완료 시 골드 생성 요청
         if (targetTable != null) targetTable.ProduceGold();
 
         WaitingLineManager.Instance.OnFrontPersonLeft();
@@ -102,7 +90,6 @@ public class Prisoner : Npc
     {
         currentState = PrisonerState.MovingToPrison;
 
-        // 1. [Mandatory]: 감옥 앞 대기 구역으로 먼저 이동
         Vector3 waitingPoint = PrisonManager.Instance.GetWaitingPoint();
         MoveTo(waitingPoint);
 

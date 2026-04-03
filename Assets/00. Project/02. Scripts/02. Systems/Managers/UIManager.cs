@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UIManager : SingletonBase<UIManager>
 {
-    [Header("Target Canvas")]
-    [SerializeField] private BubbleUI bubbleUI;
-    public BubbleUI BubbleUI => bubbleUI;
+    [Header("Prisoner UI")]
+    [SerializeField] private PrisonerUI prisonerUI;
+    public PrisonerUI PrisonerUI => prisonerUI;
 }

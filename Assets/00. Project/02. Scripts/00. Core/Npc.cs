@@ -12,7 +12,6 @@ public abstract class Npc : MonoBehaviour
 
     [Header("Npc Base Settings")]
     [SerializeField] protected float moveSpeed = 2f;
-    [SerializeField] protected float rotationSpeed = 10f;
 
     public Rigidbody Rb => rb;
     public bool IsMoving { get; private set; }
@@ -41,7 +40,6 @@ public abstract class Npc : MonoBehaviour
             return;
         }
 
-        // 이동 시작: 물리 간섭 차단
         IsMoving = true;
         animator.SetBool(IS_WALK, true);
         if (rb != null) rb.isKinematic = true; 
@@ -58,7 +56,6 @@ public abstract class Npc : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
-                // 도착 즉시 위치 스냅 및 물리 복구
                 transform.position = targetPos;
                 IsMoving = false;
                 animator.SetBool(IS_WALK, false);
