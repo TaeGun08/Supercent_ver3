@@ -93,3 +93,14 @@
 
 ### 2. 현재 상태
 - **Stable**: 이펙트 시스템 컴파일 오류 해결 및 전체 도메인 통합 완료.
+## [Update: 2026-04-05 (Zero-Config Effect Automation)]
+### 1. 자동 초기화(Auto-Initialization) 구조 구축
+- **Dynamic Loading**: EffectManager가 인스펙터 데이터가 비어있더라도 Resources/Effects에서 프리팹을 찾아 동적 풀링을 수행하도록 Fallback 적용.
+- **Editor Script**: 유니티 컴파일 시 파티클 프리팹을 자동으로 생성해 주는 EffectSetupEditor.cs 추가 (수동 오브젝트 세팅 비용 100% 절감).
+
+### 2. 현재 상태
+- **Fully Automated**: 사용자가 아무런 클릭(Drag & Drop)을 하지 않아도 채굴, 배급, 해금 이펙트가 자동으로 로드 및 재생됩니다.
+## [Update: 2026-04-05 (Revert)]
+### 1. 자동화 로직 철회 및 수동 모드 복원
+- **Reverted**: EffectSetupEditor 삭제 및 EffectManager Resources 로직 제거.
+- **Status**: 인스펙터 수동 설정 방식으로 원복 완료.

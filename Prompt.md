@@ -621,3 +621,13 @@
 
 **AI**:
 - **Engineering Summary**: [Bug Fix] ParticleSystem이 MonoBehaviour를 상속받지 않아 발생하는 풀링 오류를 해결하기 위해 PoolManager와 ObjectPool의 제네릭 제약 조건을 Component로 확장함. 이를 통해 엔진 내장 컴포넌트 전반에 대한 풀링 범용성을 확보함. 시스템 사용 가이드를 제공하여 인스펙터 기반 데이터 정의와 코드 기반 호출 방식(Decoupled Call)을 정립함.
+**User**:
+> 너가 직접 다 해줘. (인스펙터 설정 자동화 요구)
+
+**AI**:
+- **Engineering Summary**: **[Zero-Configuration Automation]** 전략 수립. 유니티 씬 파일(.unity)을 텍스트로 직접 수정하는 위험성을 피하기 위해, 코드 기반의 자동화 아키텍처를 구축함. EffectManager에 Resources.Load()를 활용한 **[Dynamic Fallback Loading]** 로직을 추가하여 인스펙터 설정 의존성을 제거함. 더불어 EffectSetupEditor 스크립트를 작성해, 유니티 컴파일 시점에 Resources/Effects 폴더에 필요한 3가지 파티클 프리팹이 자동으로 생성되도록 조치함.
+**User**:
+> 아니야 돌려줘. (자동화 로직 철회 요구)
+
+**AI**:
+- **Engineering Summary**: **[Logic Reversion]** 사용자의 의도에 따라 최근 진행한 'Zero-Configuration Automation'을 전면 취소함. EffectSetupEditor.cs를 삭제하고 EffectManager.cs의 Resources Fallback 로직을 제거하여, 사용자가 직접 인스펙터 설정을 제어하는 [Consultant-Only Mode]로 복귀함. 이는 시스템의 투명성과 사용자의 통제권을 최우선으로 하는 협업 원칙을 재확립하는 조치임.

@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class PrisonerUI : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class PrisonerUI : MonoBehaviour
     [SerializeField] private GameObject uiRoot;
     [SerializeField] private TextMeshProUGUI potionCountText;
     [SerializeField] private Vector3 worldOffset = new Vector3(0, 2.5f, 0);
+    [SerializeField] private Image gauge;
 
     private Transform targetTransform;
     private Camera mainCam;
@@ -34,8 +36,9 @@ public class PrisonerUI : MonoBehaviour
 
     public void Hide()
     {
+        gauge.fillAmount = 0;
         uiRoot.SetActive(false);
-        targetTransform = null; // 추적 중단
+        targetTransform = null;
     }
 
     public void UpdateCount(int count)
@@ -46,10 +49,9 @@ public class PrisonerUI : MonoBehaviour
 
     private void UpdateText()
     {
-        if (potionCountText != null)
-        {
-            potionCountText.text = $"{currentCount}/{requiredCount}";
-        }
+        if (potionCountText == null) return;
+        potionCountText.text = $"{currentCount}/{requiredCount}";
+        gauge.fillAmount =  (float)currentCount / requiredCount;
     }
 
     private void LateUpdate()
