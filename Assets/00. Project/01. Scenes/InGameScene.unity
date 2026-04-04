@@ -1574,8 +1574,8 @@ MonoBehaviour:
   waitingAreaPoint: {fileID: 55400170}
   prisonDoor: {fileID: 212104553}
   prisonerCountText: {fileID: 1354475757}
-  prisonUnlockZone: {fileID: 0}
-  prisonUnlockTarget: {fileID: 0}
+  prisonUnlockZone: {fileID: 4302082724670374729}
+  prisonUnlockTarget: {fileID: 1735017476}
 --- !u!1 &1214509782
 GameObject:
   m_ObjectHideFlags: 0
@@ -1605,7 +1605,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52c78ace861cba24dab2bcb9e2081520, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  steps: []
+  steps:
+  - stepName: 
+    condition: 0
+    target: {fileID: 0}
+    needCameraDirecting: 0
+    unlockZoneToActivate: {fileID: 0}
+  - stepName: 
+    condition: 1
+    target: {fileID: 0}
+    needCameraDirecting: 0
+    unlockZoneToActivate: {fileID: 0}
+  - stepName: 
+    condition: 2
+    target: {fileID: 0}
+    needCameraDirecting: 0
+    unlockZoneToActivate: {fileID: 0}
+  - stepName: 
+    condition: 3
+    target: {fileID: 0}
+    needCameraDirecting: 0
+    unlockZoneToActivate: {fileID: 0}
+  - stepName: 
+    condition: 4
+    target: {fileID: 0}
+    needCameraDirecting: 0
+    unlockZoneToActivate: {fileID: 0}
+  - stepName: 
+    condition: 5
+    target: {fileID: 0}
+    needCameraDirecting: 0
+    unlockZoneToActivate: {fileID: 0}
   currentStepIndex: 0
   navigationArrow: {fileID: 0}
 --- !u!4 &1214509784
@@ -1859,6 +1889,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2028757842}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1735017476 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 603375631778135395, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+  m_PrefabInstance: {fileID: 5781783370106455885}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1776108433
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2513,6 +2548,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 78d7b765bed5973409318cd7c26f6bc3, type: 3}
+--- !u!1 &4302082724670374729 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 477716022060600837, guid: e6491f0fb4587a2418451bda7ee7a8ee, type: 3}
+  m_PrefabInstance: {fileID: 8954573698024367682}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &5585918547277288394 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 157429838209912216, guid: 0c7ae80085f98ec48a2ef04083d89020, type: 3}
