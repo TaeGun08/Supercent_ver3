@@ -502,12 +502,17 @@ Transform:
   m_GameObject: {fileID: 447144962}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.3, y: 0, z: -4.18}
+  m_LocalPosition: {x: 5.91, y: 0, z: -2.68}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1201798101}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &482110228 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7591590913841831338, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+  m_PrefabInstance: {fileID: 5781783370106455885}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &538528683 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8380881341717666226, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
@@ -1599,6 +1604,9 @@ MonoBehaviour:
   - key: DistributionSuccess
     prefab: {fileID: 9157105887693468085, guid: c4f829cb7dd4b864caf8832ec5b1ee55, type: 3}
     initialCount: 1
+  - key: WorkerUnlock
+    prefab: {fileID: 141433446842962268, guid: 9fe8f8b3288e45a44af36ff8aa04486e, type: 3}
+    initialCount: 10
 --- !u!1 &1089504155
 GameObject:
   m_ObjectHideFlags: 0
@@ -1960,11 +1968,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1259037813}
   m_CullTransparentMesh: 1
---- !u!1 &1320748855 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7923655150315704585, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
-  m_PrefabInstance: {fileID: 5781783370106455885}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1354475757 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1579864439236103578, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
@@ -2126,6 +2129,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2028757842}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1733795978 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3254315799091683829, guid: 0c7ae80085f98ec48a2ef04083d89020, type: 3}
+  m_PrefabInstance: {fileID: 6268561227201095337}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1735017476 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 603375631778135395, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
@@ -3230,10 +3238,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unlock_MiningWorker
       objectReference: {fileID: 0}
-    - target: {fileID: 361894556651780078, guid: 1abb6c50a8b71904991ce80b6dc7006c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 1264216127305226476, guid: 1abb6c50a8b71904991ce80b6dc7006c, type: 3}
+      propertyPath: nextUnlock
+      value: 
+      objectReference: {fileID: 1733795978}
     - target: {fileID: 1264216127305226476, guid: 1abb6c50a8b71904991ce80b6dc7006c, type: 3}
       propertyPath: workersToActivate.Array.data[0]
       value: 
@@ -3350,7 +3358,7 @@ PrefabInstance:
     - target: {fileID: 2986872654666738103, guid: e6491f0fb4587a2418451bda7ee7a8ee, type: 3}
       propertyPath: upgrade.Array.data[0]
       value: 
-      objectReference: {fileID: 1320748855}
+      objectReference: {fileID: 482110228}
     - target: {fileID: 2986872654666738103, guid: e6491f0fb4587a2418451bda7ee7a8ee, type: 3}
       propertyPath: upgrade.Array.data[1]
       value: 
