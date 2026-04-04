@@ -89,12 +89,18 @@ public class MiningController : MonoBehaviour
         if (target == null) return;
 
         ItemStacker stoneStacker = inventory.StoneStacker;
-        bool isFull = stoneStacker.IsFull;
+        bool isFull = stoneStacker.IsFullWithPending; // 비행 중인 물량 포함 체크
 
         if (isFull)
         {
             UIManager.Instance.ShowMaxUI(transform);
         }
+
+        // 이펙트 재생 (타겟 위치)
+        EffectManager.Instance.PlayEffect("MiningHit", target.Transform.position);
+
+        // 슬롯 예약 (리소스 생성 성공 여부와 상관없이 공간 선점 시도)
+        if (!isFull) stoneStacker.ReserveSlot();
 
         IPickupAble resource = target.MineResource(isFull);
         sensor.MiningTargets?.Remove(target);
@@ -102,6 +108,11 @@ public class MiningController : MonoBehaviour
         if (resource != null)
         {
             PlayMiningVisualEffect(resource, stoneStacker);
+        }
+        else if (!isFull)
+        {
+            // 리소스 생성이 취소된 경우(파괴만 된 경우) 예약 취소
+            stoneStacker.CancelReservation();
         }
     }
 

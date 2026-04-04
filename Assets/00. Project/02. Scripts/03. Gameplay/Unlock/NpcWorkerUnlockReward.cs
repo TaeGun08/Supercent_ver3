@@ -26,6 +26,8 @@ public class NpcWorkerUnlockReward : MonoBehaviour, IUnlockReward
             if (worker != null)
             {
                 worker.SetActive(true);
+                // 인부 활성화 이펙트 재생 (인부 위치)
+                EffectManager.Instance.PlayEffect("WorkerUnlock", worker.transform.position);
             }
         }
     }

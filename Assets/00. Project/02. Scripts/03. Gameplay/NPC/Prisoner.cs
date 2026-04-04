@@ -106,7 +106,12 @@ public class Prisoner : Npc
         UIManager.Instance.HidePrisonerUI();
         isUIShown = false;
 
-        if (headObject != null) headObject.SetActive(true);
+        if (headObject != null)
+        {
+            headObject.SetActive(true);
+            // 배급 완료 이펙트 재생 (머리 위치)
+            EffectManager.Instance.PlayEffect("DistributionSuccess", headObject.transform.position);
+        }
 
         if (targetTable != null) targetTable.ProduceGold();
 

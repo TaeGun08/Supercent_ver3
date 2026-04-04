@@ -107,7 +107,6 @@ public class MiningWorker : Npc
                 }
             );
             
-            Debug.Log($"[MiningWorker] 자원을 보관소({targetStorage.name})로 운송했습니다.");
         }
         
         yield return null;

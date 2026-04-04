@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool<T> where T : MonoBehaviour
+public class ObjectPool<T> where T : Component
 {
     private readonly Queue<T> pool = new Queue<T>();
     private readonly T prefab;
@@ -50,6 +50,8 @@ public class ObjectPool<T> where T : MonoBehaviour
 
     public void Return(T obj)
     {
+        if (obj == null) return;
+
         obj.gameObject.SetActive(false);
         if (parent != null)
         {

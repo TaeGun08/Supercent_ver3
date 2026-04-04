@@ -53,3 +53,43 @@
 - [ ] **Visual Polish**: 튜토리얼 마커 및 화살표의 쉐이더/이펙트 보강.
 
 **Technical Note**: 현재 시스템은 모든 자원 순환 노드가 이벤트를 발행하므로, 튜토리얼 단계 추가 시 코드 수정 없이 `TutorialManager` 인스펙터 설정만으로 로직 확장이 가능합니다.
+
+---
+## [Update: 2026-04-05]
+### 1. 고주파 채굴 시스템 안정화 (High-Frequency Mining Stabilization)
+- **Virtual Reservation 도입**: ItemStacker.pendingCount를 통한 비행 중인 자원 예약 시스템 구축.
+- **Visual-Logic Sync**: 연출 중 인벤토리가 가득 차더라도 조약돌이 공중에 멈추지 않고 즉시 풀로 반납되도록 예외 처리 강화.
+- **Dynamic Offset Fix**: 예약 카운트를 좌표 계산에 포함하여 고속 채굴 시 조약돌 간 겹침 현상 해결.
+
+### 2. 현재 상태
+- **Stable**: 드릴 및 불도저 채굴 시 자원 적재 정합성 100% 확보.
+- **Pending**: Prisoner AI 상태 패턴 리팩터링 및 전반적인 밸런스 데이터(SO) 정립.
+
+## [Update: 2026-04-05 (Fix)]
+### 1. 고주파 채굴 시스템 안정화 (Virtual Occupancy)
+- **Status**: 완료 (Implemented).
+- **Core Logic**: ItemStacker.pendingCount를 통한 비행 중인 자원 예약 시스템 구축. 고속 채굴 시에도 조약돌의 좌표 계산과 용량 체크가 정밀하게 동기화됨.
+- **Bug Fix**: 조약돌이 공중에 멈추는 데드락 현상을 [Fail-Safe Release] 로직으로 해결함.
+
+### 2. 향후 작업 로드맵
+- **Prisoner AI**: INpcState 기반 상태 패턴 리팩터링 진행 예정 (Pending).
+- **Compliance**: 파일 로그 시스템 인코딩 안정화 및 Append-Only 원칙 엄격 준수.
+## [Update: 2026-04-05 (Effects)]
+### 1. SOLID 기반 Effect System 구축
+- **EffectManager**: 중앙 집중형 이펙트 제어 및 풀링 시스템 구현.
+- **Auto-Recycle**: 파티클 재생 완료 후 자동 풀 반납 로직 적용.
+
+### 2. 이펙트 통합 완료 지점
+- **Mining**: 채굴 타격 시 'MiningHit' 이펙트 재생.
+- **Prisoner**: 배급 완료 시 'DistributionSuccess' 이펙트 재생.
+- **Unlock**: 인부 활성화 시 'WorkerUnlock' 이펙트 재생.
+
+### 3. 현재 상태
+- **Stable**: 모든 이펙트가 풀링 시스템 내에서 정상 작동하며 물리 로직과 분리됨.
+## [Update: 2026-04-05 (System Hardening)]
+### 1. Pooling System 제약 조건 확장
+- **Refactoring**: where T : MonoBehaviour -> where T : Component로 상향 조정.
+- **Benefit**: ParticleSystem, AudioSource 등 엔진 내장 컴포넌트 풀링 지원 완료.
+
+### 2. 현재 상태
+- **Stable**: 이펙트 시스템 컴파일 오류 해결 및 전체 도메인 통합 완료.

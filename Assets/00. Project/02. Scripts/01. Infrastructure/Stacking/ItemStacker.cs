@@ -27,15 +27,17 @@ public class ItemStacker : MonoBehaviour, IStackHolder
     [SerializeField] private float spacingZ = 0.5f;
     
     private Stack<IPickupAble> stackedItems = new();
+    private int pendingCount = 0; // 비행 중인 아이템 예약 카운트
     
     public bool IsFull => stackedItems.Count >= maxStackCount;
+    public bool IsFullWithPending => (stackedItems.Count + pendingCount) >= maxStackCount;
     public bool HasItem => stackedItems.Count > 0;
     public int CurrentCount => stackedItems.Count;
     public ItemType AcceptableType => acceptableType;
     
     public event Action OnStackChanged; // 범용 이벤트로 통합
 
-    public Vector3 GetNextLocalPosition() => GetPositionAtIndex(stackedItems.Count);
+    public Vector3 GetNextLocalPosition() => GetPositionAtIndex(stackedItems.Count + pendingCount);
 
     public Vector3 GetPositionAtIndex(int index)
     {
@@ -51,10 +53,23 @@ public class ItemStacker : MonoBehaviour, IStackHolder
         float zPos = (row - (gridRows - 1) * 0.5f) * spacingZ;
         return new Vector3(xPos, layer * itemHeight, zPos);
     }
+
+    public void ReserveSlot() => pendingCount++;
+    public void CancelReservation() => pendingCount = Mathf.Max(0, pendingCount - 1);
     
     public void PushStack(IPickupAble pickupAble)
     {
-        if (pickupAble == null || pickupAble.Type != acceptableType || IsFull) return;
+        pendingCount = Mathf.Max(0, pendingCount - 1);
+
+        if (pickupAble == null || pickupAble.Type != acceptableType) return;
+
+        if (IsFull)
+        {
+            // [Fail-Fast] 가득 찬 상태에서 적재 시도 시 공중에 멈추지 않고 즉시 풀 반납
+            pickupAble.Release();
+            Debug.LogWarning($"[ItemStacker] {gameObject.name} is full. Item released to pool.");
+            return;
+        }
 
         stackedItems.Push(pickupAble);
         pickupAble.Transform.SetParent(transform);
