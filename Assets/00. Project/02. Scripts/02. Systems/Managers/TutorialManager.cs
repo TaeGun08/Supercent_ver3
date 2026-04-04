@@ -11,6 +11,7 @@ public class TutorialStep
     public TutorialCondition condition;
     public Transform target;
     public bool needCameraDirecting;
+    public Transform cameraPoint; // [New]: 카메라가 연출 시 이동할 실제 지점
     public GameObject unlockZoneToActivate;
 }
 
@@ -55,7 +56,8 @@ public class TutorialManager : SingletonBase<TutorialManager>
 
         if (step.needCameraDirecting)
         {
-            CameraDirector.Instance.ShowTarget(step.target);
+            // [Fix]: 카메라 포인트와 타겟을 모두 넘겨줌
+            CameraDirector.Instance.ShowTarget(step.target, step.cameraPoint);
         }
 
         if (navigationArrow != null)
@@ -68,17 +70,19 @@ public class TutorialManager : SingletonBase<TutorialManager>
     {
         if (currentStepIndex >= steps.Count || CameraDirector.Instance.IsDirecting) return;
 
-        if (steps[currentStepIndex].condition != condition) return;
-        currentStepIndex++;
-        RefreshCurrentStep();
+        if (steps[currentStepIndex].condition == condition)
+        {
+            currentStepIndex++;
+            RefreshCurrentStep();
+        }
     }
 
-    public void TriggerPrisonExpandGuide(Transform prisonUnlockZone, Transform target)
+    public void TriggerPrisonExpandGuide(Transform prisonUnlockZone, Transform target, Transform cameraPoint = null)
     {
         if (CameraDirector.Instance.IsDirecting) return;
         
         if (prisonUnlockZone != null) prisonUnlockZone.gameObject.SetActive(true);
-        CameraDirector.Instance.ShowTarget(target);
+        CameraDirector.Instance.ShowTarget(target, cameraPoint);
         
         if (navigationArrow != null) navigationArrow.SetTarget(target);
     }

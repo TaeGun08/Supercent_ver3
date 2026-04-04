@@ -1706,27 +1706,38 @@ MonoBehaviour:
     condition: 0
     target: {fileID: 669935608}
     needCameraDirecting: 0
+    cameraPoint: {fileID: 0}
     unlockZoneToActivate: {fileID: 0}
   - stepName: 
     condition: 1
     target: {fileID: 1513415454}
     needCameraDirecting: 0
+    cameraPoint: {fileID: 0}
     unlockZoneToActivate: {fileID: 0}
   - stepName: 
     condition: 2
     target: {fileID: 684008367}
     needCameraDirecting: 0
+    cameraPoint: {fileID: 0}
     unlockZoneToActivate: {fileID: 0}
   - stepName: 
     condition: 3
     target: {fileID: 2039796289}
     needCameraDirecting: 0
+    cameraPoint: {fileID: 0}
     unlockZoneToActivate: {fileID: 0}
   - stepName: 
     condition: 4
     target: {fileID: 1137932236}
-    needCameraDirecting: 1
+    needCameraDirecting: 0
+    cameraPoint: {fileID: 0}
     unlockZoneToActivate: {fileID: 418539281}
+  - stepName: 
+    condition: 5
+    target: {fileID: 0}
+    needCameraDirecting: 1
+    cameraPoint: {fileID: 923491148}
+    unlockZoneToActivate: {fileID: 0}
   currentStepIndex: 0
   navigationArrow: {fileID: 2040042500}
 --- !u!4 &1214509784
