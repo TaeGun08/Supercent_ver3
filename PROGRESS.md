@@ -112,3 +112,33 @@
 
 ### 2. 현재 상태
 - **Stable**: 감옥이 가득 차기 전까지 죄수가 끊김 없이 생성되며, 수감 연출이 간소화됨.
+## [Update: 2026-04-05 (Physics & Logic Hardening)]
+### 1. 물리 상호작용 및 연출 보완
+- **Anti-Clipping**: 수감 완료 시 Rigidbody.isKinematic 및 Collider.disabled 설정으로 밀어냄 현상 제거.
+- **Rotation**: 수감 시 180도 회전 연출 복구.
+
+### 2. 트리거 버그 수정
+- **Unlock Trigger**: currentPrisonerCount가 maxCapacity에 도달하는 즉시 확장 가이드가 활성화되도록 트리거 시점 보정 완료.
+
+### 3. 현재 상태
+- **Stable**: 물리적 안정성과 트리거 논리 정합성 확보.
+## [Update: 2026-04-05 (Spatial Distribution)]
+### 1. 감옥 내 분산 배치 시스템
+- **Logic**: 입구 근처 무작위 좌표(RandomOffset)를 최종 목적지로 설정하여 이동.
+- **Visuals**: 물리 연산 중단 전 위치를 고유하게 분산시켜 겹침 현상 제거.
+
+### 2. 현재 상태
+- **Stable**: 20명의 죄수가 감옥 내에 자연스럽게 흩어져 상주하며 벽 뚫기 현상 없음.
+## [Update: 2026-04-05 (Bug Fix & Revert)]
+### 1. Prisoner 연출 복구
+- **Restore**: 입구 도달 후 무작위 지점으로 흩어지는 초기 연출 방식 복원.
+
+### 2. TransportWorker 정상화
+- **Fix**: 해금 시점에 Initialize 호출 누락 해결. 인스펙터에 Cauldron 및 PotionTable 참조 필드 추가.
+## [Update: 2026-04-05 (Worker FSM Autonomy)]
+### 1. TransportWorker 자율 동작 복원
+- **Self-Initialization**: Start() 메서드를 통한 활성화 시점 자동 상태 전이(ChangeState) 로직 추가.
+- **Serialization**: [SerializeField] 복구로 인스펙터 참조 유실 방지.
+
+### 2. 현재 상태
+- **Stable**: 해금 즉시 외부 개입 없이 인부가 정상적으로 운송 업무를 시작함.

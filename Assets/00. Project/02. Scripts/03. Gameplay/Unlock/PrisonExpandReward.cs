@@ -9,9 +9,9 @@ public class PrisonExpandReward : MonoBehaviour, IUnlockReward
 
     public void Execute()
     {
-        if (PrisonManager.Instance != null)
-        {
-            PrisonManager.Instance.ExpandCapacity(additionalCapacity);
-        }
+        if (PrisonManager.Instance == null) return;
+        PrisonManager.Instance.ExpandCapacity(additionalCapacity);
+        upgrade[0].gameObject.SetActive(false);
+        upgrade[1].gameObject.SetActive(true);
     }
 }

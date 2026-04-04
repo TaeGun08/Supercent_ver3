@@ -26,6 +26,7 @@ public class NpcWorkerUnlockReward : MonoBehaviour, IUnlockReward
         {
             if (worker == null) continue;
             worker.SetActive(true);
+
             EffectManager.Instance.PlayEffect("WorkerUnlock", worker.transform.position);
         }
         

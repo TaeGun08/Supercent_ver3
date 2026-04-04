@@ -636,3 +636,23 @@
 
 **AI**:
 - **Engineering Summary**: **[Occupancy-Based Spawning]** 시스템으로 전환함. Spawner의 중단 조건을 전체 등록 인원에서 실제 수감 인원(IsPrisonFull) 기준으로 변경하여 게임 루프의 활성도를 높임. Prisoner의 수감 시퀀스에서 DORotate, DOMove 등 불필요한 트윈 연출과 대기 시간을 제거하여 런타임 오버헤드를 최적화하고, 대기열 정렬 없이 특정 구역 상주를 허용하는 자율 대기 구조를 구축함.
+**User**:
+> 감옥 도착 시 180도 회전 추가 및 물리 밀어냄 현상(벽 뚫기) 해결 요청. 20명 만석 시 해금 구역 미활성화 버그 수정.
+
+**AI**:
+- **Engineering Summary**: **[Physics Interaction Hardening]** 수감 완료 시 NPC의 물리 연산을 Kinematic으로 전환하고 콜라이더를 비활성화하여, 밀집 구역에서의 물리 척력에 의한 클리핑(Clipping) 현상을 해결함. **[Event Synchronization Fix]** 해금 트리거 시점을 비동기적인 스폰 시점이 아닌, 실제 데이터가 임계치에 도달하는 수감 완료 시점(EnterPrisonLogic)으로 동기화하여 트리거 무결성을 확보함. 수감 연출 시 180도 회전 로직을 재통합하여 시각적 완성도를 높임.
+**User**:
+> 감옥 도착 시 겹쳐서 있는 문제 해결 요청 (분산 배치 요구).
+
+**AI**:
+- **Engineering Summary**: **[Spatial Dispersion]** 수감 시퀀스의 목적지 계산 로직을 고정 좌표에서 무작위 오프셋 기반 좌표로 개편함. 각 NPC가 자신만의 고유한 목적지로 이동한 후 물리 연산을 중단함으로써, 런타임 물리 척력과 시각적 겹침(Visual Stacking) 문제를 동시에 해결함.
+**User**:
+> Prisoner 수감 연출 복구 요청 및 TransportWorker 동작 불능 버그 수정 요청.
+
+**AI**:
+- **Engineering Summary**: **[Sequence Reversion]** Prisoner의 수감 연출을 초기 모델인 [입구 도달 후 분산 이동] 시퀀스로 복구하여 시각적 개연성을 확보함. **[Dependency Injection Fix]** 해금 보상 시스템(NpcWorkerUnlockReward)에서 TransportWorker 활성화 시점에 Initialize 호출을 강제하여, 런타임 의존성 누락으로 인한 AI 동작 불능 문제를 해결함. 이를 통해 해금 즉시 생산-물류 루프가 정상 가동되도록 보장함.
+**User**:
+> TransportWorker는 오브젝트 할당이 되어 있어. (동작 불능 추가 피드백)
+
+**AI**:
+- **Engineering Summary**: **[Self-Starting FSM Recovery]** TransportWorker가 외부의 명시적인 Initialize 호출 없이도 활성화 시점에 스스로 동작을 시작할 수 있도록 자율 초기화(Self-Initialization) 구조로 개편함. 직렬화(Serialization) 필드를 복구하여 인스펙터에서 사전 할당된 참조(Dependencies)가 상태 머신에 안전하게 주입되도록 보장함.

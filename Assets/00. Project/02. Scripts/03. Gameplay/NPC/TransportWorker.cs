@@ -13,8 +13,9 @@ public class TransportWorker : Npc
     [Header("Inventory Settings")]
     [SerializeField] private ItemStacker myStacker;
     
-    private MagicCauldron targetCauldron;
-    private PotionTable targetTable;
+    [Header("Dependencies")]
+    [SerializeField] private MagicCauldron targetCauldron;
+    [SerializeField] private PotionTable targetTable;
 
     // 캐싱된 상태 객체들
     private INpcState stateToCauldron;
@@ -33,6 +34,19 @@ public class TransportWorker : Npc
         stateToTable = new State_ToTable(this);
         stateUnloading = new State_Unloading(this);
         stateDistributing = new State_Distributing(this);
+    }
+
+    private void Start()
+    {
+        // [Self-Initialization]: 활성화 시점에 인스펙터 할당값을 기반으로 자율 시작
+        if (targetCauldron != null && targetTable != null)
+        {
+            ChangeState(stateToCauldron);
+        }
+        else
+        {
+            Debug.LogWarning($"[TransportWorker] {gameObject.name}: Cauldron 또는 Table이 할당되지 않아 동작을 시작할 수 없습니다.");
+        }
     }
 
     public void Initialize(MagicCauldron cauldron, PotionTable table)

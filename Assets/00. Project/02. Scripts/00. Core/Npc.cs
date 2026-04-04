@@ -13,16 +13,19 @@ public abstract class Npc : MonoBehaviour
 
     protected Animator animator;
     protected Rigidbody rb;
+    protected Collider col; // 콜라이더 필드 추가
     protected Tween moveTween;
     protected INpcState currentState;
 
     public bool IsMoving { get; protected set; }
     public Rigidbody Rb => rb;
+    public Collider Col => col; // 콜라이더 프로퍼티 추가
 
     protected virtual void Awake()
     {
         animator = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody>();
+        col = GetComponent<Collider>(); // 콜라이더 캐싱
     }
 
     protected virtual void Update()

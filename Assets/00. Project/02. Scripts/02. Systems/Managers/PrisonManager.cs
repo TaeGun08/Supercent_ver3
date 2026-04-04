@@ -36,13 +36,6 @@ public class PrisonManager : SingletonBase<PrisonManager>
     public void RegisterNewPrisoner()
     {
         activePrisoners++;
-        
-        // [Tutorial Hook]: 감옥 만석 시 안내
-        if (IsPrisonFull && !hasTriggeredExpandGuide)
-        {
-            hasTriggeredExpandGuide = true;
-            TutorialManager.Instance.TriggerPrisonExpandGuide(prisonUnlockZone.transform, prisonUnlockTarget);
-        }
     }
 
     public Vector3 GetWaitingPoint()
@@ -72,15 +65,33 @@ public class PrisonManager : SingletonBase<PrisonManager>
         enteringCount++;
         if (prisonDoor != null) prisonDoor.SetActive(false);
 
+        // [Restore]: 입구 이동 -> 180도 회전 -> 무작위 분산 이동(DOMove)
         npc.MoveTo(prisonEntrance.position, () => {
-            // [Revert]: 불필요한 정렬 연출(Rotate, RandomMove) 삭제
-            if (npc.Rb != null) npc.Rb.freezeRotation = true;
-            
-            enteringCount--;
-            if (enteringCount <= 0 && prisonDoor != null)
-            {
-                prisonDoor.SetActive(true);
-            }
+            npc.transform.DORotate(new Vector3(0, 180f, 0f), 0.5f).OnComplete(() => {
+                
+                // 감옥 내부 무작위 지점으로 살짝 흩어지는 연출
+                float rangeX = 1.0f;
+                float rangeZ = 1.0f;
+                Vector3 randomPos = new Vector3(Random.Range(-rangeX, rangeX), 0f, Random.Range(-rangeZ, rangeZ)) + npc.transform.position;
+                
+                npc.transform.DOMove(randomPos, 1.0f).OnComplete(() => {
+                    if (npc.Rb != null) npc.Rb.isKinematic = true; // 최종 도착 시 물리 시뮬레이션 중단
+                    if (npc.Col != null) npc.Col.enabled = false; // 콜라이더 비활성화
+                });
+
+                // [Tutorial Hook]: 실제 수감 인원이 만석이 되었을 때 안내 트리거
+                if (IsPrisonFull && !hasTriggeredExpandGuide)
+                {
+                    hasTriggeredExpandGuide = true;
+                    TutorialManager.Instance.TriggerPrisonExpandGuide(prisonUnlockZone.transform, prisonUnlockTarget);
+                }
+
+                enteringCount--;
+                if (enteringCount <= 0 && prisonDoor != null)
+                {
+                    prisonDoor.SetActive(true);
+                }
+            });
         });
     }
 
