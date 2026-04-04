@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MiningEquipment : MonoBehaviour
@@ -11,4 +12,9 @@ public class MiningEquipment : MonoBehaviour
 
     [SerializeField] private MiningSensor miningSensor;
     public MiningSensor MiningSensor => miningSensor;
+
+    private void OnDisable()
+    {
+        visualObject.SetActive(false);
+    }
 }

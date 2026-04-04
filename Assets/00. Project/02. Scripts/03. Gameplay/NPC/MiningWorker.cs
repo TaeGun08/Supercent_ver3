@@ -90,6 +90,9 @@ public class MiningWorker : Npc
         animator.SetTrigger(MINING);
         yield return miningWait;
 
+        EffectManager.Instance.PlayEffect("MiningHit", target.Transform.position);
+        yield return null;
+        
         IPickupAble resource = target.MineResource(targetStorage.IsFull);
         
         if (resource != null)
