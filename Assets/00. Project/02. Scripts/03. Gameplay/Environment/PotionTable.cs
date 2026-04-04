@@ -15,6 +15,9 @@ public class PotionTable : MonoBehaviour
     {
         playerDetectionZone.OnPlayerDetected += SetPlayerPresence;
         PoolManager.Instance.CreatePool(goldPrefab, initialCount: 10);
+        
+        // [Tutorial Hook]: 테이블에 포션이 들어오거나 나갈 때 배급 행동으로 간주
+        tableStacker.OnStackChanged += () => TutorialManager.Instance.OnActionPerform(TutorialCondition.DistributePotion);
     }
 
     private void OnDestroy()

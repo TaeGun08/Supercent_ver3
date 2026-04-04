@@ -566,3 +566,11 @@
 
 **AI**:
 - **Engineering Summary**: 시스템 무결성 복구를 위해 **[Event Signature & Naming Alignment]** 수정을 수행함. `ItemStacker`의 이벤트를 인자 없는 `OnStackChanged`로 단일화하고, 이를 사용하는 `Inventory`의 핸들러(`UpdateGoldStackerPosition`)를 최신 규격에 맞춰 갱신함. `MagicCauldron` 내의 오타를 제거하고 `uIManager` 널 체크 등 방어적 로직을 추가하여 리팩터링 이후의 컴파일 무결성과 런타임 안정성을 확보함.
+
+---
+
+**User**:
+> 자원 순환 루프 학습 및 조건부 해금 안내를 위한 이벤트 주도형 튜토리얼 시스템 구축 요청.
+
+**AI**:
+- **Engineering Summary**: 게임의 핵심 메커니즘을 순차적으로 안내하는 **[Event-Driven Tutorial System]**을 구축함. `TutorialManager`를 중심으로 `Inventory`, `UnlockZone`, `PrisonManager` 등의 시스템 이벤트를 구독하여 플레이어의 행동(채굴, 투입, 배급 등)을 실시간 검증하는 구조를 설계함. `DOTween` 기반의 **시네마틱 카메라 연출**과 타겟을 실시간 추적하는 **내비게이션 화살표** 로직을 통합하여 시각적 가이드 품질을 높였으며, 감옥 만석 시 즉시 확장 구역을 안내하는 상태 반응형 트리거를 구현하여 유저 경험을 최적화함.

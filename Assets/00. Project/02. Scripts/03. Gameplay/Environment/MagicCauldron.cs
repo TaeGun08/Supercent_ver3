@@ -48,6 +48,8 @@ public class MagicCauldron : MonoBehaviour
         // 제작 조건: Idle 상태이고, 재료가 있으며, 결과물 보관소에 자리가 있을 때
         if (state == CauldronState.Idle && inputStack.HasItem && !outputStack.IsFull)
         {
+            // [Tutorial Hook]: 돌 투입 감지
+            TutorialManager.Instance.OnActionPerform(TutorialCondition.InputStone);
             StartCoroutine(CraftingRoutine());
         }
     }

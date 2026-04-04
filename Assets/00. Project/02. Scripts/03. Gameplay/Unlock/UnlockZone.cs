@@ -89,6 +89,10 @@ public class UnlockZone : MonoBehaviour
         reward?.Execute();
         
         if (costText != null) costText.text = "UNLOCKED";
+        
+        // [Tutorial Hook]: 해금 완료 알림
+        TutorialManager.Instance.OnActionPerform(TutorialCondition.UnlockZone);
+        
         gameObject.SetActive(false); 
     }
 

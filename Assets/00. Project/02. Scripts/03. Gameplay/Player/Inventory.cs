@@ -64,6 +64,13 @@ public class Inventory : MonoBehaviour
         // [Sync]: 인자 없는 이벤트 방식으로 로직 변경
         goldStacker.transform.localPosition =
             stoneStacker.CurrentCount > 0 ? goldOriginalLocalPos + goldOffsetWhenStoneExists : goldOriginalLocalPos;
+
+        // [Tutorial Hook]: 돌 획득 감지
+        if (stoneStacker.CurrentCount > 0) TutorialManager.Instance.OnActionPerform(TutorialCondition.MineStone);
+        // [Tutorial Hook]: 포션 획득 감지
+        if (potionStacker.CurrentCount > 0) TutorialManager.Instance.OnActionPerform(TutorialCondition.TakePotion);
+        // [Tutorial Hook]: 골드 획득 감지
+        if (goldStacker.CurrentCount > 0) TutorialManager.Instance.OnActionPerform(TutorialCondition.GetGold);
     }
 
     private void OnDestroy()

@@ -1574,6 +1574,55 @@ MonoBehaviour:
   waitingAreaPoint: {fileID: 55400170}
   prisonDoor: {fileID: 212104553}
   prisonerCountText: {fileID: 1354475757}
+  prisonUnlockZone: {fileID: 0}
+  prisonUnlockTarget: {fileID: 0}
+--- !u!1 &1214509782
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1214509784}
+  - component: {fileID: 1214509783}
+  m_Layer: 0
+  m_Name: TutorialManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1214509783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214509782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52c78ace861cba24dab2bcb9e2081520, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  steps: []
+  currentStepIndex: 0
+  navigationArrow: {fileID: 0}
+--- !u!4 &1214509784
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214509782}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1259037813
 GameObject:
   m_ObjectHideFlags: 0
@@ -1905,6 +1954,10 @@ PrefabInstance:
     - target: {fileID: 4302082725274655097, guid: a3f421177a7dcd3479e17170d6c201b1, type: 3}
       propertyPath: m_Name
       value: Unlock_Drill
+      objectReference: {fileID: 0}
+    - target: {fileID: 4302082725274655097, guid: a3f421177a7dcd3479e17170d6c201b1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2649,6 +2702,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unlock_TransportWorker
       objectReference: {fileID: 0}
+    - target: {fileID: 3254315799091683829, guid: 0c7ae80085f98ec48a2ef04083d89020, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2771,6 +2828,10 @@ PrefabInstance:
     - target: {fileID: 361894556651780078, guid: 1abb6c50a8b71904991ce80b6dc7006c, type: 3}
       propertyPath: m_Name
       value: Unlock_MiningWorker
+      objectReference: {fileID: 0}
+    - target: {fileID: 361894556651780078, guid: 1abb6c50a8b71904991ce80b6dc7006c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1264216127305226476, guid: 1abb6c50a8b71904991ce80b6dc7006c, type: 3}
       propertyPath: workersToActivate.Array.data[0]
@@ -2994,6 +3055,7 @@ SceneRoots:
   - {fileID: 892848899}
   - {fileID: 2137136195}
   - {fileID: 991514936}
+  - {fileID: 1214509784}
   - {fileID: 1596474728}
   - {fileID: 1201798101}
   - {fileID: 406918683}

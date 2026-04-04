@@ -17,11 +17,17 @@ public class PrisonManager : SingletonBase<PrisonManager>
     private int enteringCount; 
     private readonly HashSet<Npc> waitingNPCs = new();
 
+    [Header("Tutorial Hook")]
+    [SerializeField] private GameObject prisonUnlockZone;
+    [SerializeField] private Transform prisonUnlockTarget;
+    private bool hasTriggeredExpandGuide;
+
     public bool IsFull => activePrisoners >= maxCapacity;
     
     public void ExpandCapacity(int additionalAmount)
     {
         maxCapacity += additionalAmount;
+        hasTriggeredExpandGuide = false; // 확장 후에는 다시 트리거 가능
         UpdateUI();
         Debug.Log($"[Prison] 수용량이 확장되었습니다. 현재 최대 수용량: {maxCapacity}");
     }
@@ -29,6 +35,13 @@ public class PrisonManager : SingletonBase<PrisonManager>
     public void RegisterNewPrisoner()
     {
         activePrisoners++;
+        
+        // [Tutorial Hook]: 감옥 만석 시 안내
+        if (IsFull && !hasTriggeredExpandGuide)
+        {
+            hasTriggeredExpandGuide = true;
+            TutorialManager.Instance.TriggerPrisonExpandGuide(prisonUnlockZone.transform, prisonUnlockTarget);
+        }
     }
 
     public Vector3 GetWaitingPoint()
