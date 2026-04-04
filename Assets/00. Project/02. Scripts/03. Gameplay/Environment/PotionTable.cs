@@ -9,15 +9,14 @@ public class PotionTable : MonoBehaviour
     [SerializeField] private PlayerDetectionZone playerDetectionZone;
     
     private bool isPlayerAtTable;
-    private TransportWorker cachedWorker; // 캐싱용
+    private TransportWorker cachedWorker;
 
     private void Awake()
     {
         playerDetectionZone.OnPlayerDetected += SetPlayerPresence;
         PoolManager.Instance.CreatePool(goldPrefab, initialCount: 10);
         
-        // [Tutorial Hook]: 테이블에 포션이 들어오거나 나갈 때 배급 행동으로 간주
-        tableStacker.OnStackChanged += () => TutorialManager.Instance.OnActionPerform(TutorialCondition.DistributePotion);
+        // [Tutorial Fix]: 테이블에 아이템이 들어올 때가 아니라, 골드가 생성될 때 단계를 넘기기 위해 기존 OnStackChanged 훅 제거
     }
 
     private void OnDestroy()
@@ -35,6 +34,9 @@ public class PotionTable : MonoBehaviour
     {
         if (moneyStacker == null || moneyStacker.IsFull) return;
 
+        // [Tutorial Hook]: 실제 골드가 맵에 생성되는 시점에 배급 완료(DistributePotion) 통보
+        TutorialManager.Instance.OnActionPerform(TutorialCondition.DistributePotion);
+
         for (int i = 0; i < 6; i++)
         {
             Gold gold = PoolManager.Instance.Get<Gold>();
@@ -51,7 +53,6 @@ public class PotionTable : MonoBehaviour
     {
         get
         {
-            // 인부가 해금되어 활성화된 시점에 다시 찾을 수 있도록 동적 검색 포함
             if (cachedWorker == null || !cachedWorker.gameObject.activeInHierarchy)
             {
                 cachedWorker = FindObjectOfType<TransportWorker>();

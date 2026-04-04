@@ -2095,6 +2095,18 @@ PrefabInstance:
       propertyPath: nextZone
       value: 
       objectReference: {fileID: 5982860924946610715}
+    - target: {fileID: 2592320620515247272, guid: a3f421177a7dcd3479e17170d6c201b1, type: 3}
+      propertyPath: nextZone.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2592320620515247272, guid: a3f421177a7dcd3479e17170d6c201b1, type: 3}
+      propertyPath: nextZone.Array.data[0]
+      value: 
+      objectReference: {fileID: 5982860924946610715}
+    - target: {fileID: 2592320620515247272, guid: a3f421177a7dcd3479e17170d6c201b1, type: 3}
+      propertyPath: nextZone.Array.data[1]
+      value: 
+      objectReference: {fileID: 4302082723606611942}
     - target: {fileID: 4302082725274655097, guid: a3f421177a7dcd3479e17170d6c201b1, type: 3}
       propertyPath: m_Name
       value: Unlock_Drill
@@ -2718,6 +2730,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 48282733}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4302082723606611942 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 361894556651780078, guid: 1abb6c50a8b71904991ce80b6dc7006c, type: 3}
+  m_PrefabInstance: {fileID: 8644301296928883466}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4302082724670374729 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 477716022060600837, guid: e6491f0fb4587a2418451bda7ee7a8ee, type: 3}
