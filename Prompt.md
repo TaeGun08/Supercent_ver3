@@ -574,3 +574,19 @@
 
 **AI**:
 - **Engineering Summary**: 게임의 핵심 메커니즘을 순차적으로 안내하는 **[Event-Driven Tutorial System]**을 구축함. `TutorialManager`를 중심으로 `Inventory`, `UnlockZone`, `PrisonManager` 등의 시스템 이벤트를 구독하여 플레이어의 행동(채굴, 투입, 배급 등)을 실시간 검증하는 구조를 설계함. `DOTween` 기반의 **시네마틱 카메라 연출**과 타겟을 실시간 추적하는 **내비게이션 화살표** 로직을 통합하여 시각적 가이드 품질을 높였으며, 감옥 만석 시 즉시 확장 구역을 안내하는 상태 반응형 트리거를 구현하여 유저 경험을 최적화함.
+
+---
+
+**User**:
+> 튜토리얼 시스템에서 카메라 연출 로직을 CameraDirector 클래스로 독립 리팩터링 요청.
+
+**AI**:
+- **Engineering Summary**: **단일 책임 원칙(SRP)** 준수 및 흐름 제어 로직의 청결도를 높이기 위해 카메라 연출 기능을 `CameraDirector`로 분리함. 플레이어 조작 차단, `FollowCamera` 추적 제어, 시네마틱 `DOTween` 시퀀스를 전담하는 싱글톤 엔진을 구축하고, `TutorialManager`는 오직 타겟 주시를 위임(Delegation)하도록 아키텍처를 고도화함. 이를 통해 연출 중 발생할 수 있는 논리적 충돌을 방지하고 카메라 제어의 재사용성을 확보함.
+
+---
+
+**User**:
+> CameraDirector를 메인 카메라 컴포넌트로 통합 및 조이스틱 입력 제어 리팩터링 요청.
+
+**AI**:
+- **Engineering Summary**: 카메라 연출의 직관성과 입력 제어의 정밀도를 위해 `CameraDirector`를 `MainCamera`에 직접 부착하는 구조로 개선함. 연출 시 `PlayerController` 대신 입력 계층인 `Joystick` 컴포넌트를 직접 비활성화하고, `joystick.EndStick()` 인터페이스를 확장하여 연출 시작 즉시 모든 물리적/시각적 입력을 강제 초기화하는 **[Input-Reset Cinematic Protocol]**을 구현함. 이를 통해 연출 도중 발생할 수 있는 캐릭터 잔류 이동과 UI 잔상을 원천 제거함.
