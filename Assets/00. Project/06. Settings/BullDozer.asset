@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BullDozer
   m_EditorClassIdentifier: 
   Type: 1
-  MiningDelay: 1
+  MiningDelay: 0
   MiningRange: 2
   MiningPower: 1
   AnimationName: BullDozer

@@ -19,7 +19,6 @@ public class TutorialArrow : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
-        if (targetMarker != null) targetMarker.SetActive(false);
         if (arrowVisual != null) arrowVisual.SetActive(false);
     }
 

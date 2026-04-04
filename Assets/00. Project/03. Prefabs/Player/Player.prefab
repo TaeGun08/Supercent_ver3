@@ -340,7 +340,7 @@ MonoBehaviour:
   arrowVisual: {fileID: 7881683092971993489}
   targetMarker: {fileID: 0}
   bobbingHeight: 0.3
-  bobbingDuration: 3
+  bobbingSpeed: 2
   rotationSpeed: 90
   markerYOffset: 2.5
 --- !u!1 &1491694353053282466

@@ -13,6 +13,7 @@ public class EquipmentUnlockReward : MonoBehaviour, IUnlockReward
         MiningController miningController = FindFirstObjectByType<MiningController>();
         if (miningController == null) return;
         miningController.ChangeEquipment(equipmentIndex);
+        if (nextZone.Length <= 0) return;
         foreach (GameObject zone in nextZone)
         {
             zone?.SetActive(true);

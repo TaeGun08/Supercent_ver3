@@ -209,7 +209,6 @@ GameObject:
   - component: {fileID: 8211774726853499058}
   - component: {fileID: 7499703743413995612}
   - component: {fileID: 2015838244969213395}
-  - component: {fileID: 810725247338063875}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -304,27 +303,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!65 &810725247338063875
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 508956631601256192}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.93092024, y: 0.82133657, z: 0.6567141}
-  m_Center: {x: 0.00072465837, y: 0.0000006407501, z: 0.334468}
 --- !u!1 &664682301399553481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,6 +1094,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6255944582541589772}
   - component: {fileID: 2698563854104035873}
+  - component: {fileID: 9046602428482141813}
   m_Layer: 0
   m_Name: MagicCauldron
   m_TagString: Untagged
@@ -1158,6 +1137,27 @@ MonoBehaviour:
   outputStack: {fileID: 3481440360498110343}
   potionPrefab: {fileID: 2077822265630860988, guid: ac482965c1918054ebe854224ecb08b0, type: 3}
   craftDuration: 0.3
+--- !u!65 &9046602428482141813
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3197413258975201679}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &3522537207036934628
 GameObject:
   m_ObjectHideFlags: 0
