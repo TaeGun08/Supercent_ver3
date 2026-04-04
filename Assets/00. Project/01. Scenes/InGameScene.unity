@@ -721,6 +721,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 626023566}
   m_CullTransparentMesh: 1
+--- !u!4 &669935608 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5674279774484309899, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+  m_PrefabInstance: {fileID: 5781783370106455885}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &684008367 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6204165991811670399, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+  m_PrefabInstance: {fileID: 5781783370106455885}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1604,6 +1614,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1137932236 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4288152084789612169, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+  m_PrefabInstance: {fileID: 5781783370106455885}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1201798099
 GameObject:
   m_ObjectHideFlags: 0
@@ -1689,34 +1704,29 @@ MonoBehaviour:
   steps:
   - stepName: 
     condition: 0
-    target: {fileID: 0}
+    target: {fileID: 669935608}
     needCameraDirecting: 0
     unlockZoneToActivate: {fileID: 0}
   - stepName: 
     condition: 1
     target: {fileID: 0}
     needCameraDirecting: 0
-    unlockZoneToActivate: {fileID: 0}
+    unlockZoneToActivate: {fileID: 1513415453}
   - stepName: 
     condition: 2
-    target: {fileID: 0}
+    target: {fileID: 684008367}
     needCameraDirecting: 0
     unlockZoneToActivate: {fileID: 0}
   - stepName: 
     condition: 3
-    target: {fileID: 0}
+    target: {fileID: 2039796289}
     needCameraDirecting: 0
     unlockZoneToActivate: {fileID: 0}
   - stepName: 
     condition: 4
-    target: {fileID: 923491148}
+    target: {fileID: 1137932236}
     needCameraDirecting: 1
     unlockZoneToActivate: {fileID: 418539281}
-  - stepName: 
-    condition: 5
-    target: {fileID: 0}
-    needCameraDirecting: 0
-    unlockZoneToActivate: {fileID: 0}
   currentStepIndex: 0
   navigationArrow: {fileID: 2040042500}
 --- !u!4 &1214509784
@@ -1894,6 +1904,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1513415453 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4823371893696422423, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+  m_PrefabInstance: {fileID: 5781783370106455885}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1596474727
 GameObject:
   m_ObjectHideFlags: 0
@@ -2450,6 +2465,11 @@ MonoBehaviour:
   - {fileID: 1924161610}
   - {fileID: 1776634015}
   - {fileID: 1654973269}
+--- !u!4 &2039796289 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8831308525292656961, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+  m_PrefabInstance: {fileID: 5781783370106455885}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2040042500 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3224083558057562981, guid: 78d7b765bed5973409318cd7c26f6bc3, type: 3}
