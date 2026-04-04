@@ -132,7 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 48282733}
   m_Layer: 0
-  m_Name: NextTutorial
+  m_Name: TutorialMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1163,6 +1163,37 @@ MonoBehaviour:
   spawnPoint: {fileID: 892848899}
   spawnInterval: 5
   potionTable: {fileID: 762513344}
+--- !u!1 &923491147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 923491148}
+  m_Layer: 0
+  m_Name: CameraPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &923491148
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923491147}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.15, y: 11.83, z: -6.43}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1214509784}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1656,27 +1687,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   steps:
-  - condition: 0
+  - stepName: 
+    condition: 0
     target: {fileID: 0}
     needCameraDirecting: 0
     unlockZoneToActivate: {fileID: 0}
-  - condition: 1
+  - stepName: 
+    condition: 1
     target: {fileID: 0}
     needCameraDirecting: 0
     unlockZoneToActivate: {fileID: 0}
-  - condition: 2
+  - stepName: 
+    condition: 2
     target: {fileID: 0}
     needCameraDirecting: 0
     unlockZoneToActivate: {fileID: 0}
-  - condition: 3
+  - stepName: 
+    condition: 3
     target: {fileID: 0}
     needCameraDirecting: 0
     unlockZoneToActivate: {fileID: 0}
-  - condition: 4
-    target: {fileID: 0}
-    needCameraDirecting: 0
+  - stepName: 
+    condition: 4
+    target: {fileID: 923491148}
+    needCameraDirecting: 1
     unlockZoneToActivate: {fileID: 418539281}
-  - condition: 5
+  - stepName: 
+    condition: 5
     target: {fileID: 0}
     needCameraDirecting: 0
     unlockZoneToActivate: {fileID: 0}
@@ -1696,6 +1733,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 48282733}
+  - {fileID: 923491148}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1259037813
