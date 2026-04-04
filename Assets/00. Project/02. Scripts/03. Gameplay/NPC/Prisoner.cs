@@ -129,14 +129,14 @@ public class Prisoner : Npc
 
         currentState = PrisonerState.MovingToPrison;
 
+        // [Waiting Logic]: 감옥 대기 구역으로 이동
         Vector3 waitingPoint = PrisonManager.Instance.GetWaitingPoint();
         MoveTo(waitingPoint);
 
         yield return new WaitUntil(() => !IsMoving);
-        yield return new WaitForSeconds(0.3f); 
 
+        // 도착 후 정렬 연출이나 대기 시간 없이 즉시 수감 시도
         currentState = PrisonerState.WaitingForPrisonSpace;
-
         PrisonManager.Instance.TryEnterPrison(this);
     }
 

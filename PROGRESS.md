@@ -104,3 +104,11 @@
 ### 1. 자동화 로직 철회 및 수동 모드 복원
 - **Reverted**: EffectSetupEditor 삭제 및 EffectManager Resources 로직 제거.
 - **Status**: 인스펙터 수동 설정 방식으로 원복 완료.
+## [Update: 2026-04-05 (Prison System Optimization)]
+### 1. 스폰 및 수감 로직 개선
+- **Spawning**: 전체 인원이 아닌 실제 수감 인원(IsPrisonFull) 기준으로 생성 제한 적용.
+- **Visuals**: 도착 시의 회전(DORotate) 및 랜덤 이동(DOMove) 연출 삭제.
+- **Waiting**: 감옥 앞 정렬 대기열을 배제하고 대기 지점 상주(Autonomous Waiting) 방식으로 전환.
+
+### 2. 현재 상태
+- **Stable**: 감옥이 가득 차기 전까지 죄수가 끊김 없이 생성되며, 수감 연출이 간소화됨.

@@ -23,6 +23,7 @@ public class PrisonManager : SingletonBase<PrisonManager>
     private bool hasTriggeredExpandGuide;
 
     public bool IsFull => activePrisoners >= maxCapacity;
+    public bool IsPrisonFull => currentPrisonerCount >= maxCapacity;
     
     public void ExpandCapacity(int additionalAmount)
     {
@@ -37,7 +38,7 @@ public class PrisonManager : SingletonBase<PrisonManager>
         activePrisoners++;
         
         // [Tutorial Hook]: 감옥 만석 시 안내
-        if (IsFull && !hasTriggeredExpandGuide)
+        if (IsPrisonFull && !hasTriggeredExpandGuide)
         {
             hasTriggeredExpandGuide = true;
             TutorialManager.Instance.TriggerPrisonExpandGuide(prisonUnlockZone.transform, prisonUnlockTarget);
@@ -53,7 +54,7 @@ public class PrisonManager : SingletonBase<PrisonManager>
     {
         if (npc == null) return;
         
-        if (currentPrisonerCount >= maxCapacity)
+        if (IsPrisonFull)
         {
             waitingNPCs.Add(npc);
             return;
@@ -72,21 +73,14 @@ public class PrisonManager : SingletonBase<PrisonManager>
         if (prisonDoor != null) prisonDoor.SetActive(false);
 
         npc.MoveTo(prisonEntrance.position, () => {
-            npc.transform.DORotate(new Vector3(0, npc.transform.eulerAngles.y + 180f, 0), 0.5f)
-                .OnComplete(() => {
-                    if (npc.Rb != null) npc.Rb.freezeRotation = true;
-
-                    float randomPosX = Random.Range(-0.5f, 0.5f);
-                    float randomPosZ = Random.Range(-1f, 1f);
-                    Vector3 randomPos = new Vector3(randomPosX, 0f, randomPosZ) + npc.transform.position;
-                    npc.transform.DOMove(randomPos, 1f);
-                    
-                    enteringCount--;
-                    if (enteringCount <= 0 && prisonDoor != null)
-                    {
-                        prisonDoor.SetActive(true);
-                    }
-                });
+            // [Revert]: 불필요한 정렬 연출(Rotate, RandomMove) 삭제
+            if (npc.Rb != null) npc.Rb.freezeRotation = true;
+            
+            enteringCount--;
+            if (enteringCount <= 0 && prisonDoor != null)
+            {
+                prisonDoor.SetActive(true);
+            }
         });
     }
 

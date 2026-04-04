@@ -631,3 +631,8 @@
 
 **AI**:
 - **Engineering Summary**: **[Logic Reversion]** 사용자의 의도에 따라 최근 진행한 'Zero-Configuration Automation'을 전면 취소함. EffectSetupEditor.cs를 삭제하고 EffectManager.cs의 Resources Fallback 로직을 제거하여, 사용자가 직접 인스펙터 설정을 제어하는 [Consultant-Only Mode]로 복귀함. 이는 시스템의 투명성과 사용자의 통제권을 최우선으로 하는 협업 원칙을 재확립하는 조치임.
+**User**:
+> 감옥 수감 인원 기준으로 생성 제한을 변경하고, 도착 연출(DORotate 등) 삭제 및 자율 대기 시스템으로 전환 요청.
+
+**AI**:
+- **Engineering Summary**: **[Occupancy-Based Spawning]** 시스템으로 전환함. Spawner의 중단 조건을 전체 등록 인원에서 실제 수감 인원(IsPrisonFull) 기준으로 변경하여 게임 루프의 활성도를 높임. Prisoner의 수감 시퀀스에서 DORotate, DOMove 등 불필요한 트윈 연출과 대기 시간을 제거하여 런타임 오버헤드를 최적화하고, 대기열 정렬 없이 특정 구역 상주를 허용하는 자율 대기 구조를 구축함.

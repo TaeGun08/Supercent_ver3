@@ -27,7 +27,8 @@ public class PrisonerSpawner : MonoBehaviour
         
         while (true)
         {
-            if (PrisonManager.Instance.IsFull == false && WaitingLineManager.Instance.CanJoin)
+            // 실제 감옥이 가득 차기 전까지는 계속 스폰 허용 (대기열 공간도 고려)
+            if (PrisonManager.Instance.IsPrisonFull == false && WaitingLineManager.Instance.CanJoin)
             {
                 SpawnPrisoner();
             }
