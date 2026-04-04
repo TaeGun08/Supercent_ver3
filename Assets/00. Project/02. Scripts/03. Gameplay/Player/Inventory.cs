@@ -22,8 +22,11 @@ public class Inventory : MonoBehaviour
         InitializeStackerMap();
         
         goldOriginalLocalPos = goldStacker.transform.localPosition;
-        // [Sync]: 변경된 이벤트 명칭(OnStackChanged) 적용
-        stoneStacker.OnStackChanged += UpdateGoldStackerPosition;
+
+        // [Tutorial Fix]: 각각의 스태커가 자신의 상태 변화를 독립적으로 통보해야 함
+        stoneStacker.OnStackChanged += OnStoneChanged;
+        potionStacker.OnStackChanged += OnPotionChanged;
+        goldStacker.OnStackChanged += OnGoldChanged;
     }
 
     private void Start()
@@ -31,11 +34,29 @@ public class Inventory : MonoBehaviour
         uIManager = UIManager.Instance;
     }
 
-    private void InitializeStackerMap()
+    private void OnStoneChanged()
     {
-        RegisterStacker(stoneStacker);
-        RegisterStacker(goldStacker);
-        RegisterStacker(potionStacker);
+        UpdateGoldStackerPosition();
+        if (stoneStacker.CurrentCount > 0) 
+            TutorialManager.Instance.OnActionPerform(TutorialCondition.MineStone);
+    }
+
+    private void OnPotionChanged()
+    {
+        if (potionStacker.CurrentCount > 0) 
+            TutorialManager.Instance.OnActionPerform(TutorialCondition.TakePotion);
+    }
+
+    private void OnGoldChanged()
+    {
+        if (goldStacker.CurrentCount > 0) 
+            TutorialManager.Instance.OnActionPerform(TutorialCondition.GetGold);
+    }
+
+    private void UpdateGoldStackerPosition()
+    {
+        goldStacker.transform.localPosition =
+            stoneStacker.CurrentCount > 0 ? goldOriginalLocalPos + goldOffsetWhenStoneExists : goldOriginalLocalPos;
     }
 
     private void LateUpdate()
@@ -49,34 +70,23 @@ public class Inventory : MonoBehaviour
     private void RegisterStacker(ItemStacker stacker)
     {
         if (stacker == null) return;
-        
-        ItemType type = stacker.AcceptableType;
-        stackerMap.TryAdd(type, stacker);
+        stackerMap.TryAdd(stacker.AcceptableType, stacker);
     }
 
-    public ItemStacker GetStacker(ItemType type)
+    private void InitializeStackerMap()
     {
-        return stackerMap.GetValueOrDefault(type);
+        RegisterStacker(stoneStacker);
+        RegisterStacker(goldStacker);
+        RegisterStacker(potionStacker);
     }
 
-    private void UpdateGoldStackerPosition()
-    {
-        // [Sync]: 인자 없는 이벤트 방식으로 로직 변경
-        goldStacker.transform.localPosition =
-            stoneStacker.CurrentCount > 0 ? goldOriginalLocalPos + goldOffsetWhenStoneExists : goldOriginalLocalPos;
-
-        // [Tutorial Hook]: 돌 획득 감지
-        if (stoneStacker.CurrentCount > 0) TutorialManager.Instance.OnActionPerform(TutorialCondition.MineStone);
-        // [Tutorial Hook]: 포션 획득 감지
-        if (potionStacker.CurrentCount > 0) TutorialManager.Instance.OnActionPerform(TutorialCondition.TakePotion);
-        // [Tutorial Hook]: 골드 획득 감지
-        if (goldStacker.CurrentCount > 0) TutorialManager.Instance.OnActionPerform(TutorialCondition.GetGold);
-    }
+    public ItemStacker GetStacker(ItemType type) => stackerMap.GetValueOrDefault(type);
 
     private void OnDestroy()
     {
-        if (stoneStacker == null) return;
-        stoneStacker.OnStackChanged -= UpdateGoldStackerPosition;
+        if (stoneStacker != null) stoneStacker.OnStackChanged -= OnStoneChanged;
+        if (potionStacker != null) potionStacker.OnStackChanged -= OnPotionChanged;
+        if (goldStacker != null) goldStacker.OnStackChanged -= OnGoldChanged;
     }
     
     public ItemStacker StoneStacker => stoneStacker;

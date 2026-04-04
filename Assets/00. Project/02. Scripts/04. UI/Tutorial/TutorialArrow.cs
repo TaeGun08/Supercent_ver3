@@ -3,8 +3,8 @@ using UnityEngine;
 public class TutorialArrow : MonoBehaviour
 {
     [Header("Visual References")]
-    [SerializeField] private GameObject arrowVisual;
-    [SerializeField] private GameObject targetMarker;
+    [SerializeField] private GameObject arrowVisual;  // 플레이어 발밑 3D 모델
+    [SerializeField] private GameObject targetMarker;  // 목적지 위에 띄울 3D 모델
 
     [Header("Settings")]
     [SerializeField] private float rotationSpeed = 10f;
@@ -31,7 +31,7 @@ public class TutorialArrow : MonoBehaviour
             return;
         }
 
-        // [Fix]: 타겟이 설정되는 즉시 마커를 켜고 위치 이동
+        // 새 타겟이 들어오면 마커 즉시 이동 및 활성화
         if (targetMarker != null)
         {
             targetMarker.SetActive(true);
@@ -41,42 +41,35 @@ public class TutorialArrow : MonoBehaviour
 
     private void LateUpdate()
     {
-        // 타겟이 없으면 마커도 끔 (방어적 코드)
-        if (target == null)
-        {
-            if (targetMarker != null && targetMarker.activeSelf) targetMarker.SetActive(false);
-            if (arrowVisual != null && arrowVisual.activeSelf) arrowVisual.SetActive(false);
-            return;
-        }
+        if (target == null) return;
 
         // 1. 마커 위치 실시간 동기화
         if (targetMarker != null)
         {
-            // 타겟의 부모가 꺼져있을 가능성 체크 (안전장치)
-            if (target.gameObject.activeInHierarchy)
-            {
-                if (!targetMarker.activeSelf) targetMarker.SetActive(true);
-                targetMarker.transform.position = target.position + markerOffset;
-            }
-            else
-            {
-                if (targetMarker.activeSelf) targetMarker.SetActive(false);
-            }
+            // 타겟 자체가 꺼져있어도 마커는 보여야 함 (해금 전 안내 등)
+            // 따라서 target.gameObject.activeInHierarchy 체크를 제거하거나 완화
+            if (!targetMarker.activeSelf) targetMarker.SetActive(true);
+            targetMarker.transform.position = target.position + markerOffset;
         }
 
-        // 2. 화면 노출 여부 판정
+        // 2. 화면 노출 여부 판정 (Viewport 기준)
         Vector3 viewportPos = mainCamera.WorldToViewportPoint(target.position);
-        bool isVisible = viewportPos.x > 0 && viewportPos.x < 1 && viewportPos.y > 0 && viewportPos.y < 1 && viewportPos.z > 0;
+        
+        // z가 0보다 커야 카메라 앞쪽임
+        bool isInFront = viewportPos.z > 0;
+        bool isInScreen = viewportPos.x > 0 && viewportPos.x < 1 && viewportPos.y > 0 && viewportPos.y < 1;
+        bool isVisible = isInFront && isInScreen;
 
         // 3. 발밑 화살표 제어
         if (isVisible)
         {
+            // 화면에 목적지가 보이면 발밑 화살표는 숨김
             if (arrowVisual != null && arrowVisual.activeSelf) arrowVisual.SetActive(false);
         }
         else
         {
-            // 타겟이 화면 밖일 때만 화살표 활성화
-            if (arrowVisual != null && target.gameObject.activeInHierarchy)
+            // 화면 밖에 목적지가 있으면 발밑 화살표 활성화
+            if (arrowVisual != null)
             {
                 if (!arrowVisual.activeSelf) arrowVisual.SetActive(true);
                 UpdateArrowRotation();
@@ -86,8 +79,9 @@ public class TutorialArrow : MonoBehaviour
 
     private void UpdateArrowRotation()
     {
+        // 내(화살표) 위치에서 타겟 위치로의 방향 계산
         Vector3 direction = (target.position - transform.position);
-        direction.y = 0;
+        direction.y = 0; // 수평 유지
 
         if (direction.magnitude > 0.1f)
         {
