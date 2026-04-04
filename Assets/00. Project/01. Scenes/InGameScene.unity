@@ -446,6 +446,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 4302082725274655097, guid: a3f421177a7dcd3479e17170d6c201b1, type: 3}
   m_PrefabInstance: {fileID: 1776108433}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &446077760
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 446077761}
+  m_Layer: 0
+  m_Name: CameraPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &446077761
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 446077760}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.59, y: 11.83, z: -6.43}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1214509784}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &447144962
 GameObject:
   m_ObjectHideFlags: 0
@@ -1173,37 +1204,6 @@ MonoBehaviour:
   spawnPoint: {fileID: 892848899}
   spawnInterval: 5
   potionTable: {fileID: 762513344}
---- !u!1 &923491147
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 923491148}
-  m_Layer: 0
-  m_Name: CameraPos
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &923491148
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 923491147}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.15, y: 11.83, z: -6.43}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1214509784}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1731,13 +1731,13 @@ MonoBehaviour:
     target: {fileID: 1137932236}
     needCameraDirecting: 0
     cameraPoint: {fileID: 0}
-    unlockZoneToActivate: {fileID: 418539281}
+    unlockZoneToActivate: {fileID: 0}
   - stepName: 
     condition: 5
     target: {fileID: 0}
     needCameraDirecting: 1
-    cameraPoint: {fileID: 923491148}
-    unlockZoneToActivate: {fileID: 0}
+    cameraPoint: {fileID: 446077761}
+    unlockZoneToActivate: {fileID: 418539281}
   currentStepIndex: 0
   navigationArrow: {fileID: 2040042500}
 --- !u!4 &1214509784
@@ -1754,7 +1754,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 48282733}
-  - {fileID: 923491148}
+  - {fileID: 446077761}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1259037813

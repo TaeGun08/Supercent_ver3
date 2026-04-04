@@ -19,9 +19,14 @@ public class CameraDirector : SingletonBase<CameraDirector>
         followCamera = GetComponentInParent<FollowCamera>();
     }
 
+    /// <summary>
+    /// 지정된 포인트나 타겟을 비춥니다. 타겟이 없어도 포인트만 있다면 작동합니다.
+    /// </summary>
     public void ShowTarget(Transform target, Transform specificPoint = null, Action onComplete = null)
     {
-        if (isDirecting || target == null) return;
+        // 타겟과 포인트 둘 다 없으면 연출 불가
+        if (isDirecting || (target == null && specificPoint == null)) return;
+        
         StartCoroutine(DirectingRoutine(target, specificPoint, onComplete));
     }
 
@@ -41,27 +46,27 @@ public class CameraDirector : SingletonBase<CameraDirector>
         Vector3 startPos = mainCamera.transform.position;
         Quaternion startRot = mainCamera.transform.rotation;
 
-        // [New]: 특정 포인트가 있으면 그곳으로, 없으면 타겟 위쪽 자동 계산
+        // [연출 위치 결정]
         Vector3 viewPos;
-        Quaternion viewRot;
-
         if (specificPoint != null)
         {
             viewPos = specificPoint.position;
-            viewRot = specificPoint.rotation;
         }
         else
         {
-            viewPos = target.position + new Vector3(0, 7, -4);
-            viewRot = Quaternion.LookRotation(target.position - viewPos);
+            // 포인트가 없을 때만 타겟 기준 자동 좌표 계산
+            viewPos = target.position + new Vector3(0, 8, -6);
         }
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(mainCamera.transform.DOMove(viewPos, 1.5f).SetEase(Ease.InOutCubic));
-        seq.Join(mainCamera.transform.DORotateQuaternion(viewRot, 1.5f));
-        seq.AppendInterval(1.2f);
-        seq.Append(mainCamera.transform.DOMove(startPos, 1.2f).SetEase(Ease.InOutSine));
-        seq.Join(mainCamera.transform.DORotateQuaternion(startRot, 1.2f));
+        
+        // 1. 포지션만 이동 (회전은 현재 각도 유지)
+        seq.Append(mainCamera.transform.DOMove(viewPos, 1.2f).SetEase(Ease.OutCubic));
+        
+        seq.AppendInterval(1.2f); // 머무르는 시간
+
+        // 2. 복귀
+        seq.Append(mainCamera.transform.DOMove(startPos, 1.0f).SetEase(Ease.InSine));
 
         yield return seq.WaitForCompletion();
 

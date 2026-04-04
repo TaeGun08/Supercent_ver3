@@ -52,14 +52,19 @@ public class TutorialManager : SingletonBase<TutorialManager>
 
         TutorialStep step = steps[currentStepIndex];
         
-        if (step.unlockZoneToActivate != null) step.unlockZoneToActivate.SetActive(true);
+        // 1. 해금 존 활성화
+        if (step.unlockZoneToActivate != null)
+        {
+            step.unlockZoneToActivate.SetActive(true);
+        }
 
+        // 2. 카메라 연출 (Target이 없더라도 CameraPoint가 있으면 실행 가능)
         if (step.needCameraDirecting)
         {
-            // [Fix]: 카메라 포인트와 타겟을 모두 넘겨줌
             CameraDirector.Instance.ShowTarget(step.target, step.cameraPoint);
         }
 
+        // 3. 내비게이션 갱신 (Target이 null이면 알아서 꺼짐)
         if (navigationArrow != null)
         {
             navigationArrow.SetTarget(step.target);
