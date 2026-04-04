@@ -83,14 +83,13 @@ public class PrisonManager : SingletonBase<PrisonManager>
                 
                 // 감옥 내부 무작위 지점으로 살짝 흩어지는 연출
                 float rangeX = 1.0f;
-                float rangeZ = 1.0f;
-                Vector3 randomPos = new Vector3(Random.Range(-rangeX, rangeX), 0f, Random.Range(-rangeZ, rangeZ)) + npc.transform.position;
+                float rangeZ = 0.5f;
+                Vector3 randomPos = new Vector3(Random.Range(0, rangeX), 0f, Random.Range(0, rangeZ)) + npc.transform.position;
                 
                 npc.transform.DOMove(randomPos, 1.0f).OnComplete(() => {
-                    // [Revert]: 사용자의 요청에 따라 물리 및 논리 고정 로직 삭제 (물리 충돌 허용)
+                    npc.Rb.freezeRotation = true;
                 });
 
-                // [Tutorial Hook]: 실제 수감 인원이 만석이 되었을 때 안내 트리거
                 if (IsPrisonFull && !hasTriggeredExpandGuide)
                 {
                     hasTriggeredExpandGuide = true;
