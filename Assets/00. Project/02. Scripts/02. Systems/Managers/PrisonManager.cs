@@ -17,6 +17,13 @@ public class PrisonManager : SingletonBase<PrisonManager>
     private int enteringCount; 
     private readonly HashSet<Npc> waitingNPCs = new();
 
+    // [SOLID]: 외부 노출 프로퍼티
+    public int CurrentCount => currentPrisonerCount;
+    public int MaxCapacity => maxCapacity;
+
+    // [SOLID]: 상태 변화를 알리는 이벤트 (현재 인원, 최대 수용량)
+    public event System.Action<int, int> OnPrisonerCountChanged;
+
     [Header("Tutorial Hook")]
     [SerializeField] private GameObject prisonUnlockZone;
     [SerializeField] private Transform prisonUnlockTarget;
@@ -29,8 +36,11 @@ public class PrisonManager : SingletonBase<PrisonManager>
     {
         maxCapacity += additionalAmount;
         hasTriggeredExpandGuide = false; // 확장 후에는 다시 트리거 가능
-        UpdateUI();
-        Debug.Log($"[Prison] 수용량이 확장되었습니다. 현재 최대 수용량: {maxCapacity}");
+        
+        NotifyStateChanged();
+        
+        // 확장 즉시 대기열에 있던 죄수들을 가용량만큼 수용 시도
+        RefreshWaitingQueue();
     }
 
     public void RegisterNewPrisoner()
@@ -59,8 +69,10 @@ public class PrisonManager : SingletonBase<PrisonManager>
     private void EnterPrisonLogic(Npc npc)
     {
         currentPrisonerCount++;
-        UpdateUI();
-        waitingNPCs.Remove(npc);
+        prisonerCountText.text = $"{currentPrisonerCount}/{maxCapacity}";
+        NotifyStateChanged();
+
+        if (waitingNPCs.Contains(npc)) waitingNPCs.Remove(npc);
 
         enteringCount++;
         if (prisonDoor != null) prisonDoor.SetActive(false);
@@ -75,15 +87,15 @@ public class PrisonManager : SingletonBase<PrisonManager>
                 Vector3 randomPos = new Vector3(Random.Range(-rangeX, rangeX), 0f, Random.Range(-rangeZ, rangeZ)) + npc.transform.position;
                 
                 npc.transform.DOMove(randomPos, 1.0f).OnComplete(() => {
-                    if (npc.Rb != null) npc.Rb.isKinematic = true; // 최종 도착 시 물리 시뮬레이션 중단
-                    if (npc.Col != null) npc.Col.enabled = false; // 콜라이더 비활성화
+                    // [Revert]: 사용자의 요청에 따라 물리 및 논리 고정 로직 삭제 (물리 충돌 허용)
                 });
 
                 // [Tutorial Hook]: 실제 수감 인원이 만석이 되었을 때 안내 트리거
                 if (IsPrisonFull && !hasTriggeredExpandGuide)
                 {
                     hasTriggeredExpandGuide = true;
-                    TutorialManager.Instance.TriggerPrisonExpandGuide(prisonUnlockZone.transform, prisonUnlockTarget);
+                    if (TutorialManager.Instance != null)
+                        TutorialManager.Instance.TriggerPrisonExpandGuide(prisonUnlockZone.transform, prisonUnlockTarget);
                 }
 
                 enteringCount--;
@@ -95,24 +107,31 @@ public class PrisonManager : SingletonBase<PrisonManager>
         });
     }
 
-    private void UpdateUI()
+    private void NotifyStateChanged()
     {
-        if (prisonerCountText != null)
-        {
-            prisonerCountText.text = $"{currentPrisonerCount} / {maxCapacity}";
-        }
+        OnPrisonerCountChanged?.Invoke(currentPrisonerCount, maxCapacity);
     }
     
     public void RefreshWaitingQueue()
     {
-        if (waitingNPCs.Count <= 0 || IsFull) return;
+        if (waitingNPCs.Count <= 0) return;
 
-        waitingNPCs.RemoveWhere(npc => npc == null);
+        // 현재 가용 용량 계산
+        int availableSpace = maxCapacity - currentPrisonerCount;
+        if (availableSpace <= 0) return;
 
-        var enumerator = waitingNPCs.GetEnumerator();
-        if (enumerator.MoveNext())
+        // 컬렉션 수정 방지를 위해 임시 리스트 사용
+        List<Npc> toEnter = new List<Npc>();
+        foreach (var npc in waitingNPCs)
         {
-            TryEnterPrison(enumerator.Current);
+            if (npc == null) continue;
+            toEnter.Add(npc);
+            if (toEnter.Count >= availableSpace) break;
+        }
+
+        foreach (var npc in toEnter)
+        {
+            EnterPrisonLogic(npc);
         }
     }
 }

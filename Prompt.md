@@ -661,3 +661,13 @@
 
 **AI**:
 - **Engineering Summary**: **[Route-Based State Machine Alignment]** TransportWorker의 이동 타겟을 구체 클래스 좌표에서 전용 웨이포인트(Transform) 좌표로 수정하여 이동 정밀도를 확보함. 사용자 요청에 따라 [Full-Load -> Complete-Unload -> Distribution-Stay -> Re-fetch]의 엄격한 업무 사이클을 상태 머신에 이식함. 배급 상태 진입 시 가마솥 생산 여부와 상관없이 테이블 물량 보존을 우선시하는 로직을 적용하여 물류 자동화 루프의 개연성을 완성함.
+**User**:
+> 수감 완료 시 물리 고정 해제 및 감옥 확장 시 대기 인원 즉시 입소 로직 추가 요청.
+
+**AI**:
+- **Engineering Summary**: **[Dynamic Prison Lifecycle]** 수감 완료 시 적용되던 물리 엔진 동결 로직을 제거하여, 감옥 내 NPC들의 물리적 반응성을 복구함. **[Expansion-Triggered Batch Entry]** PrisonManager.ExpandCapacity 시점에 대기열 스캔 루프를 즉시 실행하여, 증설된 용량만큼 대기 인원이 비동기적으로 자동 입소하는 파이프라인을 구축함. 매니저의 UI 의존성을 제거하고 이벤트 기반 통보 시스템으로 전면 전환하여 SOLID 원칙(SRP)을 강화함.
+**User**:
+> 감옥 카운팅이 되지 않는 버그 리포트.
+
+**AI**:
+- **Engineering Summary**: **[State-UI Synchronization Fix]** PrisonManager의 데이터 캡슐화 이후 누락된 UI 갱신 파이프라인을 복구함. CurrentCount 및 MaxCapacity 프로퍼티를 노출하여 UI의 초기 동기화를 보장하고, 신규 구축된 PrisonUIController를 통해 이벤트 기반의 리액티브 UI 시스템을 완성함. 이를 통해 매니저와 UI 간의 통신 무결성을 확보하고 카운팅 누락 문제를 원천 해결함.

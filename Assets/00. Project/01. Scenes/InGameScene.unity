@@ -3141,6 +3141,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2537200135687430174, guid: f8aeec0e147850140a76a8665f29f0ad, type: 3}
+      propertyPath: nextZone.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6337150545878708771, guid: f8aeec0e147850140a76a8665f29f0ad, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
