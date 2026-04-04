@@ -656,3 +656,8 @@
 
 **AI**:
 - **Engineering Summary**: **[Self-Starting FSM Recovery]** TransportWorker가 외부의 명시적인 Initialize 호출 없이도 활성화 시점에 스스로 동작을 시작할 수 있도록 자율 초기화(Self-Initialization) 구조로 개편함. 직렬화(Serialization) 필드를 복구하여 인스펙터에서 사전 할당된 참조(Dependencies)가 상태 머신에 안전하게 주입되도록 보장함.
+**User**:
+> TransportWorker 루트 이동 오류 수정 및 업무 루프(수집-하적-배급대기) 정교화 요청.
+
+**AI**:
+- **Engineering Summary**: **[Route-Based State Machine Alignment]** TransportWorker의 이동 타겟을 구체 클래스 좌표에서 전용 웨이포인트(Transform) 좌표로 수정하여 이동 정밀도를 확보함. 사용자 요청에 따라 [Full-Load -> Complete-Unload -> Distribution-Stay -> Re-fetch]의 엄격한 업무 사이클을 상태 머신에 이식함. 배급 상태 진입 시 가마솥 생산 여부와 상관없이 테이블 물량 보존을 우선시하는 로직을 적용하여 물류 자동화 루프의 개연성을 완성함.

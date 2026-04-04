@@ -6954,11 +6954,19 @@ PrefabInstance:
     - target: {fileID: 7767288382047069085, guid: f00fb52da65ee004384ce3e4cce4042c, type: 3}
       propertyPath: tablePoint
       value: 
-      objectReference: {fileID: 8831308525292656961}
+      objectReference: {fileID: 3138581211311800511}
+    - target: {fileID: 7767288382047069085, guid: f00fb52da65ee004384ce3e4cce4042c, type: 3}
+      propertyPath: targetTable
+      value: 
+      objectReference: {fileID: 815037365354989030}
     - target: {fileID: 7767288382047069085, guid: f00fb52da65ee004384ce3e4cce4042c, type: 3}
       propertyPath: cauldronPoint
       value: 
-      objectReference: {fileID: 6255944582541589772}
+      objectReference: {fileID: 1565485024693748446}
+    - target: {fileID: 7767288382047069085, guid: f00fb52da65ee004384ce3e4cce4042c, type: 3}
+      propertyPath: targetCauldron
+      value: 
+      objectReference: {fileID: 2698563854104035873}
     - target: {fileID: 7767288382047069085, guid: f00fb52da65ee004384ce3e4cce4042c, type: 3}
       propertyPath: distributionStandPoint
       value: 

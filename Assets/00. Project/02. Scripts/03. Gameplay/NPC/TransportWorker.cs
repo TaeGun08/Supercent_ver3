@@ -38,22 +38,6 @@ public class TransportWorker : Npc
 
     private void Start()
     {
-        // [Self-Initialization]: 활성화 시점에 인스펙터 할당값을 기반으로 자율 시작
-        if (targetCauldron != null && targetTable != null)
-        {
-            ChangeState(stateToCauldron);
-        }
-        else
-        {
-            Debug.LogWarning($"[TransportWorker] {gameObject.name}: Cauldron 또는 Table이 할당되지 않아 동작을 시작할 수 없습니다.");
-        }
-    }
-
-    public void Initialize(MagicCauldron cauldron, PotionTable table)
-    {
-        targetCauldron = cauldron;
-        targetTable = table;
-        
         if (targetCauldron != null && targetTable != null)
         {
             ChangeState(stateToCauldron);
@@ -73,7 +57,11 @@ public class TransportWorker : Npc
         private TransportWorker worker;
         public State_ToCauldron(TransportWorker w) => worker = w;
         public void Enter() => worker.MoveTo(worker.cauldronPoint.position);
-        public void Execute() { if (!worker.IsMoving) worker.ChangeState(worker.stateLoading); }
+        public void Execute() 
+        { 
+            // 가마솥 포인트 도착 시 수집 상태로
+            if (!worker.IsMoving) worker.ChangeState(worker.stateLoading); 
+        }
         public void Exit() { }
     }
 
@@ -86,13 +74,25 @@ public class TransportWorker : Npc
         public void Execute()
         {
             if (isHandling) return;
-            if (worker.myStacker.IsFull) { worker.ChangeState(worker.stateToTable); return; }
+            
+            // 1. 최대치만큼 챙기면 테이블로 이동
+            if (worker.myStacker.IsFull) 
+            { 
+                worker.ChangeState(worker.stateToTable); 
+                return; 
+            }
 
+            // 2. 가마솥에 물건이 있으면 계속 수집
             ItemStacker output = worker.targetCauldron.GetOutputStacker();
             if (output.HasItem)
             {
                 IPickupAble item = output.PopStack();
                 if (item != null) worker.StartCoroutine(HandleCollect(item));
+            }
+            else if (worker.myStacker.HasItem)
+            {
+                // 가마솥이 비었더라도 들고 있는 게 있다면 일단 테이블로 운반 (유동적 흐름)
+                worker.ChangeState(worker.stateToTable);
             }
         }
         private IEnumerator HandleCollect(IPickupAble item)
@@ -116,7 +116,7 @@ public class TransportWorker : Npc
         { 
             if (!worker.IsMoving) 
             {
-                worker.transform.DORotate(new Vector3(0, 180f, 0), 0.3f);
+                // 도착 즉시 하적 상태로
                 worker.ChangeState(worker.stateUnloading); 
             }
         }
@@ -132,19 +132,27 @@ public class TransportWorker : Npc
         public void Execute()
         {
             if (isHandling) return;
+
+            // 1. 자신의 인벤토리가 다 비워졌다면
             if (!worker.myStacker.HasItem)
             {
+                // 테이블에 포션이 있다면 배급 대기, 없다면 다시 가지러 감
                 if (worker.targetTable.GetStacker().HasItem) worker.ChangeState(worker.stateDistributing);
                 else worker.ChangeState(worker.stateToCauldron);
                 return;
             }
 
+            // 2. 테이블 인벤토리가 가득 찼다면 (자신은 남았어도 더 이상 못 쌓음)
             ItemStacker tableInput = worker.targetTable.GetStacker();
-            if (!tableInput.IsFull)
+            if (tableInput.IsFull)
             {
-                IPickupAble item = worker.myStacker.PopStack();
-                if (item != null) worker.StartCoroutine(HandleDeposit(item, tableInput));
+                worker.ChangeState(worker.stateDistributing);
+                return;
             }
+
+            // 3. 하적 로직 수행
+            IPickupAble item = worker.myStacker.PopStack();
+            if (item != null) worker.StartCoroutine(HandleDeposit(item, tableInput));
         }
         private IEnumerator HandleDeposit(IPickupAble item, ItemStacker target)
         {
@@ -162,14 +170,19 @@ public class TransportWorker : Npc
     {
         private TransportWorker worker;
         public State_Distributing(TransportWorker w) => worker = w;
-        public void Enter() => worker.MoveTo(worker.distributionStandPoint.position);
+        public void Enter() 
+        {
+            worker.MoveTo(worker.distributionStandPoint.position, () => {
+                // 도착 시 고정된 방향(뒤쪽)을 바라봄
+                worker.transform.DORotate(new Vector3(0, 180f, 0), 0.3f);
+            });
+        }
         public void Execute()
         {
             if (worker.IsMoving) return;
-            worker.transform.rotation = Quaternion.Lerp(worker.transform.rotation, Quaternion.Euler(0, 180f, 0), Time.deltaTime * worker.rotationSpeed);
             
-            // 테이블이 비워지거나 가마솥에 물건이 나오면 다시 수집 모드로
-            if (!worker.targetTable.GetStacker().HasItem || worker.targetCauldron.GetOutputStacker().HasItem)
+            // 테이블의 포션이 다 사라졌다면 다시 가지러 가기
+            if (!worker.targetTable.GetStacker().HasItem)
             {
                 worker.ChangeState(worker.stateToCauldron);
             }
