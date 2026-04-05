@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using TMPro;
@@ -14,6 +15,13 @@ public class UnlockZone : MonoBehaviour
     [SerializeField] private Transform goldTargetPoint;
     [SerializeField] private TMP_Text costText;
     [SerializeField] private Image costImage;
+
+    [Header("Camera Direction (Optional)")]
+    [SerializeField] private Transform lookTarget;      // 비춰줄 대상
+    [SerializeField] private Transform cameraPoint;     // 카메라가 위치할 지점
+
+    // [SOLID]: 연출 레이어 분리를 위한 이벤트
+    public event Action<Transform, Transform> OnUnlocked;
 
     private int currentPaidGold;
     private int playerLayer;
@@ -61,7 +69,7 @@ public class UnlockZone : MonoBehaviour
                     currentPaidGold++;
                     UpdateVisuals();
                     
-                    AudioManager.Instance.Play(SoundType.ItemDrop_Gold);
+                    AudioManager.Instance.Play(gold.Data.dropSound); // [Data-Driven]
                     DOParabolicMove.MoveToStaticPosition(
                         gold.Transform,
                         goldTargetPoint != null ? goldTargetPoint.position : transform.position,
@@ -88,6 +96,10 @@ public class UnlockZone : MonoBehaviour
         isUnlocked = true;
         
         AudioManager.Instance.Play(SoundType.UnlockSuccess);
+
+        // [SOLID]: 직접 카메라를 비추는 대신 이벤트를 발행하여 연출 레이어에 알림
+        OnUnlocked?.Invoke(lookTarget, cameraPoint);
+
         reward?.Execute();
         
         if (costText != null) costText.text = "UNLOCKED";

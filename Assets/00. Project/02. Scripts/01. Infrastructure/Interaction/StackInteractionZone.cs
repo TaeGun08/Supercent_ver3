@@ -36,13 +36,13 @@ public class StackInteractionZone : MonoBehaviour
 
     private IEnumerator ProcessInteraction(GameObject playerObj)
     {
-        if (playerObj.TryGetComponent(out Inventory stackManager) == false) yield break;
+        if (playerObj.TryGetComponent(out Inventory inventory) == false) yield break;
         WaitForSeconds wait = new WaitForSeconds(interval);
 
         while (true)
         {
-            if (mode == InteractionMode.In) HandleInput(stackManager);
-            else HandleOutput(stackManager);
+            if (mode == InteractionMode.In) HandleInput(inventory);
+            else HandleOutput(inventory);
             yield return wait;
         }
     }
@@ -63,10 +63,8 @@ public class StackInteractionZone : MonoBehaviour
         IPickupAble item = playerSource.PopStack();
         if (item == null) return;
 
-        // [Sound Polish]: 아이템 타입에 따른 사운드 분기
-        SoundType dropSound = targetStacker.AcceptableType == ItemType.Gold 
-            ? SoundType.ItemDrop_Gold : SoundType.ItemDrop_Default;
-        AudioManager.Instance.Play(dropSound);
+        // [Data-Driven]: 아이템 데이터에서 사운드 가져오기
+        AudioManager.Instance.Play(item.Data.dropSound);
 
         Vector3 targetWorldPos = targetStacker.transform.TransformPoint(targetStacker.GetNextLocalPosition());
 
@@ -95,10 +93,8 @@ public class StackInteractionZone : MonoBehaviour
         IPickupAble item = targetStacker.PopStack();
         if (item == null) return;
 
-        // [Sound Polish]: 아이템 타입에 따른 사운드 분기
-        SoundType pickupSound = targetStacker.AcceptableType == ItemType.Gold 
-            ? SoundType.ItemPickup_Gold : SoundType.ItemPickup_Default;
-        AudioManager.Instance.Play(pickupSound);
+        // [Data-Driven]: 아이템 데이터에서 사운드 가져오기
+        AudioManager.Instance.Play(item.Data.pickupSound);
 
         DOParabolicMove.MoveToDynamicTarget(
             item.Transform, 

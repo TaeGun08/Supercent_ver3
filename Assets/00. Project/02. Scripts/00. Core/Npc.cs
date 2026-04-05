@@ -57,7 +57,11 @@ public abstract class Npc : MonoBehaviour
         float distance = Vector3.Distance(transform.position, targetPos);
         float duration = distance / moveSpeed;
 
-        transform.DOLookAt(targetPos, 0.2f, AxisConstraint.Y);
+        // [Fix]: 현재 위치와 목표 위치가 너무 가까우면 LookAt 계산을 생략하여 오류 방지
+        if (Vector3.Distance(transform.position, targetPos) > 0.05f)
+        {
+            transform.DOLookAt(targetPos, 0.2f, AxisConstraint.Y);
+        }
 
         moveTween = transform.DOMove(targetPos, duration)
             .SetEase(Ease.Linear)

@@ -170,9 +170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e52f3ba56f7162b48828ac6572e016a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptableType: 0
+  itemData: {fileID: 11400000, guid: 8c508d38454ad514dac633b080073612, type: 2}
   maxStackCount: 8
-  itemHeight: 0.5
   gridColumns: 2
   gridRows: 1
   spacingX: 0.5
@@ -760,9 +759,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e52f3ba56f7162b48828ac6572e016a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptableType: 1
+  itemData: {fileID: 11400000, guid: d573cc5c8ef4f87419652c09f8c939ed, type: 2}
   maxStackCount: 50
-  itemHeight: 0.25
   gridColumns: 1
   gridRows: 2
   spacingX: 0.5
@@ -1246,9 +1244,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e52f3ba56f7162b48828ac6572e016a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceptableType: 2
+  itemData: {fileID: 11400000, guid: f714ae03cf580c94e8eb3e678736e788, type: 2}
   maxStackCount: 20
-  itemHeight: 0.5
   gridColumns: 1
   gridRows: 1
   spacingX: 0.5

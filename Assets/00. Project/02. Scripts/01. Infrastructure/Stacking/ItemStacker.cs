@@ -15,11 +15,9 @@ public interface IStackHolder
 public class ItemStacker : MonoBehaviour, IStackHolder
 {
     [Header("Stacker Settings")]
-    [SerializeField] private ItemType acceptableType;
+    [SerializeField] private ItemDataSO itemData;
     [SerializeField] private int maxStackCount = 10;
-    [SerializeField] private float itemHeight = 0.5f;
-    public float ItemHeight => itemHeight;
-
+    
     [Header("Grid Settings")]
     [SerializeField] private int gridColumns = 1;
     [SerializeField] private int gridRows = 1;
@@ -33,16 +31,20 @@ public class ItemStacker : MonoBehaviour, IStackHolder
     public bool IsFullWithPending => (stackedItems.Count + pendingCount) >= maxStackCount;
     public bool HasItem => stackedItems.Count > 0;
     public int CurrentCount => stackedItems.Count;
-    public ItemType AcceptableType => acceptableType;
     
-    public event Action OnStackChanged; // 범용 이벤트로 통합
+    // [Data-Driven]: 메타데이터 접근
+    public ItemDataSO ItemData => itemData;
+    public ItemType AcceptableType => itemData != null ? itemData.itemType : ItemType.None;
+    public float ItemHeight => itemData != null ? itemData.stackHeight : 0.5f;
+    
+    public event Action OnStackChanged;
 
     public Vector3 GetNextLocalPosition() => GetPositionAtIndex(stackedItems.Count + pendingCount);
 
     public Vector3 GetPositionAtIndex(int index)
     {
         int layerSize = gridColumns * gridRows;
-        if (layerSize <= 1) return new Vector3(0, index * itemHeight, 0);
+        if (layerSize <= 1) return new Vector3(0, index * ItemHeight, 0);
 
         int layer = index / layerSize;
         int indexInLayer = index % layerSize;
@@ -51,7 +53,7 @@ public class ItemStacker : MonoBehaviour, IStackHolder
 
         float xPos = (col - (gridColumns - 1) * 0.5f) * spacingX;
         float zPos = (row - (gridRows - 1) * 0.5f) * spacingZ;
-        return new Vector3(xPos, layer * itemHeight, zPos);
+        return new Vector3(xPos, layer * ItemHeight, zPos);
     }
 
     public void ReserveSlot() => pendingCount++;
@@ -61,11 +63,15 @@ public class ItemStacker : MonoBehaviour, IStackHolder
     {
         pendingCount = Mathf.Max(0, pendingCount - 1);
 
-        if (pickupAble == null || pickupAble.Type != acceptableType) return;
+        // [Fix]: 객체 참조 비교는 에셋 할당 실수에 취약하므로 Enum 값으로 검증
+        if (pickupAble == null || pickupAble.Data == null || pickupAble.Data.itemType != AcceptableType) 
+        {
+            Debug.LogWarning($"[ItemStacker] 잘못된 아이템 투입 시도: {pickupAble?.Data?.itemName ?? "Unknown"} (Expected: {AcceptableType})");
+            return;
+        }
 
         if (IsFull)
         {
-            // [Fail-Fast] 가득 찬 상태에서 적재 시도 시 공중에 멈추지 않고 즉시 풀 반납
             pickupAble.Release();
             return;
         }

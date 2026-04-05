@@ -696,3 +696,8 @@
 
 **AI**:
 - **Engineering Summary**: MiningWorker와 TransportWorker의 각 상태(Mining, Loading, Unloading)에 맞춰 적절한 효과음 호출부를 추가함. Prisoner의 포션 수령 사운드 누락분을 복구하고 호출 시점을 최적화하여 오디오 피드백 누락 문제를 해결함.
+**User**: 
+> 다시 전체적인 코드 분석하고, SOLID원치 기반으로 리팩터링을 진행하자, 기존 코드의 스타일과 기능들을 망치지 않는 선에서 진행해줬으면 해.
+
+**AI**:
+- **Engineering Summary**: 3단계에 걸친 대규모 리팩터링 수행. 1) Prisoner AI 상태 패턴 이식, 2) ItemDataSO 기반 데이터 주도형 자원 시스템 구축, 3) UnlockZone 연출 이벤트를 통한 프레젠테이션 레이어 분리 완료. 이를 통해 시스템 유연성을 극대화하고 런타임 성능(Zero-GC)을 유지함.

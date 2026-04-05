@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class Cobblestone : MonoBehaviour, IPickupAble
 {
+    [SerializeField] private ItemDataSO itemData;
     public Transform Transform => transform;
-    public ItemType Type => ItemType.Stone;
+    public ItemDataSO Data => itemData;
 
     public void Release()
     {

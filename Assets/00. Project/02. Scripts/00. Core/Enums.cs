@@ -1,3 +1,11 @@
+public enum ItemType 
+{ 
+    None = 0, 
+    Stone, 
+    Gold, 
+    Potion 
+}
+
 public enum SoundType
 {
     None = 0,

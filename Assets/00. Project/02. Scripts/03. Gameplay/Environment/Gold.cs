@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class Gold : MonoBehaviour, IPickupAble
 {
+    [SerializeField] private ItemDataSO itemData;
     public Transform Transform => transform;
-    public ItemType Type => ItemType.Gold;
+    public ItemDataSO Data => itemData;
 
     public void Release()
     {

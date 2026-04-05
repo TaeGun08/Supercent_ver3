@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Project.Core.Interfaces;
 
 public enum MiningWorkerState { MovingToStart, Scanning, Mining, MovingToNext }
 

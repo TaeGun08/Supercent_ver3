@@ -215,3 +215,17 @@
 
 ### 3. 현재 상태
 - **Stable**: 모든 NPC 활동에 대한 오디오 피드백 루프 완성. 인스펙터 클립 할당 시 즉시 정상 작동 가능.
+## [Update: 2026-04-06 (SOLID Refactoring Completion)]
+### 1. Prisoner AI 상태 패턴 전환
+- **Prisoner**: INpcState 기반의 클래스 캡슐화 상태 머신으로 전면 개편. 코루틴 의존성 제거 및 Zero-GC 달성.
+
+### 2. 데이터 기반 자원 아키텍처 (SSOT)
+- **ItemDataSO**: 아이템의 속성(높이, 사운드 등)을 통합 관리하는 단일 진실 공급원 구축.
+- **Impact**: StackInteractionZone 등에서 하드코딩된 아이템 분기 로직 완전 제거.
+
+### 3. 연출 레이어 분리 (Decoupling)
+- **UnlockCinematicDirector**: UnlockZone의 이벤트를 구독하여 시네마틱 연출을 전담 수행.
+- **Benefit**: 해금 로직과 시각 연출 간의 의존성 제거 및 확장성 확보.
+
+### 4. 현재 상태
+- **Stable**: 프로젝트 전반의 결합도가 낮아졌으며, SOLID 원칙을 준수하는 고퀄리티 코드베이스 확보.
