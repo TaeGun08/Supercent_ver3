@@ -975,6 +975,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 642525026}
   m_CullTransparentMesh: 1
+--- !u!4 &654064512 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4078544689610013061, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+  m_PrefabInstance: {fileID: 5781783370106455885}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &669935608 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5674279774484309899, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
@@ -2111,6 +2116,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1259037813}
   m_CullTransparentMesh: 1
+--- !u!4 &1311104309 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8519821660963466618, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+  m_PrefabInstance: {fileID: 5781783370106455885}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1354475757 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1579864439236103578, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
@@ -3507,6 +3517,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2986872654666738103, guid: e6491f0fb4587a2418451bda7ee7a8ee, type: 3}
+      propertyPath: lookTarget
+      value: 
+      objectReference: {fileID: 654064512}
+    - target: {fileID: 2986872654666738103, guid: e6491f0fb4587a2418451bda7ee7a8ee, type: 3}
+      propertyPath: cameraPoint
+      value: 
+      objectReference: {fileID: 1311104309}
+    - target: {fileID: 2986872654666738103, guid: e6491f0fb4587a2418451bda7ee7a8ee, type: 3}
       propertyPath: upgrade.Array.data[0]
       value: 
       objectReference: {fileID: 482110228}
@@ -3594,6 +3612,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6886328132341961128, guid: e6491f0fb4587a2418451bda7ee7a8ee, type: 3}
+      propertyPath: cameraPoint
+      value: 
+      objectReference: {fileID: 963194228}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

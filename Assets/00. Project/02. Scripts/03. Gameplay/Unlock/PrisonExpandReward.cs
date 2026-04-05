@@ -8,8 +8,8 @@ public class PrisonExpandReward : MonoBehaviour, IUnlockReward
     [SerializeField] private GameObject[] upgrade;
 
     [Header("Camera Settings")]
-    [SerializeField] private Transform lookTarget;      // 비춰줄 대상
-    [SerializeField] private Transform cameraPoint;     // 카메라가 위치할 지점
+    [SerializeField] private Transform lookTarget;
+    [SerializeField] private Transform cameraPoint;
 
     public void Execute()
     {
