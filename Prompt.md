@@ -676,3 +676,8 @@
 
 **AI**:
 - **Engineering Summary**: 단일 AudioSource와 PlayOneShot을 활용한 저비용/고효율 사운드 시스템 구축. SoundType Enum과 SoundDataSO를 통해 데이터와 로직을 분리하였으며, 채굴, 인터랙션, 해금, 수감 등 핵심 지점에 사운드 호출부를 통합함. [Fail-Fast] 원칙에 따라 클립 부재 시 명시적 경고를 발생시켜 데이터 무결성을 보장함.
+**User**: 
+> 그리고 PrizonUnlockZone이 해금되었을 때, 카메라 연출이 있었으면 좋겠어. 그냥 지금의 연출 처럼 잠깐 지정 위치로 이동했다 돌아오는 걸로.
+
+**AI**:
+- **Engineering Summary**: PrisonExpandReward 클래스에 CameraDirector 연동 로직을 추가하여 해금 시 시네마틱 연출을 구현함. [SRP] 원칙을 준수하며, 기존 카메라 제어 레이어를 재사용하여 조이스틱 입력 차단과 연출을 동기화함.

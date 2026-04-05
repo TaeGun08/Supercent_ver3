@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "SoundData", menuName = "Project/Settings/SoundData")]
+[CreateAssetMenu(fileName = "SoundData", menuName = "ScriptableObjects/SoundData")]
 public class SoundDataSO : ScriptableObject
 {
     [System.Serializable]

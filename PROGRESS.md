@@ -177,3 +177,10 @@
 
 ### 3. 현재 상태
 - **Stable**: 사운드 로직이 물리/UI 시스템과 분리되어 독립적으로 동작하며, 단일 채널로 고주파 효과음 처리 가능.
+## [Update: 2026-04-06 (Cinematic Unlock Polish)]
+### 1. 감옥 확장 해금 연출 고도화
+- **PrisonExpandReward**: 해금 시 CameraDirector를 호출하여 특정 지점을 비추는 시네마틱 연출 추가.
+- **Integration**: lookTarget(주시 대상) 및 cameraPoint(카메라 위치) 필드를 통한 유연한 연출 설정 가능.
+
+### 2. 현재 상태
+- **Stable**: 해금 즉시 조이스틱 입력이 차단되며, 지정된 지점을 비춘 후 플레이어에게 복귀하는 시퀀스 정상 작동 확인.
