@@ -164,3 +164,16 @@
 
 ### 2. 현재 상태
 - **Stable**: 죄수 입소 시 실시간 UI 카운팅 정상 작동 확인.
+## [Update: 2026-04-06 (Sound System Integration)]
+### 1. 전역 사운드 시스템 구축
+- **AudioManager**: 단일 AudioSource 기반의 PlayOneShot 재생 구조 구현. 캐싱을 통한 성능 최적화.
+- **SoundDataSO**: Enum(SoundType)과 AudioClip을 매핑하는 ScriptableObject 데이터 구조 정립.
+
+### 2. 핵심 게임플레이 연동 완료
+- **Mining**: 채굴 타격 시 MiningHit 사운드 재생.
+- **Interaction**: 아이템 획득(Pickup) 및 하적(Drop) 사운드 재생.
+- **Unlock**: 구역 해금 성공 시 UnlockSuccess 사운드 재생.
+- **Prison**: 죄수 수감 완료 시 PrisonerEnter 사운드 재생.
+
+### 3. 현재 상태
+- **Stable**: 사운드 로직이 물리/UI 시스템과 분리되어 독립적으로 동작하며, 단일 채널로 고주파 효과음 처리 가능.

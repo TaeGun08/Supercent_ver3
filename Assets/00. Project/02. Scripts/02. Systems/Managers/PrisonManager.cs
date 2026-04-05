@@ -69,6 +69,7 @@ public class PrisonManager : SingletonBase<PrisonManager>
     private void EnterPrisonLogic(Npc npc)
     {
         currentPrisonerCount++;
+        AudioManager.Instance.Play(SoundType.PrisonerEnter);
         prisonerCountText.text = $"{currentPrisonerCount}/{maxCapacity}";
         NotifyStateChanged();
 

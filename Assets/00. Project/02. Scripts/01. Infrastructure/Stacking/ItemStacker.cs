@@ -67,7 +67,6 @@ public class ItemStacker : MonoBehaviour, IStackHolder
         {
             // [Fail-Fast] 가득 찬 상태에서 적재 시도 시 공중에 멈추지 않고 즉시 풀 반납
             pickupAble.Release();
-            Debug.LogWarning($"[ItemStacker] {gameObject.name} is full. Item released to pool.");
             return;
         }
 

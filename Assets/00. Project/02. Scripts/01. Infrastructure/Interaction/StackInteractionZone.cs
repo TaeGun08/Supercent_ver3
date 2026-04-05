@@ -63,6 +63,7 @@ public class StackInteractionZone : MonoBehaviour
         IPickupAble item = playerSource.PopStack();
         if (item == null) return;
 
+        AudioManager.Instance.Play(SoundType.ItemDrop);
         Vector3 targetWorldPos = targetStacker.transform.TransformPoint(targetStacker.GetNextLocalPosition());
 
         DOParabolicMove.MoveToStaticPosition(

@@ -671,3 +671,8 @@
 
 **AI**:
 - **Engineering Summary**: **[State-UI Synchronization Fix]** PrisonManager의 데이터 캡슐화 이후 누락된 UI 갱신 파이프라인을 복구함. CurrentCount 및 MaxCapacity 프로퍼티를 노출하여 UI의 초기 동기화를 보장하고, 신규 구축된 PrisonUIController를 통해 이벤트 기반의 리액티브 UI 시스템을 완성함. 이를 통해 매니저와 UI 간의 통신 무결성을 확보하고 카운팅 누락 문제를 원천 해결함.
+**User**: 
+> 이제 우리가 다음 작업은 사운드를 넣을거야. 일단 오디오 SO를 만들어서 오디오 클립을 담은걸 오디오 매니저에 할당하고 오디오 매니저를 참조해서 원하는 오디오를 사용하는거야. 효과음만 있으면 될 것 같아. 그리고 오디오 매니저에 오디오소스 하나만 사용하자.
+
+**AI**:
+- **Engineering Summary**: 단일 AudioSource와 PlayOneShot을 활용한 저비용/고효율 사운드 시스템 구축. SoundType Enum과 SoundDataSO를 통해 데이터와 로직을 분리하였으며, 채굴, 인터랙션, 해금, 수감 등 핵심 지점에 사운드 호출부를 통합함. [Fail-Fast] 원칙에 따라 클립 부재 시 명시적 경고를 발생시켜 데이터 무결성을 보장함.

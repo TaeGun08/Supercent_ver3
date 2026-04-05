@@ -86,6 +86,7 @@ public class UnlockZone : MonoBehaviour
         if (isUnlocked) return;
         isUnlocked = true;
         
+        AudioManager.Instance.Play(SoundType.UnlockSuccess);
         reward?.Execute();
         
         if (costText != null) costText.text = "UNLOCKED";
