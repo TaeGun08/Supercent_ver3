@@ -14,11 +14,12 @@ public class MiningWorker : Npc
     [Header("Mining Settings")]
     [SerializeField] private ItemStacker targetStorage;
     [SerializeField] private float scanDistance = 1.5f;
-    [SerializeField] private float miningDelay = 1.0f;
+    [SerializeField] private float miningDelay = 0.2f;
     [SerializeField] private LayerMask targetLayer;
 
     private MiningWorkerState currentState;
     private WaitForSeconds miningWait;
+    private WaitForSeconds animWait;
     private Vector3 moveDirection;
 
     protected override void Awake()
@@ -26,6 +27,7 @@ public class MiningWorker : Npc
         base.Awake();
         
         miningWait = new WaitForSeconds(miningDelay);
+        animWait = new WaitForSeconds(0.2f);
         moveDirection = (endPoint.position - startPoint.position).normalized;
     }
 
@@ -87,10 +89,12 @@ public class MiningWorker : Npc
 
     private IEnumerator PerformMining(IMiningTarget target)
     {
-        animator.SetTrigger(MINING);
-        AudioManager.Instance.Play(SoundType.MiningHit_Burst);
         yield return miningWait;
+        animator.SetTrigger(MINING);
 
+        yield return animWait;
+        
+        AudioManager.Instance.Play(SoundType.MiningHit_Burst);
         EffectManager.Instance.PlayEffect("MiningHit", target.Transform.position);
         yield return null;
         

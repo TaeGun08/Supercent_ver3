@@ -3488,6 +3488,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5348427568930974101}
     - target: {fileID: 8105283168771700500, guid: 4fade108aab98ae4aa4f3c2edade7c69, type: 3}
+      propertyPath: miningDelay
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8105283168771700500, guid: 4fade108aab98ae4aa4f3c2edade7c69, type: 3}
       propertyPath: targetStorage
       value: 
       objectReference: {fileID: 5988852859535154939}
@@ -3768,6 +3772,10 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 2634005880423206561}
+    - target: {fileID: 8105283168771700500, guid: 4fade108aab98ae4aa4f3c2edade7c69, type: 3}
+      propertyPath: miningDelay
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 8105283168771700500, guid: 4fade108aab98ae4aa4f3c2edade7c69, type: 3}
       propertyPath: targetStorage
       value: 
@@ -4325,6 +4333,10 @@ PrefabInstance:
       propertyPath: startPoint
       value: 
       objectReference: {fileID: 6613501011405127126}
+    - target: {fileID: 8105283168771700500, guid: 4fade108aab98ae4aa4f3c2edade7c69, type: 3}
+      propertyPath: miningDelay
+      value: 0.3
+      objectReference: {fileID: 0}
     - target: {fileID: 8105283168771700500, guid: 4fade108aab98ae4aa4f3c2edade7c69, type: 3}
       propertyPath: targetStorage
       value: 

@@ -3128,9 +3128,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1161621622275103193, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2936077510563232638, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3254172620388225992, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5105436922238577410, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
       propertyPath: m_Name
       value: Map
+      objectReference: {fileID: 0}
+    - target: {fileID: 6517519312500273753, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+      propertyPath: miningDelay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6909875850388904687, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+      propertyPath: miningDelay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7121038794122268926, guid: 6cc9141878172864cba30d116f1a9553, type: 3}
+      propertyPath: miningDelay
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
