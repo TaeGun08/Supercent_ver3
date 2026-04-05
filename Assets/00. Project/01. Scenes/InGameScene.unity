@@ -564,7 +564,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 540949916}
-  soundData: {fileID: 0}
+  soundData: {fileID: 11400000, guid: 96dec12e0f49bf84eae7135933784883, type: 2}
 --- !u!82 &540949916
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3621,7 +3621,7 @@ SceneRoots:
   - {fileID: 406918683}
   - {fileID: 2028757842}
   - {fileID: 1038726117}
+  - {fileID: 540949914}
   - {fileID: 2063313246}
   - {fileID: 623792244}
   - {fileID: 1121204347}
-  - {fileID: 540949914}

@@ -12,4 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d733e57512f524aa06e51b18875d13, type: 3}
   m_Name: SoundData
   m_EditorClassIdentifier: 
-  soundMappings: []
+  soundMappings:
+  - type: 1
+    clip: {fileID: 8300000, guid: 6b00a2df81f900f4db1608dc6c0549f0, type: 3}
+  - type: 2
+    clip: {fileID: 8300000, guid: 2cd74d50b10b0324b87f6b18f84b1e70, type: 3}
+  - type: 3
+    clip: {fileID: 8300000, guid: c04d2543686a7384ba2658f16f94282b, type: 3}
+  - type: 4
+    clip: {fileID: 8300000, guid: c04d2543686a7384ba2658f16f94282b, type: 3}
+  - type: 5
+    clip: {fileID: 8300000, guid: 76080592aa7af1b45b8471cf26a131a6, type: 3}
+  - type: 6
+    clip: {fileID: 8300000, guid: 6b00a2df81f900f4db1608dc6c0549f0, type: 3}
+  - type: 7
+    clip: {fileID: 8300000, guid: 83547d15936a3f8408e1c50736686f8e, type: 3}
+  - type: 9
+    clip: {fileID: 8300000, guid: 874cde7713d21a04183288f69e866f31, type: 3}

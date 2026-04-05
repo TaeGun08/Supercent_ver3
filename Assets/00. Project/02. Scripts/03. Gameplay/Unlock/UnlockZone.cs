@@ -61,6 +61,7 @@ public class UnlockZone : MonoBehaviour
                     currentPaidGold++;
                     UpdateVisuals();
                     
+                    AudioManager.Instance.Play(SoundType.ItemDrop_Gold);
                     DOParabolicMove.MoveToStaticPosition(
                         gold.Transform,
                         goldTargetPoint != null ? goldTargetPoint.position : transform.position,

@@ -98,7 +98,11 @@ public class MiningController : MonoBehaviour
 
         // 이펙트 재생 (타겟 위치)
         EffectManager.Instance.PlayEffect("MiningHit", target.Transform.position);
-        AudioManager.Instance.Play(SoundType.MiningHit);
+        
+        // [Sound Polish]: 채굴 방식에 따른 사운드 분기
+        SoundType miningSound = currentMiningEq.MiningData.Type == MiningType.Burst 
+            ? SoundType.MiningHit_Burst : SoundType.MiningHit_Continuous;
+        AudioManager.Instance.Play(miningSound);
 
         // 슬롯 예약 (리소스 생성 성공 여부와 상관없이 공간 선점 시도)
         if (!isFull) stoneStacker.ReserveSlot();

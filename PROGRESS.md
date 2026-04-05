@@ -184,3 +184,15 @@
 
 ### 2. 현재 상태
 - **Stable**: 해금 즉시 조이스틱 입력이 차단되며, 지정된 지점을 비춘 후 플레이어에게 복귀하는 시퀀스 정상 작동 확인.
+## [Update: 2026-04-06 (Sound Detail Refinement)]
+### 1. 사운드 타입 세분화 및 로직 적용
+- **Mining**: Burst(단발)와 Continuous(연속) 채굴 방식에 따른 사운드 분리 적용.
+- **Resource Specific**: Gold와 일반 아이템(Potion, Cobblestone)의 획득(Pickup)/하적(Drop) 사운드 분리.
+
+### 2. 주요 시스템 반영
+- **MiningController**: 장착 장비 데이터(MiningType) 기반 사운드 재생.
+- **StackInteractionZone**: 상호작용 Stacker의 ItemType 기반 사운드 분기.
+- **UnlockZone**: 골드 투입 시 전용 사운드(ItemDrop_Gold) 명시적 호출.
+
+### 3. 현재 상태
+- **Stable**: 자원 종류와 동작 방식에 따른 청각적 피드백의 다양성 확보 완료.

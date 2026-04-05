@@ -63,7 +63,11 @@ public class StackInteractionZone : MonoBehaviour
         IPickupAble item = playerSource.PopStack();
         if (item == null) return;
 
-        AudioManager.Instance.Play(SoundType.ItemDrop);
+        // [Sound Polish]: 아이템 타입에 따른 사운드 분기
+        SoundType dropSound = targetStacker.AcceptableType == ItemType.Gold 
+            ? SoundType.ItemDrop_Gold : SoundType.ItemDrop_Default;
+        AudioManager.Instance.Play(dropSound);
+
         Vector3 targetWorldPos = targetStacker.transform.TransformPoint(targetStacker.GetNextLocalPosition());
 
         DOParabolicMove.MoveToStaticPosition(
@@ -90,6 +94,11 @@ public class StackInteractionZone : MonoBehaviour
 
         IPickupAble item = targetStacker.PopStack();
         if (item == null) return;
+
+        // [Sound Polish]: 아이템 타입에 따른 사운드 분기
+        SoundType pickupSound = targetStacker.AcceptableType == ItemType.Gold 
+            ? SoundType.ItemPickup_Gold : SoundType.ItemPickup_Default;
+        AudioManager.Instance.Play(pickupSound);
 
         DOParabolicMove.MoveToDynamicTarget(
             item.Transform, 

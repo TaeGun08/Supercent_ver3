@@ -681,3 +681,8 @@
 
 **AI**:
 - **Engineering Summary**: PrisonExpandReward 클래스에 CameraDirector 연동 로직을 추가하여 해금 시 시네마틱 연출을 구현함. [SRP] 원칙을 준수하며, 기존 카메라 제어 레이어를 재사용하여 조이스틱 입력 차단과 연출을 동기화함.
+**User**: 
+> 사운드는 채굴은 Burst, Continuous로 사운드가 두개야, 그리고 포션이랑 조약돌 픽업 풋다운 소리는 같은데 골드는 달라야 해서 픽업 풋다운 소리를 지정할 수 있게 해줬으면 해.
+
+**AI**:
+- **Engineering Summary**: SoundType Enum을 세분화(Mining_Burst/Continuous, Item_Default/Gold)하고, 각 시스템에서 현재 장비 타입 및 아이템 타입을 체크하여 사운드를 동적으로 분기함. 이를 통해 기획 의도에 부합하는 정밀한 오디오 피드백 루프를 구축함.
