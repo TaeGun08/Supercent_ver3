@@ -106,6 +106,7 @@ public class Prisoner : Npc
         UIManager.Instance.HidePrisonerUI();
         isUIShown = false;
 
+        AudioManager.Instance.Play(SoundType.PrisonerFull);
         if (headObject != null)
         {
             headObject.SetActive(true);
@@ -145,6 +146,7 @@ public class Prisoner : Npc
         IPickupAble potion = source.PopStack();
         if (potion == null) yield break;
 
+        AudioManager.Instance.Play(SoundType.PotionDistributed);
         bool moveComplete = false;
         
         DOParabolicMove.MoveToDynamicTarget(

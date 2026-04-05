@@ -686,3 +686,13 @@
 
 **AI**:
 - **Engineering Summary**: SoundType Enum을 세분화(Mining_Burst/Continuous, Item_Default/Gold)하고, 각 시스템에서 현재 장비 타입 및 아이템 타입을 체크하여 사운드를 동적으로 분기함. 이를 통해 기획 의도에 부합하는 정밀한 오디오 피드백 루프를 구축함.
+**User**: 
+> 가마솥에서 생성될때, 배급할때, 죄수가 배급을 다 받았을 때도 사운드가 있었으면 해, 죄수가 감옥에 들어가는 사운드는 없어도 돼.
+
+**AI**:
+- **Engineering Summary**: 가마솥 생산, 배급 이동, 수령 완료 시점에 대한 전용 사운드 타입을 추가하고 각 도메인 로직에 통합함. 또한 기획 변경에 따라 PrisonManager의 수감 사운드를 제거하여 사운드 시스템의 의도된 정밀도를 확보함.
+**User**: 
+> 현재 포션을 배급할 때 소리가 안나. 그리고 채굴 인부가 채굴을 할떄 Burst사운드가 나면 돼. 운반 인부는 아이템 픽업 드롭 사운다가 나면 돼.
+
+**AI**:
+- **Engineering Summary**: MiningWorker와 TransportWorker의 각 상태(Mining, Loading, Unloading)에 맞춰 적절한 효과음 호출부를 추가함. Prisoner의 포션 수령 사운드 누락분을 복구하고 호출 시점을 최적화하여 오디오 피드백 누락 문제를 해결함.

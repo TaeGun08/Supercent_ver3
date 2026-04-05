@@ -87,7 +87,10 @@ public class MagicCauldron : MonoBehaviour
                     targetWorldPos,
                     height: 2f,
                     duration: moveDuration,
-                    onComplete: () => outputStack.PushStack(potion)
+                    onComplete: () => {
+                        outputStack.PushStack(potion);
+                        AudioManager.Instance.Play(SoundType.PotionProduced);
+                    }
                 );
                 yield return moveWait; 
             }

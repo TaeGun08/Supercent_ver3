@@ -99,6 +99,7 @@ public class TransportWorker : Npc
         {
             isHandling = true;
             bool complete = false;
+            AudioManager.Instance.Play(SoundType.ItemPickup_Default);
             DOParabolicMove.MoveToDynamicTarget(item.Transform, worker.myStacker.transform, 1.5f, 0.15f, 
                 worker.myStacker.GetNextLocalPosition(), 0f, () => { worker.myStacker.PushStack(item); complete = true; });
             yield return new WaitUntil(() => complete);
@@ -158,6 +159,7 @@ public class TransportWorker : Npc
         {
             isHandling = true;
             bool complete = false;
+            AudioManager.Instance.Play(SoundType.ItemDrop_Default);
             Vector3 targetPos = target.transform.TransformPoint(target.GetNextLocalPosition());
             DOParabolicMove.MoveToStaticPosition(item.Transform, targetPos, 1.5f, 0.15f, 0f, () => { target.PushStack(item); complete = true; });
             yield return new WaitUntil(() => complete);
@@ -192,3 +194,4 @@ public class TransportWorker : Npc
 
     #endregion
 }
+

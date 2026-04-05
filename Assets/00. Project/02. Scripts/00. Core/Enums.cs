@@ -1,13 +1,15 @@
 public enum SoundType
 {
     None = 0,
-    MiningHit_Burst,        // 단발성 채굴 (곡괭이 등)
-    MiningHit_Continuous,   // 연속성 채굴 (드릴, 불도저)
-    ItemPickup_Default,     // 일반 아이템 획득 (조약돌, 포션)
-    ItemDrop_Default,       // 일반 아이템 하적
-    ItemPickup_Gold,        // 골드 획득
-    ItemDrop_Gold,          // 골드 투입/하적
+    MiningHit_Burst,        
+    MiningHit_Continuous,   
+    ItemPickup_Default,     
+    ItemDrop_Default,       
+    ItemPickup_Gold,        
+    ItemDrop_Gold,          
     UnlockSuccess,
-    PrisonerEnter,
+    PotionProduced,         // 가마솥 생산 완료
+    PotionDistributed,      // 죄수 배급 (포션 이동)
+    PrisonerFull,           // 죄수 수령 완료
     ButtonClick
 }

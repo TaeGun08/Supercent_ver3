@@ -88,6 +88,7 @@ public class MiningWorker : Npc
     private IEnumerator PerformMining(IMiningTarget target)
     {
         animator.SetTrigger(MINING);
+        AudioManager.Instance.Play(SoundType.MiningHit_Burst);
         yield return miningWait;
 
         EffectManager.Instance.PlayEffect("MiningHit", target.Transform.position);

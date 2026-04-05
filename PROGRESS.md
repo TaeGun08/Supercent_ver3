@@ -196,3 +196,22 @@
 
 ### 3. 현재 상태
 - **Stable**: 자원 종류와 동작 방식에 따른 청각적 피드백의 다양성 확보 완료.
+## [Update: 2026-04-06 (Sound Expansion & Correction)]
+### 1. 생산/배급 사운드 추가 및 수감 사운드 제거
+- **MagicCauldron**: 포션 생산 완료 및 스택 적재 시 PotionProduced 사운드 재생.
+- **Prisoner Distribution**: 죄수가 포션을 받는 시점에 PotionDistributed 사운드 재생.
+- **Prisoner Complete**: 모든 포션 수령 완료 시 PrisonerFull 사운드 재생.
+- **PrisonManager**: 수감 시 사운드(PrisonerEnter) 제거 (기획 요청).
+
+### 2. 현재 상태
+- **Stable**: 가마솥-테이블-죄수로 이어지는 자원 순환 과정의 오디오 피드백 정교화 완료.
+## [Update: 2026-04-06 (Worker Sound & Distribution Fix)]
+### 1. 인부(Worker) 사운드 통합 완료
+- **MiningWorker**: 채굴 애니메이션 시점에 MiningHit_Burst 사운드 재생.
+- **TransportWorker**: 아이템 수집(Loading) 시 ItemPickup_Default, 하적(Unloading) 시 ItemDrop_Default 사운드 재생.
+
+### 2. 배급 사운드 정합성 확보
+- **Prisoner**: 포션 수령(ExecuteTakingPotion) 시작 시점에 PotionDistributed 사운드 호출부 재검증 및 확정.
+
+### 3. 현재 상태
+- **Stable**: 모든 NPC 활동에 대한 오디오 피드백 루프 완성. 인스펙터 클립 할당 시 즉시 정상 작동 가능.
