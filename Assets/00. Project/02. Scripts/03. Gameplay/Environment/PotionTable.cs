@@ -37,7 +37,7 @@ public class PotionTable : MonoBehaviour
         // [Tutorial Hook]: 실제 골드가 맵에 생성되는 시점에 배급 완료(DistributePotion) 통보
         TutorialManager.Instance.OnActionPerform(TutorialCondition.DistributePotion);
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 20; i++)
         {
             Gold gold = PoolManager.Instance.Get<Gold>();
             if (gold != null)
