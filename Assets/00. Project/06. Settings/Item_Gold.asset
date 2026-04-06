@@ -15,5 +15,5 @@ MonoBehaviour:
   itemType: 2
   itemName: Gold
   stackHeight: 0.25
-  pickupSound: 3
-  dropSound: 4
+  pickupSound: 5
+  dropSound: 6
